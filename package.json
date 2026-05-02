@@ -8,10 +8,16 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "pages:dev": "npm run build && WRANGLER_LOG_PATH=.wrangler/logs wrangler pages dev dist",
+    "deploy": "npm run build && WRANGLER_LOG_PATH=.wrangler/logs wrangler pages deploy dist --project-name whiteyedcat --branch master",
+    "deploy:preview": "npm run build && WRANGLER_LOG_PATH=.wrangler/logs wrangler pages deploy dist --project-name whiteyedcat",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "astro": "^6.2.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.87.0"
   }
 }
