@@ -1,12 +1,34 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'whiteyedcat',
+	description = 'Painter and illustrator portfolio featuring selected works, collaborations, commissions, and exhibitions.',
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Birthstone&family=Bodoni+Moda:opsz,wght@6..96,700&family=Space+Grotesk:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<title>{title}</title>
 	</head>
 	<body>
 		<slot />
@@ -14,10 +36,41 @@
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
+	:global(:root) {
+		color-scheme: light;
+		font-family: 'Space Grotesk', sans-serif;
 	}
-</style>
+
+	:global(html) {
+		scroll-behavior: smooth;
+	}
+
+	:global(body) {
+		margin: 0;
+		min-width: 320px;
+		min-height: 100vh;
+	}
+
+	:global(*),
+	:global(*::before),
+	:global(*::after) {
+		box-sizing: border-box;
+	}
+
+	:global(img) {
+		display: block;
+		max-width: 100%;
+	}
+
+	:global(a) {
+		color: inherit;
+		text-decoration: none;
+	}
+	
+	:global(button),
+	:global(input),
+	:global(textarea),
+	:global(select) {
+		font: inherit;
+	}
+ </style>

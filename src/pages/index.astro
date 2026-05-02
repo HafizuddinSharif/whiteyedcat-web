@@ -1,11 +1,816 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import avatar from '../assets/whiteyedcat/avatar.png';
+import cat from '../assets/whiteyedcat/cat.png';
+import dividerBottom from '../assets/whiteyedcat/divider-bottom.png';
+import dividerTop from '../assets/whiteyedcat/divider-top.png';
+import fish from '../assets/whiteyedcat/fish.png';
+import galleryA from '../assets/whiteyedcat/gallery-a.png';
+import galleryB from '../assets/whiteyedcat/gallery-b.png';
+import heroBg from '../assets/whiteyedcat/hero-bg.png';
+import stickers from '../assets/whiteyedcat/stickers.png';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const navigation = [
+	{ label: 'About', href: '#about' },
+	{ label: 'Artworks', href: '#artworks' },
+	{ label: 'Collabs', href: '#collabs' },
+	{ label: 'Commisions', href: '#commissions' },
+	{ label: 'Exhibitions', href: '#exhibitions' },
+	{ label: 'Media Mentions', href: '#media' },
+	{ label: 'Contact', href: '#contact' },
+];
+
+const galleryItems = [
+	{ src: galleryA, alt: 'Colorful collage artwork featuring playful objects and a dog portrait.', size: 'portrait' },
+	{ src: galleryB, alt: 'Portrait painting framed by green leaves and ribbon-like accents.', size: 'square' },
+	{ src: galleryA, alt: 'Mixed-media collage with bright motifs and layered stickers.', size: 'portrait' },
+	{ src: galleryB, alt: 'Illustrated portrait with dark floral tones and painterly texture.', size: 'square' },
+	{ src: galleryA, alt: 'Eclectic collage combining warm colors and decorative cut-outs.', size: 'square' },
+	{ src: galleryB, alt: 'Painterly portrait piece with botanical framing.', size: 'portrait' },
+];
+
+const rolePills = ['painter', 'illustrator'];
+
+const vibeItems = [
+	{ src: fish, alt: 'Decorative fish illustration.' },
+	{ src: cat, alt: 'Decorative cat illustration.' },
+];
+
+const serviceLinks = [
+	{ id: 'collabs', label: 'collaborations', href: '#collabs' },
+	{ id: 'commissions', label: 'commisions', href: '#commissions', badge: 'Accepting requests!' },
+	{ id: 'exhibitions', label: 'exhibitions', href: '#exhibitions' },
+	{ id: 'shop', label: 'buy my artwork!', href: '#contact' },
+];
+
+const footerGroups = [
+	[
+		{ label: 'Home', href: '#top' },
+		{ label: 'About', href: '#about' },
+		{ label: 'Contact', href: '#contact' },
+	],
+	[
+		{ label: 'Artworks', href: '#artworks' },
+		{ label: 'Collabs', href: '#collabs' },
+		{ label: 'Commisions', href: '#commissions' },
+		{ label: 'Exhibitions', href: '#exhibitions' },
+	],
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="whiteyedcat | Painter and Illustrator"
+	description="A responsive portfolio landing page for whiteyedcat featuring selected works, artist profile, collaborations, commissions, and contact."
+>
+	<main class="page-shell" id="top">
+		<header class="site-header">
+			<div class="site-header__inner">
+				<a href="#top" class="brand-mark" aria-label="Go to top">
+					<img src={avatar.src} alt="" loading="eager" decoding="async" />
+				</a>
+				<nav class="site-nav" aria-label="Primary">
+					{
+						navigation.map((item) => (
+							<a href={item.href}>{item.label}</a>
+						))
+					}
+				</nav>
+			</div>
+		</header>
+
+		<section class="hero">
+			<div class="hero__backdrop" aria-hidden="true">
+				<img src={heroBg.src} alt="" loading="eager" decoding="async" />
+			</div>
+			<div class="hero__overlay" aria-hidden="true"></div>
+			<div class="hero__content">
+				<div class="hero__socials" aria-label="Social links">
+					<a href="#contact">X</a>
+					<a href="#contact">IG</a>
+					<a href="#contact">@</a>
+				</div>
+				<h1>whiteyedcat</h1>
+					<div class="role-pills" aria-label="Creative roles">
+						{
+							rolePills.map((role) => (
+								<span class="role-pill">
+									<span class="role-pills__icon" aria-hidden="true">✦</span>
+									<span class="role-pill__label">{role}</span>
+								</span>
+							))
+						}
+					</div>
+			</div>
+		</section>
+
+		<section class="gallery-section" id="artworks">
+			<div class="section-heading">
+				<h2>Featured works</h2>
+			</div>
+			<div class="gallery-grid">
+				{
+					galleryItems.map((item) => (
+						<article class={`art-card art-card--${item.size}`}>
+							<img src={item.src.src} alt={item.alt} loading="lazy" decoding="async" />
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<div class="divider divider--top" aria-hidden="true">
+			<img src={dividerTop.src} alt="" loading="lazy" decoding="async" />
+		</div>
+
+		<section class="about-section" id="about">
+			<div class="about-card">
+				<div class="about-card__avatar">
+					<img src={avatar.src} alt="whiteyedcat illustrated profile avatar." loading="lazy" decoding="async" />
+				</div>
+				<div class="about-card__copy">
+					<p class="eyebrow">Meet <span>whiteyedcat</span></p>
+					<p class="lead">
+						Exploring emotions of womanhood through my paintings, my paintings delve into a realm where playfulness dances with darkness. Through my art, I explore the depth of emotions beyond what meets the eye.
+					</p>
+					<div class="vibes">
+						<div>
+							<h3>What I vibe with</h3>
+						</div>
+						<div class="vibes__art">
+							{
+								vibeItems.map((item) => (
+									<img src={item.src.src} alt={item.alt} loading="lazy" decoding="async" />
+								))
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<div class="divider divider--bottom" aria-hidden="true">
+			<img src={dividerBottom.src} alt="" loading="lazy" decoding="async" />
+		</div>
+
+		<section class="services-section" id="contact">
+			<div class="section-heading section-heading--large">
+				<h2>Work with me!</h2>
+			</div>
+			<div class="services-layout">
+				<div class="services-layout__art">
+					<div class="services-layout__frame">
+						<img src={galleryA.src} alt="Collage artwork used as a call-to-action visual." loading="lazy" decoding="async" />
+						<img class="services-layout__stickers" src={stickers.src} alt="" loading="lazy" decoding="async" />
+					</div>
+				</div>
+				<div class="services-layout__list">
+					<ul>
+						{
+							serviceLinks.map((item) => (
+								<li id={item.id} class="service-pill" >
+									<a href={item.href}>
+										<span class="spark" aria-hidden="true">✦</span>
+										<span>{item.badge && <strong class="service-badge">{item.badge}</strong>} {item.label}</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+					<div class="services-layout__media" id="media">
+						<p>Media mentions and external features can live here next as the portfolio expands.</p>
+					</div>
+				</div>
+				<img class="services-layout__accent" src={fish.src} alt="" loading="lazy" decoding="async" />
+			</div>
+		</section>
+
+		<footer class="site-footer">
+			<div class="site-footer__curve" aria-hidden="true"></div>
+			<div class="site-footer__inner">
+				<div class="site-footer__brand">
+					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
+					<h2>whiteyedcat</h2>
+					<p class="social-line">X IG @</p>
+					<p class="credit">Designed and build by snouu.dev</p>
+				</div>
+				<div class="site-footer__links">
+					{
+						footerGroups.map((group) => (
+							<ul>
+								{
+									group.map((item) => (
+										<li><a href={item.href}>{item.label}</a></li>
+									))
+								}
+							</ul>
+						))
+					}
+				</div>
+			</div>
+		</footer>
+	</main>
 </Layout>
+
+<style>
+	:root {
+		--color-bg: #f9f5f2;
+		--color-text: #121212;
+		--color-text-inverse: #f2eee6;
+		--color-card: #ffffff;
+		--color-accent: #5fd0d3;
+		--color-footer: #0b0b0b;
+		--shadow-soft: 0 30px 80px rgba(18, 18, 18, 0.08);
+		--shell-width: min(1180px, calc(100vw - 2rem));
+		--section-gap: clamp(4rem, 8vw, 8rem);
+	}
+
+	.page-shell {
+		background: var(--color-bg);
+		color: var(--color-text);
+		overflow: clip;
+	}
+
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 30;
+		margin-bottom: -5.5rem;
+		background: rgba(255, 255, 255, 0.88);
+		backdrop-filter: blur(16px);
+		border-bottom: 1px solid rgba(18, 18, 18, 0.08);
+	}
+
+	.site-header__inner {
+		width: var(--shell-width);
+		margin: 0 auto;
+		min-height: 5.5rem;
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.brand-mark {
+		flex: 0 0 auto;
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: 50%;
+		overflow: hidden;
+		box-shadow: 0 10px 24px rgba(18, 18, 18, 0.14);
+	}
+
+	.brand-mark img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.site-nav {
+		flex: 1 1 auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.9rem 1.35rem;
+		font-size: 0.86rem;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+	}
+
+	.site-nav a {
+		flex: 1 1 0;
+		position: relative;
+		text-align: center;
+		padding-block: 0.2rem;
+	}
+
+	.site-nav a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -0.15rem;
+		height: 2px;
+		background: var(--color-accent);
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform 180ms ease;
+	}
+
+	.site-nav a:hover::after,
+	.site-nav a:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	.hero {
+		position: relative;
+		min-height: 100vh;
+		display: grid;
+		place-items: end center;
+		padding: 8.5rem 1rem 2.2rem;
+	}
+
+	.hero__backdrop,
+	.hero__overlay {
+		position: absolute;
+		inset: 0;
+	}
+
+	.hero__backdrop img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+	}
+
+	.hero__overlay {
+		background:
+			linear-gradient(to bottom, rgba(18, 18, 18, 0.1), rgba(18, 18, 18, 0.38)),
+			radial-gradient(circle at 50% 65%, rgba(255, 255, 255, 0.04), transparent 40%);
+	}
+
+	.hero__content {
+		position: relative;
+		z-index: 1;
+		width: min(44rem, 100%);
+		display: grid;
+		justify-items: center;
+		gap: 0.8rem;
+		color: var(--color-text-inverse);
+		text-align: center;
+	}
+
+	.hero__socials {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.8rem;
+		font-size: 0.9rem;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.hero__content h1,
+	.site-footer__brand h2 {
+		margin: 0;
+		font-family: 'Birthstone', cursive;
+		font-size: clamp(4rem, 10vw, 7.75rem);
+		line-height: 0.95;
+		font-weight: 400;
+	}
+
+	.role-pills {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.9rem;
+	}
+
+	.services-layout__list a {
+		border: 1.5px solid rgba(242, 238, 230, 0.92);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.08);
+		backdrop-filter: blur(10px);
+	}
+
+	.role-pill {
+		border: 1.5px solid rgba(242, 238, 230, 0.92);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.08);
+		backdrop-filter: blur(10px);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55rem;
+		padding: 0.55rem 1.3rem;
+		font-size: 1rem;
+		font-weight: 700;
+	}
+
+	.role-pills__icon {
+		font-size: 0.95rem;
+		line-height: 1;
+	}
+
+	.gallery-section,
+	.about-section,
+	.services-section {
+		width: var(--shell-width);
+		margin: 0 auto;
+	}
+
+	.gallery-section {
+		padding-block: var(--section-gap);
+	}
+
+	.section-heading {
+		margin-bottom: 2.2rem;
+		text-align: center;
+	}
+
+	.section-heading--large {
+		margin-bottom: 2.8rem;
+	}
+
+	.section-heading h2,
+	.eyebrow,
+	.services-layout__media p {
+		margin: 0;
+		font-family: 'Bodoni Moda', serif;
+	}
+
+	.section-heading h2 {
+		font-size: clamp(2.35rem, 5vw, 4rem);
+		line-height: 1;
+	}
+
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.4rem;
+	}
+
+	.art-card {
+		background: var(--color-card);
+		border-radius: 1rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-soft);
+	}
+
+	.art-card img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.art-card--portrait {
+		aspect-ratio: 0.8;
+	}
+
+	.art-card--square {
+		aspect-ratio: 1;
+	}
+
+	.divider {
+		width: min(2000px, 100%);
+		margin: 0 auto;
+	}
+
+	.divider img {
+		width: 100%;
+		height: auto;
+	}
+
+	.about-section {
+		padding-block: var(--section-gap);
+	}
+
+	.about-card {
+		display: grid;
+		grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(1.5rem, 4vw, 3rem);
+	}
+
+	.about-card__avatar {
+		justify-self: start;
+		width: clamp(11rem, 28vw, 16rem);
+		aspect-ratio: 1;
+		border-radius: 50%;
+		overflow: hidden;
+		box-shadow: 0 24px 54px rgba(18, 18, 18, 0.14);
+	}
+
+	.about-card__avatar img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.eyebrow {
+		font-size: clamp(1.85rem, 3vw, 2.3rem);
+		line-height: 1.1;
+	}
+
+	.eyebrow span {
+		font-family: 'Birthstone', cursive;
+		font-size: 1.25em;
+	}
+
+	.lead {
+		max-width: 46rem;
+		margin: 1rem 0 0;
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1.7;
+	}
+
+	.vibes {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.25rem 2rem;
+		margin-top: 1.35rem;
+	}
+
+	.vibes h3 {
+		margin: 0;
+		font-size: 1.3rem;
+	}
+
+	.vibes__art {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.vibes__art img {
+		width: clamp(6rem, 16vw, 9rem);
+		aspect-ratio: 1;
+		object-fit: contain;
+	}
+
+	.services-section {
+		padding-block: var(--section-gap) clamp(4rem, 8vw, 6rem);
+	}
+
+	.services-layout {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(16rem, 28rem) minmax(18rem, 1fr);
+		align-items: center;
+		gap: clamp(1.75rem, 4vw, 4rem);
+	}
+
+	.services-layout__frame {
+		position: relative;
+		width: min(100%, 24rem);
+		border-radius: 1rem;
+		overflow: visible;
+	}
+
+	.services-layout__frame > img:first-child {
+		width: 100%;
+		border-radius: 1rem;
+		box-shadow: var(--shadow-soft);
+	}
+
+	.services-layout__stickers {
+		position: absolute;
+		left: -0.9rem;
+		right: -0.9rem;
+		bottom: -1.8rem;
+		width: calc(100% + 1.8rem);
+	}
+
+	.services-layout__list ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.services-layout__list a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.95rem 1.25rem;
+		color: var(--color-text);
+		background: transparent;
+		border-color: rgba(18, 18, 18, 0.78);
+		font-size: 1rem;
+		font-weight: 700;
+		transition:
+			transform 180ms ease,
+			background-color 180ms ease,
+			border-color 180ms ease;
+	}
+
+	.services-layout__list a:hover,
+	.services-layout__list a:focus-visible {
+		transform: translateY(-2px);
+		background: rgba(95, 208, 211, 0.12);
+		border-color: var(--color-accent);
+	}
+
+	.spark {
+		font-size: 1.05rem;
+		line-height: 1;
+	}
+
+	.services-layout__list strong {
+		flex: 0 0 auto;
+		padding: 0.38rem 0.7rem;
+		border-radius: 0.4rem;
+		background: var(--color-accent);
+		color: var(--color-text-inverse);
+		font-size: 0.7rem;
+		letter-spacing: 0.01em;
+		text-transform: uppercase;
+	}
+
+	.service-badge {
+		margin-right: 10px;
+	}
+
+	.services-layout__media {
+		max-width: 32rem;
+		margin-top: 1.4rem;
+		padding-left: 0.3rem;
+	}
+
+	.services-layout__media p {
+		font-size: 1rem;
+		line-height: 1.6;
+	}
+
+	.services-layout__accent {
+		position: absolute;
+		right: -2rem;
+		bottom: -2rem;
+		width: clamp(4.5rem, 10vw, 7rem);
+	}
+
+	.site-footer {
+		position: relative;
+		margin-top: 2rem;
+		background: var(--color-footer);
+		color: var(--color-text-inverse);
+	}
+
+	.site-footer__curve {
+		height: clamp(3.5rem, 10vw, 6rem);
+		background: var(--color-bg);
+		border-bottom-left-radius: 100% 100%;
+		border-bottom-right-radius: 100% 100%;
+	}
+
+	.site-footer__inner {
+		width: var(--shell-width);
+		margin: 0 auto;
+		padding: 2.5rem 0 3.5rem;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 2rem;
+	}
+
+	.site-footer__brand img {
+		width: 4.5rem;
+		height: 4.5rem;
+		border-radius: 50%;
+		object-fit: cover;
+		margin-bottom: 1rem;
+	}
+
+	.site-footer__brand h2 {
+		font-size: clamp(3rem, 7vw, 5rem);
+		color: var(--color-text-inverse);
+	}
+
+	.social-line,
+	.credit {
+		margin: 0;
+	}
+
+	.social-line {
+		margin-top: 0.4rem;
+		font-size: 0.95rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.credit {
+		margin-top: 1rem;
+		font-size: 0.85rem;
+		color: rgba(242, 238, 230, 0.82);
+	}
+
+	.site-footer__links {
+		display: flex;
+		gap: clamp(2rem, 5vw, 4.5rem);
+		align-items: end;
+	}
+
+	.site-footer__links ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.85rem;
+		font-size: 0.92rem;
+		font-weight: 700;
+	}
+
+	.site-nav a:focus-visible,
+	.hero__socials a:focus-visible,
+	.site-footer a:focus-visible,
+	.services-layout__list a:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 0.28rem;
+	}
+
+	@media (max-width: 920px) {
+		.site-header {
+			position: static;
+			margin-bottom: 0;
+		}
+
+		.site-header__inner {
+			padding-block: 1rem;
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.site-nav {
+			width: 100%;
+			justify-content: flex-start;
+		}
+
+		.site-nav a {
+			flex: 0 0 auto;
+			text-align: left;
+		}
+
+		.gallery-grid,
+		.about-card,
+		.services-layout,
+		.site-footer__inner {
+			grid-template-columns: 1fr;
+		}
+
+		.gallery-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.about-card__avatar,
+		.services-layout__frame {
+			justify-self: center;
+		}
+
+		.about-card__copy,
+		.services-layout__list,
+		.site-footer__brand {
+			text-align: center;
+		}
+
+		.vibes {
+			justify-content: center;
+		}
+
+		.services-layout__media {
+			margin-inline: auto;
+			padding-left: 0;
+		}
+
+		.site-footer__links {
+			justify-content: center;
+			align-items: start;
+		}
+
+		.services-layout__accent {
+			right: 0;
+			bottom: -3rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		:root {
+			--shell-width: min(100vw - 1.25rem, 34rem);
+		}
+
+		.hero {
+			min-height: 34rem;
+			padding-top: 2rem;
+		}
+
+		.hero__content h1 {
+			font-size: clamp(3.5rem, 19vw, 5.4rem);
+		}
+
+		.role-pills span {
+			font-size: 0.95rem;
+		}
+
+		.gallery-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.section-heading {
+			margin-bottom: 1.8rem;
+		}
+
+		.about-section,
+		.services-section {
+			padding-block: 4rem;
+		}
+
+		.site-footer__links {
+			flex-direction: column;
+			gap: 1.2rem;
+		}
+
+		.site-footer__links ul {
+			justify-items: center;
+		}
+	}
+</style>
