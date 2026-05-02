@@ -185,7 +185,15 @@ const footerGroups = [
 		</section>
 
 		<footer class="site-footer">
-			<div class="site-footer__curve" aria-hidden="true"></div>
+			<div class="site-footer__wave" aria-hidden="true">
+				<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
+					<g>
+						<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
+						<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
+						<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
+					</g>
+				</svg>
+			</div>
 			<div class="site-footer__inner">
 				<div class="site-footer__brand">
 					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
@@ -638,11 +646,23 @@ const footerGroups = [
 		color: var(--color-text-inverse);
 	}
 
-	.site-footer__curve {
-		height: clamp(3.5rem, 10vw, 6rem);
+	.site-footer__wave {
+		position: relative;
+		height: clamp(4.5rem, 12vw, 7.5rem);
 		background: var(--color-bg);
-		border-bottom-left-radius: 100% 100%;
-		border-bottom-right-radius: 100% 100%;
+		overflow: hidden;
+	}
+
+	.site-footer__wave svg {
+		position: absolute;
+		inset: auto -1px -1px;
+		width: calc(100% + 2px);
+		height: 100%;
+		display: block;
+	}
+
+	.site-footer__wave path {
+		fill: var(--color-footer);
 	}
 
 	.site-footer__inner {
