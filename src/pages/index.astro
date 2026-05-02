@@ -68,7 +68,12 @@ const footerGroups = [
 				<a href="#top" class="brand-mark" aria-label="Go to top">
 					<img src={avatar.src} alt="" loading="eager" decoding="async" />
 				</a>
-				<nav class="site-nav" aria-label="Primary">
+				<button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation">
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</button>
+				<nav class="site-nav" id="primary-navigation" aria-label="Primary">
 					{
 						navigation.map((item) => (
 							<a href={item.href}>{item.label}</a>
@@ -80,7 +85,7 @@ const footerGroups = [
 
 		<section class="hero">
 			<div class="hero__backdrop" aria-hidden="true">
-				<img src={heroBg.src} alt="" loading="eager" decoding="async" />
+				<img data-hero-parallax src={heroBg.src} alt="" loading="eager" decoding="async" />
 			</div>
 			<div class="hero__overlay" aria-hidden="true"></div>
 			<div class="hero__content">
@@ -219,6 +224,91 @@ const footerGroups = [
 	</main>
 </Layout>
 
+<script>
+	const hero = document.querySelector<HTMLElement>('.hero');
+	const parallaxImage = document.querySelector<HTMLElement>('[data-hero-parallax]');
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	let frame = 0;
+
+	const updateHeroParallax = () => {
+		frame = 0;
+
+		if (!hero || !parallaxImage || reducedMotion.matches) {
+			if (parallaxImage) {
+				parallaxImage.style.setProperty('--hero-parallax-y', '0px');
+			}
+			return;
+		}
+
+		const rect = hero.getBoundingClientRect();
+		const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+		if (rect.bottom < 0 || rect.top > viewportHeight) {
+			return;
+		}
+
+		const scrollProgress = Math.min(1, Math.max(0, -rect.top / rect.height));
+		const startOffset = Math.max(-120, -viewportHeight * 0.12);
+		const travel = Math.min(320, Math.max(180, viewportHeight * 0.32));
+		const offset = startOffset + scrollProgress * travel;
+
+		parallaxImage.style.setProperty('--hero-parallax-y', `${offset}px`);
+	};
+
+	const requestHeroParallaxUpdate = () => {
+		if (frame) return;
+		frame = window.requestAnimationFrame(updateHeroParallax);
+	};
+
+	updateHeroParallax();
+	window.addEventListener('scroll', requestHeroParallaxUpdate, { passive: true });
+	window.addEventListener('resize', requestHeroParallaxUpdate);
+	reducedMotion.addEventListener('change', requestHeroParallaxUpdate);
+
+	const siteHeader = document.querySelector<HTMLElement>('.site-header');
+	const navToggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+	const primaryNavigation = document.querySelector<HTMLElement>('#primary-navigation');
+	const mediumScreen = window.matchMedia('(max-width: 920px)');
+
+	const setNavigationOpen = (isOpen: boolean) => {
+		if (!siteHeader || !navToggle || !primaryNavigation) return;
+
+		siteHeader.classList.toggle('is-nav-open', isOpen);
+		navToggle.setAttribute('aria-expanded', String(isOpen));
+		navToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+	};
+
+	navToggle?.addEventListener('click', () => {
+		setNavigationOpen(!siteHeader?.classList.contains('is-nav-open'));
+	});
+
+	primaryNavigation?.addEventListener('click', (event) => {
+		if (event.target instanceof HTMLAnchorElement) {
+			setNavigationOpen(false);
+		}
+	});
+
+	document.addEventListener('click', (event) => {
+		if (!mediumScreen.matches || !siteHeader?.classList.contains('is-nav-open')) return;
+		if (event.target instanceof Node && siteHeader.contains(event.target)) return;
+
+		setNavigationOpen(false);
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') {
+			setNavigationOpen(false);
+		}
+	});
+
+	mediumScreen.addEventListener('change', (event) => {
+		if (!event.matches) {
+			setNavigationOpen(false);
+		}
+	});
+</script>
+
 <style>
 	:root {
 		--color-bg: #f9f5f2;
@@ -239,10 +329,12 @@ const footerGroups = [
 	}
 
 	.site-header {
-		position: sticky;
+		position: fixed;
 		top: 0;
+		left: 0;
+		right: 0;
 		z-index: 30;
-		margin-bottom: -5.5rem;
+		margin-bottom: 0;
 		background: rgba(255, 255, 255, 0.88);
 		backdrop-filter: blur(16px);
 		border-bottom: 1px solid rgba(18, 18, 18, 0.08);
@@ -254,7 +346,7 @@ const footerGroups = [
 		min-height: 5.5rem;
 		display: flex;
 		align-items: center;
-		gap: 1.25rem;
+		/* gap: 1.25rem; */
 	}
 
 	.brand-mark {
@@ -308,12 +400,75 @@ const footerGroups = [
 		transform: scaleX(1);
 	}
 
+	.nav-toggle {
+		position: relative;
+		display: none;
+		width: 3rem;
+		height: 3rem;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		color: var(--color-text);
+		cursor: pointer;
+		place-items: center;
+		padding: 0;
+		transition:
+			background-color 180ms ease,
+			border-color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.nav-toggle:hover,
+	.nav-toggle:focus-visible {
+		background: transparent;
+	}
+
+	.nav-toggle span {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		display: block;
+		width: 1.18rem;
+		height: 2px;
+		border-radius: 999px;
+		background: currentColor;
+		transition:
+			opacity 180ms ease,
+			transform 180ms ease;
+	}
+
+	.nav-toggle span:nth-child(1) {
+		transform: translate(-50%, calc(-50% - 0.42rem));
+	}
+
+	.nav-toggle span:nth-child(2) {
+		transform: translate(-50%, -50%);
+	}
+
+	.nav-toggle span:nth-child(3) {
+		transform: translate(-50%, calc(-50% + 0.42rem));
+	}
+
+	.site-header.is-nav-open .nav-toggle span:nth-child(1) {
+		transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	.site-header.is-nav-open .nav-toggle span:nth-child(2) {
+		opacity: 0;
+	}
+
+	.site-header.is-nav-open .nav-toggle span:nth-child(3) {
+		transform: translate(-50%, -50%) rotate(-45deg);
+	}
+
 	.hero {
 		position: relative;
 		min-height: 100vh;
 		display: grid;
 		place-items: end center;
 		padding: 8.5rem 1rem 2.2rem;
+		overflow: hidden;
+		isolation: isolate;
 	}
 
 	.hero__backdrop,
@@ -327,6 +482,9 @@ const footerGroups = [
 		height: 100%;
 		object-fit: cover;
 		object-position: center top;
+		transform: translate3d(0, var(--hero-parallax-y, -72px), 0) scale(1.22);
+		transform-origin: center top;
+		will-change: transform;
 	}
 
 	.hero__overlay {
@@ -722,6 +880,7 @@ const footerGroups = [
 	}
 
 	.site-nav a:focus-visible,
+	.nav-toggle:focus-visible,
 	.hero__socials a:focus-visible,
 	.site-footer a:focus-visible,
 	.services-layout__list a:focus-visible {
@@ -731,24 +890,65 @@ const footerGroups = [
 
 	@media (max-width: 920px) {
 		.site-header {
-			position: static;
 			margin-bottom: 0;
 		}
 
 		.site-header__inner {
 			padding-block: 1rem;
-			align-items: flex-start;
-			flex-direction: column;
+			align-items: center;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+
+		.nav-toggle {
+			display: grid;
+			margin-left: auto;
 		}
 
 		.site-nav {
+			order: 3;
 			width: 100%;
-			justify-content: flex-start;
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 0.2rem;
+			max-height: 0;
+			overflow: hidden;
+			opacity: 0;
+			pointer-events: none;
+			transform: translateY(-0.45rem);
+			transition:
+				max-height 240ms ease,
+				opacity 180ms ease,
+				padding 240ms ease,
+				transform 240ms ease;
+		}
+
+		.site-header.is-nav-open .site-nav {
+			max-height: 32rem;
+			opacity: 1;
+			padding: 0.7rem 0 0.25rem;
+			pointer-events: auto;
+			transform: translateY(0);
 		}
 
 		.site-nav a {
-			flex: 0 0 auto;
+			flex: none;
 			text-align: left;
+			padding: 0.72rem 0.85rem;
+			border-top: 1px solid rgba(18, 18, 18, 0.08);
+			border-radius: 0.45rem;
+			transition:
+				background-color 180ms ease,
+				color 180ms ease;
+		}
+
+		.site-nav a:hover,
+		.site-nav a:focus-visible {
+			background: rgba(95, 208, 211, 0.13);
+		}
+
+		.site-nav a::after {
+			display: none;
 		}
 
 		.gallery-grid,
@@ -799,8 +999,14 @@ const footerGroups = [
 		}
 
 		.hero {
-			min-height: 34rem;
+			min-height: 100vh;
+			min-height: 100svh;
 			padding-top: 2rem;
+		}
+
+		.hero__backdrop img {
+			object-position: center center;
+			transform: translate3d(0, var(--hero-parallax-y, -72px), 0) scale(1.28);
 		}
 
 		.hero__content h1 {
