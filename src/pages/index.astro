@@ -113,6 +113,8 @@ const footerGroups = [
 				<h2>Featured works</h2>
 			</div>
 			<div class="gallery-grid">
+				<div class="gallery-grid__sizer" aria-hidden="true"></div>
+				<div class="gallery-grid__gutter" aria-hidden="true"></div>
 				{
 					galleryItems.map((item) => (
 						<article class={`art-card art-card--${item.size}`}>
@@ -225,6 +227,30 @@ const footerGroups = [
 </Layout>
 
 <script>
+	import Masonry from 'masonry-layout';
+
+	const galleryGrid = document.querySelector<HTMLElement>('.gallery-grid');
+
+	if (galleryGrid) {
+		const masonry = new Masonry(galleryGrid, {
+			itemSelector: '.art-card',
+			columnWidth: '.gallery-grid__sizer',
+			gutter: '.gallery-grid__gutter',
+			percentPosition: true,
+		});
+
+		const galleryImages = Array.from(galleryGrid.querySelectorAll('img'));
+
+		galleryImages.forEach((image) => {
+			if (image.complete) return;
+			image.addEventListener('load', () => masonry.layout(), { once: true });
+			image.addEventListener('error', () => masonry.layout(), { once: true });
+		});
+
+		window.addEventListener('load', () => masonry.layout(), { once: true });
+		window.addEventListener('resize', () => masonry.layout(), { passive: true });
+	}
+
 	const hero = document.querySelector<HTMLElement>('.hero');
 	const parallaxImage = document.querySelector<HTMLElement>('[data-hero-parallax]');
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -588,12 +614,33 @@ const footerGroups = [
 	}
 
 	.gallery-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 1.4rem;
+		--gallery-gap: 1.4rem;
+		position: relative;
+	}
+
+	.gallery-grid::after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+
+	.gallery-grid__sizer,
+	.art-card {
+		width: calc((100% - (var(--gallery-gap) * 2)) / 3);
+	}
+
+	.gallery-grid__sizer,
+	.gallery-grid__gutter {
+		height: 0;
+	}
+
+	.gallery-grid__gutter {
+		width: var(--gallery-gap);
 	}
 
 	.art-card {
+		float: left;
+		margin-bottom: var(--gallery-gap);
 		background: var(--color-card);
 		border-radius: 1rem;
 		overflow: hidden;
@@ -951,7 +998,6 @@ const footerGroups = [
 			display: none;
 		}
 
-		.gallery-grid,
 		.about-card,
 		.services-layout,
 		.site-footer__inner {
@@ -959,7 +1005,12 @@ const footerGroups = [
 		}
 
 		.gallery-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
+			--gallery-gap: 1.2rem;
+		}
+
+		.gallery-grid__sizer,
+		.art-card {
+			width: calc((100% - var(--gallery-gap)) / 2);
 		}
 
 		.about-card__avatar,
@@ -971,6 +1022,14 @@ const footerGroups = [
 		.services-layout__list,
 		.site-footer__brand {
 			text-align: center;
+		}
+
+		.site-footer__inner {
+			justify-items: center;
+		}
+
+		.site-footer__brand img {
+			margin-inline: auto;
 		}
 
 		.vibes {
@@ -1018,7 +1077,7 @@ const footerGroups = [
 		}
 
 		.gallery-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
+			--gallery-gap: 0.85rem;
 		}
 
 		.section-heading {
@@ -1031,8 +1090,7 @@ const footerGroups = [
 		}
 
 		.site-footer__links {
-			flex-direction: column;
-			gap: 1.2rem;
+			gap: clamp(2rem, 10vw, 3rem);
 		}
 
 		.site-footer__links ul {

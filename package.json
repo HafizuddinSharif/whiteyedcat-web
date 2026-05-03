@@ -15,9 +15,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.2.1"
+    "astro": "^6.2.1",
+    "masonry-layout": "^4.2.2"
   },
   "devDependencies": {
+    "@types/masonry-layout": "^4.2.8",
     "wrangler": "^4.87.0"
   }
 }
