@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ArtworkCard from '../components/ArtworkCard.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import galleryA from '../assets/whiteyedcat/gallery-a.png';
 import galleryB from '../assets/whiteyedcat/gallery-b.png';
@@ -17,16 +18,16 @@ const navigation = [
 
 const artworkColumns = [
 	[
-		{ src: galleryA, alt: 'Colorful collage artwork featuring dogs, charms, candy, and bright playful objects.', type: 'portrait', purchaseUrl: null },
-		{ src: galleryB, alt: 'Painterly portrait of a woman surrounded by flowing dark green forms.', type: 'square', purchaseUrl: null },
+		{ src: galleryA, alt: 'Colorful collage artwork featuring dogs, charms, candy, and bright playful objects.', title: 'Artwork 1', type: 'portrait', purchaseUrl: null },
+		{ src: galleryB, alt: 'Painterly portrait of a woman surrounded by flowing dark green forms.', title: 'Artwork 2', type: 'square', purchaseUrl: null },
 	],
 	[
-		{ src: galleryB, alt: 'Square painterly portrait with layered botanical texture and smoky movement.', type: 'square', purchaseUrl: null, showBuy: true },
-		{ src: galleryA, alt: 'Bright mixed-media dog collage with vivid charms and toy-like shapes.', type: 'portrait', purchaseUrl: null, showBuy: true },
+		{ src: galleryB, alt: 'Square painterly portrait with layered botanical texture and smoky movement.', title: 'Artwork 3', type: 'square', purchaseUrl: null },
+		{ src: galleryA, alt: 'Bright mixed-media dog collage with vivid charms and toy-like shapes.', title: 'Artwork 4', type: 'portrait', purchaseUrl: null },
 	],
 	[
-		{ src: galleryA, alt: 'Portrait-format mixed-media artwork with dogs and colorful nostalgic objects.', type: 'portrait', purchaseUrl: null },
-		{ src: galleryA, alt: 'Colorful dog collage artwork with candies, bows, charms, and saturated details.', type: 'portrait', purchaseUrl: null },
+		{ src: galleryA, alt: 'Portrait-format mixed-media artwork with dogs and colorful nostalgic objects.', title: 'Artwork 5', type: 'portrait', purchaseUrl: null },
+		{ src: galleryA, alt: 'Colorful dog collage artwork with candies, bows, charms, and saturated details.', title: 'Artwork 6', type: 'portrait', purchaseUrl: null },
 	],
 ];
 
@@ -114,19 +115,13 @@ const footerGroups = [
 						<div class="gallery-column">
 							{
 								column.map((item) => (
-									<article class={`artwork-card artwork-card--${item.type}`}>
-										<img src={item.src.src} alt={item.alt} loading="lazy" decoding="async" />
-										{item.showBuy && (
-											<div class="artwork-card__buy">
-												<button class="buy-button" type="button" disabled aria-label="Artwork purchase link unavailable">
-													<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-														<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V5.5a2.7 2.7 0 0 1 2.7-2.7H12c.5 0 1 .2 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8ZM7.2 8.7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
-													</svg>
-													<span>buy me</span>
-												</button>
-											</div>
-										)}
-									</article>
+									<ArtworkCard
+										src={item.src}
+										alt={item.alt}
+										title={item.title}
+										variant={item.type}
+										purchaseUrl={item.purchaseUrl}
+									/>
 								))
 							}
 						</div>
@@ -368,33 +363,6 @@ const footerGroups = [
 	.gallery-column {
 		display: grid;
 		gap: clamp(1rem, 2vw, 1.55rem);
-	}
-
-	.artwork-card {
-		position: relative;
-		border-radius: 0.45rem;
-		overflow: hidden;
-		background: var(--art-footer);
-	}
-
-	.artwork-card--portrait {
-		aspect-ratio: 720 / 900;
-	}
-
-	.artwork-card--square {
-		aspect-ratio: 1;
-	}
-
-	.artwork-card img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.artwork-card__buy {
-		position: absolute;
-		right: 0.45rem;
-		bottom: 0.45rem;
 	}
 
 	.buy-button {

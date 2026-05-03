@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ArtworkCard from '../components/ArtworkCard.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import cat from '../assets/whiteyedcat/cat.png';
 import dividerBottom from '../assets/whiteyedcat/divider-bottom.png';
@@ -21,12 +22,12 @@ const navigation = [
 ];
 
 const galleryItems = [
-	{ src: galleryA, alt: 'Colorful collage artwork featuring playful objects and a dog portrait.', size: 'portrait' },
-	{ src: galleryB, alt: 'Portrait painting framed by green leaves and ribbon-like accents.', size: 'square' },
-	{ src: galleryA, alt: 'Mixed-media collage with bright motifs and layered stickers.', size: 'portrait' },
-	{ src: galleryB, alt: 'Illustrated portrait with dark floral tones and painterly texture.', size: 'square' },
-	{ src: galleryA, alt: 'Eclectic collage combining warm colors and decorative cut-outs.', size: 'square' },
-	{ src: galleryB, alt: 'Painterly portrait piece with botanical framing.', size: 'portrait' },
+	{ src: galleryA, alt: 'Colorful collage artwork featuring playful objects and a dog portrait.', title: 'Artwork 1', size: 'portrait', purchaseUrl: null },
+	{ src: galleryB, alt: 'Portrait painting framed by green leaves and ribbon-like accents.', title: 'Artwork 2', size: 'square', purchaseUrl: null },
+	{ src: galleryA, alt: 'Mixed-media collage with bright motifs and layered stickers.', title: 'Artwork 3', size: 'portrait', purchaseUrl: null },
+	{ src: galleryB, alt: 'Illustrated portrait with dark floral tones and painterly texture.', title: 'Artwork 4', size: 'square', purchaseUrl: null },
+	{ src: galleryA, alt: 'Eclectic collage combining warm colors and decorative cut-outs.', title: 'Artwork 5', size: 'square', purchaseUrl: null },
+	{ src: galleryB, alt: 'Painterly portrait piece with botanical framing.', title: 'Artwork 6', size: 'portrait', purchaseUrl: null },
 ];
 
 const rolePills = ['painter', 'illustrator'];
@@ -132,9 +133,14 @@ const footerGroups = [
 				<div class="gallery-grid__gutter" aria-hidden="true"></div>
 				{
 					galleryItems.map((item) => (
-						<article class={`art-card art-card--${item.size}`}>
-							<img src={item.src.src} alt={item.alt} loading="lazy" decoding="async" />
-						</article>
+						<ArtworkCard
+							src={item.src}
+							alt={item.alt}
+							title={item.title}
+							variant={item.size}
+							purchaseUrl={item.purchaseUrl}
+							class="art-card"
+						/>
 					))
 				}
 			</div>
@@ -757,7 +763,7 @@ const footerGroups = [
 	}
 
 	.gallery-grid__sizer,
-	.art-card {
+	:global(.gallery-grid .art-card) {
 		width: calc((100% - (var(--gallery-gap) * 2)) / 3);
 	}
 
@@ -770,27 +776,15 @@ const footerGroups = [
 		width: var(--gallery-gap);
 	}
 
-	.art-card {
+	:global(.gallery-grid .art-card) {
 		float: left;
 		margin-bottom: var(--gallery-gap);
-		background: var(--color-card);
-		border-radius: 1rem;
-		overflow: hidden;
-		box-shadow: var(--shadow-soft);
-	}
-
-	.art-card img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.art-card--portrait {
-		aspect-ratio: 0.8;
-	}
-
-	.art-card--square {
-		aspect-ratio: 1;
+		--artwork-card-radius: 1rem;
+		--artwork-card-bg: var(--color-card);
+		--artwork-card-shadow: var(--shadow-soft);
+		--artwork-card-title-bg: var(--color-card);
+		--artwork-card-title-color: #121212;
+		--artwork-card-tag: var(--color-yellow);
 	}
 
 	.divider {
@@ -1141,7 +1135,7 @@ const footerGroups = [
 		}
 
 		.gallery-grid__sizer,
-		.art-card {
+		:global(.gallery-grid .art-card) {
 			width: calc((100% - var(--gallery-gap)) / 2);
 		}
 

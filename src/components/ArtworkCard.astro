@@ -1,0 +1,224 @@
+---
+interface Props {
+	src: { src: string } | string;
+	alt: string;
+	title: string;
+	variant: 'portrait' | 'square';
+	purchaseUrl?: string | null;
+	class?: string;
+}
+
+const {
+	src,
+	alt,
+	title,
+	variant,
+	purchaseUrl = null,
+	class: className = '',
+} = Astro.props;
+
+const imageSrc = typeof src === 'string' ? src : src.src;
+const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter(Boolean).join(' ');
+---
+
+<article class={cardClass} data-artwork-card tabindex="0" aria-label={`Show title for ${title}`}>
+	<div class="artwork-card__inner">
+		<div class="artwork-card__face artwork-card__front">
+			<img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
+		</div>
+		<div class="artwork-card__face artwork-card__back">
+			<p>{title}</p>
+		</div>
+	</div>
+	{
+		purchaseUrl && (
+			<a class="artwork-card__buy" href={purchaseUrl} aria-label={`Buy ${title}`}>
+				<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+					<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V5.5a2.7 2.7 0 0 1 2.7-2.7H12c.5 0 1 .2 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8ZM7.2 8.7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+				</svg>
+				<span>buy me</span>
+			</a>
+		)
+	}
+</article>
+
+<script>
+	const getArtworkCard = (target: EventTarget | null) => {
+		if (!(target instanceof Element)) return null;
+		return target.closest<HTMLElement>('[data-artwork-card]');
+	};
+
+	document.addEventListener('click', (event) => {
+		const card = getArtworkCard(event.target);
+		if (!card) return;
+		if (event.target instanceof Element && event.target.closest('a')) return;
+
+		card.classList.toggle('is-flipped');
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key !== 'Enter' && event.key !== ' ') return;
+
+		const card = getArtworkCard(event.target);
+		if (!card) return;
+
+		event.preventDefault();
+		card.classList.toggle('is-flipped');
+	});
+</script>
+
+<style>
+	.artwork-card {
+		--artwork-card-radius: 0.45rem;
+		--artwork-card-bg: #0b0b0b;
+		--artwork-card-shadow: none;
+		--artwork-card-title-bg: #000000;
+		--artwork-card-title-color: #f2eee6;
+		--artwork-card-tag: #f6c813;
+		position: relative;
+		border-radius: var(--artwork-card-radius);
+		background: var(--artwork-card-bg);
+		box-shadow: var(--artwork-card-shadow);
+		outline: none;
+		perspective: 1200px;
+	}
+
+	.artwork-card--portrait {
+		aspect-ratio: 720 / 900;
+	}
+
+	.artwork-card--square {
+		aspect-ratio: 1;
+	}
+
+	.artwork-card__inner,
+	.artwork-card__face {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+	}
+
+	.artwork-card__inner {
+		overflow: hidden;
+		-webkit-transform-style: preserve-3d;
+		transform-style: preserve-3d;
+		transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.artwork-card:hover .artwork-card__inner,
+	.artwork-card:focus-within .artwork-card__inner,
+	.artwork-card.is-flipped .artwork-card__inner {
+		transform: rotateY(180deg);
+	}
+
+	.artwork-card__face {
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		transform-style: preserve-3d;
+	}
+
+	.artwork-card__front {
+		background: var(--artwork-card-bg);
+		opacity: 1;
+		transform: rotateY(0deg);
+		transition: opacity 120ms ease;
+	}
+
+	.artwork-card:hover .artwork-card__front,
+	.artwork-card:focus-within .artwork-card__front,
+	.artwork-card.is-flipped .artwork-card__front {
+		opacity: 0;
+	}
+
+	.artwork-card__front img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.artwork-card__back {
+		display: grid;
+		place-items: center;
+		padding: clamp(1rem, 4vw, 2rem);
+		background: var(--artwork-card-title-bg);
+		color: var(--artwork-card-title-color);
+		text-align: center;
+		opacity: 0;
+		transform: rotateY(180deg) translateZ(2px);
+		transition: opacity 160ms ease;
+		z-index: 2;
+	}
+
+	.artwork-card:hover .artwork-card__back,
+	.artwork-card:focus-within .artwork-card__back,
+	.artwork-card.is-flipped .artwork-card__back {
+		opacity: 1;
+	}
+
+	.artwork-card__back p {
+		margin: 0;
+		font-family: 'Bodoni Moda', serif;
+		font-size: clamp(1.5rem, 6vw, 2.9rem);
+		line-height: 0.98;
+		transform: translateZ(1px);
+	}
+
+	.artwork-card__buy {
+		position: absolute;
+		right: 0.45rem;
+		bottom: 0.45rem;
+		z-index: 2;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		min-height: 1.45rem;
+		padding: 0.18rem 0.48rem;
+		border-radius: 999px;
+		background: #0b0b0b;
+		color: #ffffff;
+		font-size: 0.63rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.artwork-card__buy svg {
+		width: 0.88rem;
+		height: 0.88rem;
+		fill: var(--artwork-card-tag);
+		flex: 0 0 auto;
+	}
+
+	.artwork-card:focus-visible {
+		outline: 3px solid var(--artwork-card-tag);
+		outline-offset: 4px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.artwork-card {
+			perspective: none;
+		}
+
+		.artwork-card__inner {
+			transform-style: flat;
+			transition: none;
+		}
+
+		.artwork-card:hover .artwork-card__inner,
+		.artwork-card:focus-within .artwork-card__inner,
+		.artwork-card.is-flipped .artwork-card__inner {
+			transform: none;
+		}
+
+		.artwork-card__back {
+			opacity: 0;
+			transform: none;
+			transition: opacity 180ms ease;
+		}
+
+		.artwork-card:hover .artwork-card__back,
+		.artwork-card:focus-within .artwork-card__back,
+		.artwork-card.is-flipped .artwork-card__back {
+			opacity: 1;
+		}
+	}
+</style>
