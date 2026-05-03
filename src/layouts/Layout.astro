@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+
 interface Props {
 	title?: string;
 	description?: string;
@@ -29,6 +31,7 @@ const {
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 		<title>{title}</title>
+		<ClientRouter fallback="animate" />
 	</head>
 	<body>
 		<slot />
@@ -43,6 +46,45 @@ const {
 
 	:global(html) {
 		scroll-behavior: smooth;
+	}
+
+	@keyframes pageFadeOut {
+		from {
+			opacity: 1;
+		}
+
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes pageFadeIn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+	:global(::view-transition-old(root)) {
+		animation: pageFadeOut 220ms ease forwards;
+	}
+
+	:global(::view-transition-new(root)) {
+		animation: pageFadeIn 280ms ease 60ms both;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(html) {
+			scroll-behavior: auto;
+		}
+
+		:global(::view-transition-old(root)),
+		:global(::view-transition-new(root)) {
+			animation: none;
+		}
 	}
 
 	:global(body) {
