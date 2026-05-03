@@ -1,0 +1,655 @@
+---
+import Layout from '../layouts/Layout.astro';
+import avatar from '../assets/whiteyedcat/avatar.png';
+import contactDividerBottom from '../assets/whiteyedcat/contact-divider-bottom.png';
+import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
+import contactFishLeft from '../assets/whiteyedcat/contact-fish-left.png';
+import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
+
+const navigation = [
+	{ label: 'Home', href: '/' },
+	{ label: 'About', href: '/#about' },
+	{ label: 'Artworks', href: '/artworks' },
+	{ label: 'Collabs', href: '/#collabs' },
+	{ label: 'Commisions', href: '/#commissions' },
+	{ label: 'Exhibitions', href: '/#exhibitions' },
+	{ label: 'Media Mentions', href: '/#media' },
+	{ label: 'Contact', href: '/contact' },
+];
+
+const footerGroups = [
+	[
+		{ label: 'Home', href: '/' },
+		{ label: 'About', href: '/#about' },
+		{ label: 'Contact', href: '/contact' },
+	],
+	[
+		{ label: 'Artworks', href: '/artworks' },
+		{ label: 'Collabs', href: '/#collabs' },
+		{ label: 'Commisions', href: '/#commissions' },
+		{ label: 'Exhibitions', href: '/#exhibitions' },
+	],
+];
+---
+
+<Layout
+	title="Contact | whiteyedcat"
+	description="Contact whiteyedcat for commissions, collaborations, exhibitions, and media enquiries."
+>
+	<main class="contact-page">
+		<header class="contact-header">
+			<div class="artist-lockup">
+				<img src={avatar.src} alt="whiteyedcat illustrated profile avatar." loading="eager" decoding="async" />
+				<div class="artist-lockup__copy">
+					<div class="artist-lockup__topline">
+						<h1>whiteyedcat</h1>
+						<div class="social-links" aria-label="Social links">
+							<a href="https://x.com/whiteyedcat" aria-label="X">X</a>
+							<a href="https://www.instagram.com/whiteyedcat/" aria-label="Instagram">
+								<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+									<rect x="5" y="5" width="14" height="14" rx="4"></rect>
+									<circle cx="12" cy="12" r="3.2"></circle>
+									<circle cx="16.3" cy="7.7" r="0.8"></circle>
+								</svg>
+							</a>
+							<a href="https://www.threads.net/@whiteyedcat" aria-label="Threads">@</a>
+						</div>
+					</div>
+					<div class="role-pills" aria-label="Creative roles">
+						<span class="role-pill">
+							<span aria-hidden="true">✦</span>
+							painter
+						</span>
+						<span class="role-pill">
+							<span aria-hidden="true">✦</span>
+							illustrator
+						</span>
+					</div>
+					<p>I live for garage survival...and cats</p>
+				</div>
+			</div>
+
+			<nav class="contact-nav" aria-label="Primary">
+				{
+					navigation.map((item) => (
+						<a href={item.href} aria-current={item.href === '/contact' ? 'page' : undefined}>{item.label}</a>
+					))
+				}
+			</nav>
+		</header>
+
+		<div class="contact-divider contact-divider--top" aria-hidden="true">
+			<img src={contactDividerTop.src} alt="" loading="eager" decoding="async" />
+		</div>
+
+		<section class="contact-section" aria-labelledby="contact-heading">
+			<div class="contact-panel">
+				<img class="contact-fish contact-fish--left" src={contactFishLeft.src} alt="" loading="lazy" decoding="async" />
+				<div class="contact-panel__body">
+					<h2 id="contact-heading">Contact Me</h2>
+					<div class="contact-methods">
+						<div class="contact-method">
+							<p>Send me an email at</p>
+							<a class="contact-chip" href="mailto:whiteyedcat@gmail.com" aria-label="Email whiteyedcat">
+								<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+									<path d="M3.8 5.5h16.4c.7 0 1.3.6 1.3 1.3v10.4c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3V6.8c0-.7.6-1.3 1.3-1.3Zm.9 2.2 7.3 5.1 7.3-5.1H4.7Zm14.8 8.6V9.7l-7.1 4.9a.8.8 0 0 1-.9 0L4.5 9.7v6.6h15Z"></path>
+								</svg>
+								<span>whiteyedcat@gmail</span>
+							</a>
+						</div>
+						<div class="contact-method">
+							<p>Or DM me on</p>
+							<a class="contact-chip" href="https://www.instagram.com/whiteyedcat/" aria-label="DM whiteyedcat on Instagram">
+								<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+									<rect x="4.5" y="4.5" width="15" height="15" rx="4.2"></rect>
+									<circle cx="12" cy="12" r="3.25"></circle>
+									<circle cx="16.25" cy="7.75" r="0.8"></circle>
+								</svg>
+								<span>@whiteyedcat</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<img class="contact-fish contact-fish--right" src={contactFishRight.src} alt="" loading="lazy" decoding="async" />
+			</div>
+		</section>
+
+		<div class="contact-divider contact-divider--bottom" aria-hidden="true">
+			<img src={contactDividerBottom.src} alt="" loading="lazy" decoding="async" />
+		</div>
+
+		<footer class="contact-footer">
+			<div class="contact-footer__wave" aria-hidden="true">
+				<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
+					<g>
+						<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
+						<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
+						<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
+					</g>
+				</svg>
+			</div>
+			<div class="contact-footer__inner">
+				<div class="contact-footer__brand">
+					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
+					<h2>whiteyedcat</h2>
+					<p class="footer-socials">X IG @</p>
+					<p class="credit">Designed and build by snouu.dev</p>
+				</div>
+				<div class="contact-footer__links">
+					{
+						footerGroups.map((group) => (
+							<ul>
+								{
+									group.map((item) => (
+										<li><a href={item.href}>{item.label}</a></li>
+									))
+								}
+							</ul>
+						))
+					}
+				</div>
+			</div>
+		</footer>
+	</main>
+</Layout>
+
+<style>
+	:root {
+		--contact-bg: #f9f5f2;
+		--contact-surface: #ffffff;
+		--contact-text: #121212;
+		--contact-inverse: #f2eee6;
+		--contact-footer: #0b0b0b;
+		--contact-shell: min(1180px, calc(100vw - 2rem));
+	}
+
+	.contact-page {
+		min-height: 100vh;
+		background: var(--contact-surface);
+		color: var(--contact-text);
+		overflow: clip;
+	}
+
+	.contact-header {
+		background: var(--contact-surface);
+		padding: clamp(2rem, 5vw, 3.1rem) 1rem 1.45rem;
+	}
+
+	.artist-lockup {
+		width: min(48rem, 100%);
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: clamp(6.4rem, 16vw, 12rem) minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(1.2rem, 3vw, 2rem);
+	}
+
+	.artist-lockup > img {
+		width: 100%;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.artist-lockup__copy {
+		min-width: 0;
+		display: grid;
+		gap: 0.55rem;
+	}
+
+	.artist-lockup__topline {
+		display: flex;
+		align-items: center;
+		gap: clamp(0.8rem, 3vw, 2.2rem);
+	}
+
+	.artist-lockup h1,
+	.contact-footer__brand h2 {
+		margin: 0;
+		font-family: 'Birthstone', cursive;
+		font-weight: 400;
+		line-height: 0.92;
+	}
+
+	.artist-lockup h1 {
+		font-size: clamp(3.9rem, 8.3vw, 6.25rem);
+	}
+
+	.social-links {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		font-size: 0.9rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.social-links a {
+		display: inline-grid;
+		place-items: center;
+		width: 1rem;
+		height: 1rem;
+	}
+
+	.social-links svg {
+		width: 1rem;
+		height: 1rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+	}
+
+	.role-pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.7rem;
+	}
+
+	.role-pill {
+		min-width: clamp(7rem, 15vw, 10.3rem);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.35rem;
+		padding: 0.18rem 1rem 0.24rem;
+		border: 2px solid var(--contact-text);
+		border-radius: 999px;
+		font-size: 0.95rem;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.artist-lockup p {
+		margin: 0;
+		font-size: clamp(0.95rem, 1.9vw, 1.5rem);
+		font-weight: 500;
+		line-height: 1.25;
+	}
+
+	.contact-nav {
+		width: var(--contact-shell);
+		margin: clamp(1.8rem, 4vw, 3.15rem) auto 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		font-size: clamp(0.82rem, 1.4vw, 1rem);
+		font-weight: 700;
+	}
+
+	.contact-nav a {
+		position: relative;
+		padding-block: 0.3rem;
+		white-space: nowrap;
+	}
+
+	.contact-nav a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 2px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform 180ms ease;
+	}
+
+	.contact-nav a:hover::after,
+	.contact-nav a:focus-visible::after,
+	.contact-nav a[aria-current='page']::after {
+		transform: scaleX(1);
+	}
+
+	.contact-section {
+		position: relative;
+		background: var(--contact-surface);
+		padding: clamp(1.8rem, 4vw, 3.7rem) 0 0;
+	}
+
+	.contact-divider {
+		width: min(2000px, 100%);
+		margin-inline: auto;
+		pointer-events: none;
+	}
+
+	.contact-divider img {
+		width: 100%;
+		height: auto;
+	}
+
+	.contact-divider--top {
+		margin-top: clamp(4.6rem, 8vw, 7.2rem);
+	}
+
+	.contact-divider--bottom {
+		margin-top: clamp(2.4rem, 4vw, 3.8rem);
+		margin-bottom: clamp(5.5rem, 11vw, 8.4rem);
+	}
+
+	.contact-panel {
+		position: relative;
+		width: var(--contact-shell);
+		min-height: clamp(20rem, 34vw, 26rem);
+		margin: 0 auto;
+		display: grid;
+		place-items: center;
+		isolation: isolate;
+	}
+
+	.contact-panel__body {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		justify-items: center;
+		gap: clamp(1rem, 2vw, 1.4rem);
+		text-align: center;
+	}
+
+	.contact-panel h2 {
+		margin: 0;
+		font-family: 'Bodoni Moda', serif;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		line-height: 1;
+	}
+
+	.contact-methods {
+		display: grid;
+		gap: 0.72rem;
+		font-size: clamp(0.95rem, 1.55vw, 1.5rem);
+		font-weight: 500;
+	}
+
+	.contact-method {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	.contact-method p {
+		min-width: 11.75rem;
+		margin: 0;
+		text-align: right;
+		line-height: 1.25;
+	}
+
+	.contact-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.48rem;
+		min-height: 2rem;
+		padding: 0.2rem 0.66rem;
+		border: 1.5px solid var(--contact-text);
+		border-radius: 0.45rem;
+		background: var(--contact-surface);
+		line-height: 1;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.contact-chip:hover,
+	.contact-chip:focus-visible {
+		background: var(--contact-text);
+		color: var(--contact-inverse);
+		transform: translateY(-1px);
+	}
+
+	.contact-chip svg {
+		width: 1.45rem;
+		height: 1.45rem;
+		flex: 0 0 auto;
+	}
+
+	.contact-method:first-child .contact-chip svg {
+		fill: currentColor;
+	}
+
+	.contact-chip rect,
+	.contact-chip circle {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+	}
+
+	.contact-fish {
+		position: absolute;
+		z-index: 0;
+		width: clamp(8.5rem, 18vw, 15rem);
+		pointer-events: none;
+	}
+
+	.contact-fish--left {
+		left: clamp(0rem, 4vw, 3rem);
+		top: 10%;
+	}
+
+	.contact-fish--right {
+		right: clamp(0rem, 3vw, 2.6rem);
+		top: 27%;
+	}
+
+	.contact-footer {
+		position: relative;
+		margin-top: 2rem;
+		background: var(--contact-footer);
+		color: var(--contact-inverse);
+	}
+
+	.contact-footer__wave {
+		position: relative;
+		height: clamp(4.5rem, 12vw, 7.5rem);
+		background: var(--contact-surface);
+		overflow: hidden;
+	}
+
+	.contact-footer__wave svg {
+		position: absolute;
+		inset: auto -1px -1px;
+		width: calc(100% + 2px);
+		height: 100%;
+		display: block;
+	}
+
+	.contact-footer__wave g {
+		will-change: transform;
+	}
+
+	.contact-footer__wave path {
+		fill: var(--contact-footer);
+	}
+
+	.contact-footer__inner {
+		width: var(--contact-shell);
+		margin: 0 auto;
+		padding: 2.5rem 0 3.5rem;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 2rem;
+	}
+
+	.contact-footer__brand img {
+		width: 4.5rem;
+		height: 4.5rem;
+		border-radius: 50%;
+		object-fit: cover;
+		margin-bottom: 1rem;
+	}
+
+	.contact-footer__brand h2 {
+		font-size: clamp(3rem, 7vw, 5rem);
+		color: var(--contact-inverse);
+	}
+
+	.footer-socials,
+	.credit {
+		margin: 0;
+	}
+
+	.footer-socials {
+		margin-top: 0.4rem;
+		font-size: 0.95rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.credit {
+		margin-top: 1rem;
+		color: rgba(242, 238, 230, 0.82);
+		font-size: 0.85rem;
+	}
+
+	.contact-footer__links {
+		display: flex;
+		gap: clamp(2rem, 5vw, 4.5rem);
+		align-items: end;
+	}
+
+	.contact-footer__links ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.85rem;
+		font-size: 0.92rem;
+		font-weight: 700;
+	}
+
+	.contact-nav a:focus-visible,
+	.social-links a:focus-visible,
+	.contact-chip:focus-visible,
+	.contact-footer a:focus-visible {
+		outline: 2px solid var(--contact-text);
+		outline-offset: 0.28rem;
+	}
+
+	.contact-chip:focus-visible {
+		outline-color: var(--contact-text);
+	}
+
+	.contact-footer a:focus-visible {
+		outline-color: var(--contact-inverse);
+	}
+
+	@media (max-width: 920px) {
+		.contact-nav {
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 0.85rem 1.4rem;
+		}
+
+		.contact-panel {
+			min-height: 28rem;
+		}
+
+		.contact-fish {
+			opacity: 0.82;
+		}
+
+		.contact-footer__inner {
+			grid-template-columns: 1fr;
+			align-items: start;
+		}
+
+		.contact-footer__links {
+			max-width: 30rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		:root {
+			--contact-shell: min(100vw - 1.25rem, 34rem);
+		}
+
+		.contact-header {
+			padding-top: 1.4rem;
+		}
+
+		.artist-lockup {
+			grid-template-columns: 1fr;
+			justify-items: center;
+			text-align: center;
+		}
+
+		.artist-lockup > img {
+			width: 7.5rem;
+		}
+
+		.artist-lockup__topline {
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 0.6rem 1rem;
+		}
+
+		.role-pills {
+			justify-content: center;
+		}
+
+		.contact-divider--top {
+			margin-top: 3rem;
+		}
+
+		.contact-panel {
+			min-height: 28rem;
+		}
+
+		.contact-method {
+			display: grid;
+			justify-items: center;
+			gap: 0.45rem;
+		}
+
+		.contact-method p {
+			min-width: 0;
+			text-align: center;
+		}
+
+		.contact-chip {
+			min-height: 2.45rem;
+		}
+
+		.contact-fish {
+			width: clamp(7rem, 38vw, 10rem);
+		}
+
+		.contact-fish--left {
+			left: -1rem;
+			top: 0;
+		}
+
+		.contact-fish--right {
+			right: -1.35rem;
+			top: auto;
+			bottom: 0.4rem;
+		}
+
+		.contact-footer__brand,
+		.contact-footer__links ul {
+			text-align: center;
+			justify-items: center;
+		}
+
+		.contact-footer__brand img {
+			margin-inline: auto;
+		}
+
+		.contact-footer__links {
+			justify-self: center;
+			grid-template-columns: repeat(2, minmax(7rem, 1fr));
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.contact-nav a::after,
+		.contact-chip {
+			transition: none;
+		}
+
+		.contact-footer__wave animateTransform {
+			display: none;
+		}
+	}
+</style>
