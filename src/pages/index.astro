@@ -62,6 +62,21 @@ const footerGroups = [
 	title="whiteyedcat | Painter and Illustrator"
 	description="A responsive portfolio landing page for whiteyedcat featuring selected works, artist profile, collaborations, commissions, and contact."
 >
+	<div class="intro-reveal" aria-hidden="true">
+		<div class="intro-reveal__brand">
+			<img src={avatar.src} alt="" loading="eager" decoding="async" />
+			<p>whiteyedcat</p>
+		</div>
+		<div class="intro-reveal__wave">
+			<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
+				<g>
+					<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
+					<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
+					<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
+				</g>
+			</svg>
+		</div>
+	</div>
 	<main class="page-shell" id="top">
 		<header class="site-header">
 			<div class="site-header__inner">
@@ -346,12 +361,129 @@ const footerGroups = [
 		--shadow-soft: 0 30px 80px rgba(18, 18, 18, 0.08);
 		--shell-width: min(1180px, calc(100vw - 2rem));
 		--section-gap: clamp(4rem, 8vw, 8rem);
+		--intro-wave-height: clamp(4.5rem, 12vw, 7.5rem);
 	}
 
 	.page-shell {
 		background: var(--color-bg);
 		color: var(--color-text);
 		overflow: clip;
+	}
+
+	.intro-reveal {
+		position: fixed;
+		inset: 0;
+		z-index: 100;
+		background: var(--color-footer);
+		backface-visibility: hidden;
+		overflow: visible;
+		pointer-events: auto;
+		transform: translate3d(0, 0, 0);
+		will-change: transform;
+		animation: introRevealWipe 900ms cubic-bezier(0.76, 0, 0.24, 1) 1050ms forwards;
+	}
+
+	.intro-reveal__brand {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		align-content: center;
+		gap: 0.45rem;
+		color: var(--color-text-inverse);
+		text-align: center;
+		opacity: 0;
+		animation: introBrandFade 1100ms ease forwards;
+	}
+
+	.intro-reveal__brand img {
+		width: clamp(5rem, 14vw, 7.5rem);
+		aspect-ratio: 1;
+		border-radius: 50%;
+		object-fit: cover;
+		box-shadow: 0 24px 56px rgba(0, 0, 0, 0.32);
+	}
+
+	.intro-reveal__brand p {
+		margin: 0;
+		font-family: 'Birthstone', cursive;
+		font-size: clamp(4rem, 10vw, 7.75rem);
+		line-height: 0.95;
+		font-weight: 400;
+	}
+
+	.intro-reveal__wave {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: calc(var(--intro-wave-height) * -1 + 1px);
+		height: var(--intro-wave-height);
+		overflow: hidden;
+		transform: translate3d(0, 0, 0);
+	}
+
+	.intro-reveal__wave svg {
+		position: absolute;
+		inset: auto -1px -1px;
+		width: calc(100% + 2px);
+		height: 100%;
+		display: block;
+	}
+
+	.intro-reveal__wave path {
+		fill: var(--color-footer);
+	}
+
+	.site-header,
+	.hero__content {
+		opacity: 0;
+		will-change: opacity;
+		animation: introContentReveal 700ms ease 1240ms forwards;
+	}
+
+	@keyframes introRevealWipe {
+		0% {
+			transform: translate3d(0, 0, 0);
+			visibility: visible;
+		}
+
+		99% {
+			transform: translate3d(0, calc(100vh + var(--intro-wave-height)), 0);
+			visibility: visible;
+		}
+
+		100% {
+			transform: translate3d(0, calc(100vh + var(--intro-wave-height)), 0);
+			visibility: hidden;
+		}
+	}
+
+	@keyframes introBrandFade {
+		0% {
+			opacity: 0;
+			transform: translate3d(0, 0.25rem, 0);
+		}
+
+		28%,
+		58% {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+
+		100% {
+			opacity: 0;
+			transform: translate3d(0, -0.35rem, 0);
+		}
+	}
+
+	@keyframes introContentReveal {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
 	}
 
 	.site-header {
@@ -1095,6 +1227,23 @@ const footerGroups = [
 
 		.site-footer__links ul {
 			justify-items: center;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.intro-reveal {
+			display: none;
+			animation: none;
+		}
+
+		.intro-reveal__brand {
+			animation: none;
+		}
+
+		.site-header,
+		.hero__content {
+			opacity: 1;
+			animation: none;
 		}
 	}
 </style>
