@@ -196,14 +196,14 @@ const serviceLinks = [
 </Layout>
 
 <script>
-	const hero = document.querySelector<HTMLElement>('.hero');
-	const parallaxImage = document.querySelector<HTMLElement>('[data-hero-parallax]');
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 	let frame = 0;
 
 	const updateHeroParallax = () => {
 		frame = 0;
+		const hero = document.querySelector<HTMLElement>('.hero');
+		const parallaxImage = document.querySelector<HTMLElement>('[data-hero-parallax]');
 
 		if (!hero || !parallaxImage || reducedMotion.matches) {
 			if (parallaxImage) {
@@ -237,12 +237,13 @@ const serviceLinks = [
 	window.addEventListener('resize', requestHeroParallaxUpdate);
 	reducedMotion.addEventListener('change', requestHeroParallaxUpdate);
 
-	const siteHeader = document.querySelector<HTMLElement>('.site-header');
-	const navToggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-	const primaryNavigation = document.querySelector<HTMLElement>('#primary-navigation');
 	const mediumScreen = window.matchMedia('(max-width: 920px)');
 
 	const setNavigationOpen = (isOpen: boolean) => {
+		const siteHeader = document.querySelector<HTMLElement>('.site-header');
+		const navToggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+		const primaryNavigation = document.querySelector<HTMLElement>('#primary-navigation');
+
 		if (!siteHeader || !navToggle || !primaryNavigation) return;
 
 		siteHeader.classList.toggle('is-nav-open', isOpen);
@@ -250,19 +251,24 @@ const serviceLinks = [
 		navToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
 	};
 
-	navToggle?.addEventListener('click', () => {
-		setNavigationOpen(!siteHeader?.classList.contains('is-nav-open'));
-	});
-
-	primaryNavigation?.addEventListener('click', (event) => {
-		if (event.target instanceof HTMLAnchorElement) {
-			setNavigationOpen(false);
-		}
-	});
-
 	document.addEventListener('click', (event) => {
+		if (!(event.target instanceof Element)) return;
+
+		const siteHeader = document.querySelector<HTMLElement>('.site-header');
+		const navToggle = event.target.closest<HTMLButtonElement>('.nav-toggle');
+
+		if (navToggle) {
+			setNavigationOpen(!siteHeader?.classList.contains('is-nav-open'));
+			return;
+		}
+
+		if (event.target.closest('#primary-navigation a')) {
+			setNavigationOpen(false);
+			return;
+		}
+
 		if (!mediumScreen.matches || !siteHeader?.classList.contains('is-nav-open')) return;
-		if (event.target instanceof Node && siteHeader.contains(event.target)) return;
+		if (siteHeader.contains(event.target)) return;
 
 		setNavigationOpen(false);
 	});
@@ -304,6 +310,11 @@ const serviceLinks = [
 
 	window.addEventListener('load', queueArtworkMasonry);
 	window.addEventListener('resize', queueArtworkMasonry);
+	document.addEventListener('astro:page-load', () => {
+		setNavigationOpen(false);
+		requestHeroParallaxUpdate();
+		queueArtworkMasonry();
+	});
 	document.fonts?.ready.then(queueArtworkMasonry);
 	queueArtworkMasonry();
 </script>
