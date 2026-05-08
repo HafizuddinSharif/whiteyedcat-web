@@ -2,13 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import CommissionItem from '../components/CommissionItem.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { commissionItems } from '../data/commissions';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import commissionsCat from '../assets/whiteyedcat/commissions-cat.png';
 import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
-import commissionsPortrait from '../assets/whiteyedcat/commissions-portrait.png';
-import commissionsStickers from '../assets/whiteyedcat/commissions-stickers.png';
-import galleryA from '../assets/whiteyedcat/gallery-a.png';
-import galleryB from '../assets/whiteyedcat/gallery-b.png';
 
 const navigation = [
 	{ label: 'Home', href: '/' },
@@ -20,118 +17,11 @@ const navigation = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const commissionItems = [
-	{
-		id: 'portraits',
-		title: 'Portraits',
-		description:
-			'Illustrated portraits for people. Pop-art meets hyperrealism. Each piece is unique and painted with intention.',
-		images: [
-			{
-				src: commissionsPortrait,
-				alt: 'Colorful portrait commission preview featuring a dog surrounded by bright objects and painted details.',
-			},
-			{
-				src: galleryA,
-				alt: 'Colorful mixed-media portrait artwork with bright charms and playful details.',
-			},
-			{
-				src: galleryB,
-				alt: 'Painterly portrait framed by dark green flowing forms.',
-			},
-		],
-		defaultVariant: 'no-background',
-		variants: [
-			{
-				id: 'no-background',
-				label: 'no background',
-				choices: [
-					{ label: 'Face only', price: 'RM200' },
-					{ label: 'Half body', price: 'RM300' },
-					{ label: 'Full body', price: 'RM350' },
-				],
-			},
-			{
-				id: 'with-background',
-				label: 'with background',
-				choices: [
-					{ label: 'Face only', price: 'RM300' },
-					{ label: 'Half body', price: 'RM350' },
-					{ label: 'Full body', price: 'RM400' },
-				],
-			},
-		],
-	},
-	{
-		id: 'pet-portraits',
-		title: 'Pet Portraits',
-		description:
-			'Illustrated portraits for pets. Pop-art meets hyperrealism. Each piece is unique and painted with intention.',
-		images: [
-			{
-				src: commissionsPortrait,
-				alt: 'Colorful pet portrait commission preview with dogs and playful surrounding details.',
-			},
-			{
-				src: galleryA,
-				alt: 'Bright mixed-media pet artwork with dogs, charms, and saturated details.',
-			},
-		],
-		defaultVariant: 'no-background',
-		variants: [
-			{
-				id: 'no-background',
-				label: 'no background',
-				choices: [{ label: 'Any animal', price: 'RM50' }],
-			},
-			{
-				id: 'with-background',
-				label: 'with background',
-				choices: [{ label: 'Any animal', price: 'RM100' }],
-			},
-		],
-	},
-	{
-		id: 'scenery',
-		title: 'Scenery',
-		description:
-			'Original digital paintings of landscapes, cityscapes, and fantasy environments. Painted with mood and atmosphere in mind - each piece tells a story without a subject.',
-		images: [
-			{
-				src: commissionsPortrait,
-				alt: 'Colorful commission preview standing in for scenery artwork.',
-			},
-			{
-				src: galleryB,
-				alt: 'Painterly artwork with atmospheric flowing green forms.',
-			},
-		],
-		choices: [{ label: 'One scene', prefix: 'from', price: 'RM500' }],
-	},
-	{
-		id: 'pet-sticker-pack',
-		title: 'Pet sticker pack',
-		description: 'Custom illustrated sticker sets. Great for Telegram, LINE, or printing.',
-		images: [
-			{
-				src: commissionsStickers,
-				alt: 'Sticker pack preview with small illustrated cats and playful animal poses.',
-			},
-			{
-				src: commissionsCat,
-				alt: 'Orange cat illustration used as a pet sticker style preview.',
-			},
-		],
-		choices: [{ label: 'Per 8 stickers', price: 'RM30' }],
-		imageFit: 'contain',
-	},
-];
-
 ---
 
 <Layout
 	title="Commissions | whiteyedcat"
-	description="Commission whiteyedcat for custom portraits, pet portraits, scenery paintings, and sticker packs with current Malaysian Ringgit rates and contact links."
+	description="Commission whiteyedcat for custom portraits, pet portraits, scenery paintings, and sticker packs with country-specific rates and contact links."
 >
 	<main class="commissions-page">
 		<header class="commissions-header">
@@ -176,7 +66,12 @@ const commissionItems = [
 		</header>
 
 		<section class="commissions-section" aria-labelledby="commissions-heading">
-			<h2 id="commissions-heading">Commissions</h2>
+			<div class="commissions-section__header">
+				<div>
+					<h2 id="commissions-heading">Commissions</h2>
+					<p data-commission-country-label>United States pricing</p>
+				</div>
+			</div>
 			<div class="commissions-list">
 				{
 					commissionItems.map((item) => (
@@ -385,6 +280,19 @@ const commissionItems = [
 		padding: clamp(2rem, 5vw, 3.7rem) 0 clamp(3.2rem, 6vw, 5.5rem);
 	}
 
+	.commissions-section__header {
+		width: min(72rem, 100%);
+		margin: 0 auto;
+		display: grid;
+		justify-items: center;
+		text-align: center;
+	}
+
+	.commissions-section__header > div {
+		display: grid;
+		gap: 0.42rem;
+	}
+
 	.commissions-section h2,
 	.commissions-cta h2 {
 		margin: 0;
@@ -392,6 +300,18 @@ const commissionItems = [
 		font-size: clamp(2.1rem, 4vw, 3rem);
 		line-height: 1.05;
 		text-align: center;
+	}
+
+	.commissions-section h2 {
+		text-align: center;
+	}
+
+	.commissions-section__header p {
+		margin: 0;
+		font-size: clamp(0.9rem, 1.3vw, 1rem);
+		font-weight: 600;
+		line-height: 1.25;
+		color: rgba(18, 18, 18, 0.68);
 	}
 
 	.commissions-list {
@@ -658,6 +578,16 @@ const commissionItems = [
 
 		.commissions-list {
 			gap: 3.2rem;
+		}
+
+		.commissions-section__header {
+			grid-template-columns: 1fr;
+			justify-items: center;
+			text-align: center;
+		}
+
+		.commissions-section h2 {
+			text-align: center;
 		}
 
 		.commissions-cta {

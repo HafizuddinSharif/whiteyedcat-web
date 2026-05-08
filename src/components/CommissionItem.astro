@@ -1,22 +1,5 @@
 ---
-interface CommissionImage {
-	src: {
-		src: string;
-	};
-	alt: string;
-}
-
-interface CommissionChoice {
-	label: string;
-	price: string;
-	prefix?: string;
-}
-
-interface CommissionVariant {
-	id: string;
-	label: string;
-	choices: CommissionChoice[];
-}
+import type { CommissionChoice, CommissionCountry, CommissionImage, CommissionVariant } from '../data/commissions';
 
 interface Props {
 	id: string;
@@ -43,6 +26,20 @@ const {
 const initialImage = images[0];
 const hasVariants = variants.length > 0;
 const hasThumbnails = images.length > 1;
+
+const defaultCountry = 'US';
+const countryPricing = {
+	MY: {
+		label: 'Malaysia',
+	},
+	US: {
+		label: 'United States',
+	},
+} as const;
+
+const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) => {
+	return prices[country as CommissionCountry] ?? prices[defaultCountry];
+};
 ---
 
 <article class:list={['commission-item', `commission-item--${imageFit}`]} data-commission-item={id}>
@@ -116,7 +113,7 @@ const hasThumbnails = images.length > 1;
 									<span>{choice.label}</span>
 									<strong>
 										{choice.prefix && <small>{choice.prefix}</small>}
-										{choice.price}
+										<span data-commission-price data-prices={JSON.stringify(choice.prices)}>{getPrice(choice.prices)}</span>
 									</strong>
 								</div>
 							))}
@@ -128,7 +125,7 @@ const hasThumbnails = images.length > 1;
 							<span>{choice.label}</span>
 							<strong>
 								{choice.prefix && <small>{choice.prefix}</small>}
-								{choice.price}
+								<span data-commission-price data-prices={JSON.stringify(choice.prices)}>{getPrice(choice.prices)}</span>
 							</strong>
 						</div>
 					))
@@ -139,6 +136,127 @@ const hasThumbnails = images.length > 1;
 </article>
 
 <script>
+	const commissionPricing = {
+		defaultCountry: 'US',
+		storageKey: 'whiteyedcat-commission-country',
+		countries: {
+			MY: {
+				label: 'Malaysia',
+			},
+			US: {
+				label: 'United States',
+			},
+		},
+	};
+
+	type CommissionCountry = keyof typeof commissionPricing.countries;
+
+	const isSupportedCountry = (country: string | null | undefined): country is CommissionCountry => {
+		return Boolean(country && country in commissionPricing.countries);
+	};
+
+	const getSavedCommissionCountry = () => {
+		try {
+			return window.localStorage.getItem(commissionPricing.storageKey);
+		} catch {
+			return null;
+		}
+	};
+
+	const saveCommissionCountry = (country: CommissionCountry) => {
+		try {
+			window.localStorage.setItem(commissionPricing.storageKey, country);
+		} catch {
+			return;
+		}
+	};
+
+	const getCountryFromLocale = (locale: string | undefined) => {
+		if (!locale) return null;
+
+		try {
+			const region = new Intl.Locale(locale).region;
+			return region ? region.toUpperCase() : null;
+		} catch {
+			const region = locale.split('-')[1];
+			return region ? region.toUpperCase() : null;
+		}
+	};
+
+	const getCountryFromTimezone = () => {
+		const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		const timezoneCountryMap: Record<string, CommissionCountry> = {
+			'Asia/Kuala_Lumpur': 'MY',
+			'America/Adak': 'US',
+			'America/Anchorage': 'US',
+			'America/Boise': 'US',
+			'America/Chicago': 'US',
+			'America/Denver': 'US',
+			'America/Detroit': 'US',
+			'America/Indiana/Indianapolis': 'US',
+			'America/Juneau': 'US',
+			'America/Kentucky/Louisville': 'US',
+			'America/Los_Angeles': 'US',
+			'America/New_York': 'US',
+			'America/Phoenix': 'US',
+			'America/Sitka': 'US',
+			'America/Yakutat': 'US',
+			'Pacific/Honolulu': 'US',
+		};
+
+		return timezoneCountryMap[timezone] ?? null;
+	};
+
+	const detectCommissionCountry = () => {
+		const savedCountry = getSavedCommissionCountry();
+		if (isSupportedCountry(savedCountry)) return savedCountry;
+
+		const timezoneCountry = getCountryFromTimezone();
+		if (timezoneCountry) return timezoneCountry;
+
+		const locales = navigator.languages?.length ? navigator.languages : [navigator.language];
+		for (const locale of locales) {
+			const country = getCountryFromLocale(locale);
+			if (isSupportedCountry(country)) return country;
+		}
+
+		return commissionPricing.defaultCountry;
+	};
+
+	const getDirectCommissionPrice = (prices: unknown, country: CommissionCountry) => {
+		if (!prices || typeof prices !== 'object') return '';
+
+		const priceMap = prices as Partial<Record<CommissionCountry, string>>;
+		return priceMap[country] ?? priceMap[commissionPricing.defaultCountry] ?? '';
+	};
+
+	const setCommissionCountry = (country: string) => {
+		const activeCountry = isSupportedCountry(country) ? country : commissionPricing.defaultCountry;
+		const pricing = commissionPricing.countries[activeCountry];
+
+		document.querySelectorAll<HTMLSelectElement>('[data-commission-country-select]').forEach((select) => {
+			select.value = activeCountry;
+		});
+
+		document.querySelectorAll<HTMLElement>('[data-commission-country-label]').forEach((label) => {
+			label.textContent = `${pricing.label} pricing`;
+		});
+
+		document.querySelectorAll<HTMLElement>('[data-commission-price]').forEach((price) => {
+			try {
+				const prices = JSON.parse(price.dataset.prices || '{}');
+				const directPrice = getDirectCommissionPrice(prices, activeCountry);
+				if (!directPrice) return;
+
+				price.textContent = directPrice;
+			} catch {
+				return;
+			}
+		});
+
+		saveCommissionCountry(activeCountry);
+	};
+
 	const setupCommissionItems = () => {
 		document.querySelectorAll<HTMLElement>('[data-commission-item]').forEach((item) => {
 			if (item.dataset.commissionReady === 'true') return;
@@ -188,6 +306,17 @@ const hasThumbnails = images.length > 1;
 				});
 			});
 		});
+
+		document.querySelectorAll<HTMLSelectElement>('[data-commission-country-select]').forEach((select) => {
+			if (select.dataset.commissionCountryReady === 'true') return;
+
+			select.dataset.commissionCountryReady = 'true';
+			select.addEventListener('change', () => {
+				setCommissionCountry(select.value);
+			});
+		});
+
+		setCommissionCountry(detectCommissionCountry());
 	};
 
 	if (document.readyState === 'loading') {

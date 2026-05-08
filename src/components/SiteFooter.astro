@@ -37,7 +37,13 @@ const footerGroups: FooterLink[][] = [
 			<img src={avatar.src} alt="" loading="lazy" decoding="async" />
 			<h2>whiteyedcat</h2>
 			<p class="site-footer__socials">X IG @</p>
-			<p class="site-footer__credit">Designed and build by snouu.dev</p>
+			<p class="site-footer__credit">Designed and build by <a href="https://snouu.dev">snouu.dev</a></p>
+			<div class="site-footer__country-selector">
+				<select data-commission-country-select aria-label="Choose commission pricing country">
+					<option value="US">United States - USD</option>
+					<option value="MY">Malaysia - MYR</option>
+				</select>
+			</div>
 		</div>
 		<div class="site-footer__links">
 			{
@@ -54,6 +60,123 @@ const footerGroups: FooterLink[][] = [
 		</div>
 	</div>
 </footer>
+
+<script>
+	const footerCountrySelector = {
+		defaultCountry: 'US',
+		storageKey: 'whiteyedcat-commission-country',
+		countries: {
+			MY: true,
+			US: true,
+		},
+	};
+
+	type FooterCountry = keyof typeof footerCountrySelector.countries;
+
+	const isSupportedFooterCountry = (country: string | null | undefined): country is FooterCountry => {
+		return Boolean(country && country in footerCountrySelector.countries);
+	};
+
+	const getSavedFooterCountry = () => {
+		try {
+			return window.localStorage.getItem(footerCountrySelector.storageKey);
+		} catch {
+			return null;
+		}
+	};
+
+	const saveFooterCountry = (country: FooterCountry) => {
+		try {
+			window.localStorage.setItem(footerCountrySelector.storageKey, country);
+		} catch {
+			return;
+		}
+	};
+
+	const getFooterCountryFromLocale = (locale: string | undefined) => {
+		if (!locale) return null;
+
+		try {
+			const region = new Intl.Locale(locale).region;
+			return region ? region.toUpperCase() : null;
+		} catch {
+			const region = locale.split('-')[1];
+			return region ? region.toUpperCase() : null;
+		}
+	};
+
+	const getFooterCountryFromTimezone = () => {
+		const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		const timezoneCountryMap: Record<string, FooterCountry> = {
+			'Asia/Kuala_Lumpur': 'MY',
+			'America/Adak': 'US',
+			'America/Anchorage': 'US',
+			'America/Boise': 'US',
+			'America/Chicago': 'US',
+			'America/Denver': 'US',
+			'America/Detroit': 'US',
+			'America/Indiana/Indianapolis': 'US',
+			'America/Juneau': 'US',
+			'America/Kentucky/Louisville': 'US',
+			'America/Los_Angeles': 'US',
+			'America/New_York': 'US',
+			'America/Phoenix': 'US',
+			'America/Sitka': 'US',
+			'America/Yakutat': 'US',
+			'Pacific/Honolulu': 'US',
+		};
+
+		return timezoneCountryMap[timezone] ?? null;
+	};
+
+	const detectFooterCountry = () => {
+		const savedCountry = getSavedFooterCountry();
+		if (isSupportedFooterCountry(savedCountry)) return savedCountry;
+
+		const timezoneCountry = getFooterCountryFromTimezone();
+		if (timezoneCountry) return timezoneCountry;
+
+		const locales = navigator.languages?.length ? navigator.languages : [navigator.language];
+		for (const locale of locales) {
+			const country = getFooterCountryFromLocale(locale);
+			if (isSupportedFooterCountry(country)) return country;
+		}
+
+		return footerCountrySelector.defaultCountry;
+	};
+
+	const setFooterCountry = (country: string) => {
+		const activeCountry = isSupportedFooterCountry(country) ? country : footerCountrySelector.defaultCountry;
+
+		document.querySelectorAll<HTMLSelectElement>('[data-commission-country-select]').forEach((select) => {
+			select.value = activeCountry;
+		});
+
+		saveFooterCountry(activeCountry);
+		window.dispatchEvent(new CustomEvent('commission-country-change', { detail: { country: activeCountry } }));
+	};
+
+	const setupFooterCountrySelectors = () => {
+		document.querySelectorAll<HTMLSelectElement>('[data-commission-country-select]').forEach((select) => {
+			if (select.dataset.footerCountryReady === 'true') return;
+
+			select.dataset.footerCountryReady = 'true';
+			select.addEventListener('change', () => {
+				setFooterCountry(select.value);
+			});
+		});
+
+		setFooterCountry(detectFooterCountry());
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', setupFooterCountrySelectors, { once: true });
+	} else {
+		setupFooterCountrySelectors();
+	}
+
+	document.addEventListener('astro:page-load', setupFooterCountrySelectors);
+</script>
 
 <style>
 	.site-footer {
@@ -150,6 +273,39 @@ const footerGroups: FooterLink[][] = [
 		color: rgba(242, 238, 230, 0.78);
 		font-size: 0.93rem;
 		font-weight: 300;
+	}
+
+	.site-footer__credit a:hover {
+		text-decoration: underline;
+	}
+
+	.site-footer__country-selector {
+		margin-top: 1.8rem;
+		width: min(100%, 15.75rem);
+	}
+
+	.site-footer__country-selector select {
+		width: 100%;
+		min-height: 2.85rem;
+		padding: 0.35rem 2.3rem 0.35rem 0.8rem;
+		border: 1.5px solid var(--site-footer-text, #f2eee6);
+		border-radius: 0.35rem;
+		background:
+			linear-gradient(45deg, transparent 50%, var(--site-footer-text, #f2eee6) 50%) calc(100% - 1rem) 50% / 0.42rem 0.42rem no-repeat,
+			linear-gradient(135deg, var(--site-footer-text, #f2eee6) 50%, transparent 50%) calc(100% - 0.72rem) 50% / 0.42rem 0.42rem no-repeat,
+			var(--site-footer-bg, #0b0b0b);
+		color: var(--site-footer-text, #f2eee6);
+		font: inherit;
+		font-size: 0.78rem;
+		font-weight: 700;
+		line-height: 1;
+		appearance: none;
+		cursor: pointer;
+	}
+
+	.site-footer__country-selector select:focus-visible {
+		outline: 2px solid var(--site-footer-focus, currentColor);
+		outline-offset: 0.28rem;
 	}
 
 	.site-footer--home .site-footer__credit {
