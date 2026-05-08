@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
-import commissionsCat from '../assets/whiteyedcat/commissions-cat.png';
-import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
-import commissionsPortrait from '../assets/whiteyedcat/commissions-portrait.png';
-import commissionsStickers from '../assets/whiteyedcat/commissions-stickers.png';
+import exhibitionsDivider from '../assets/whiteyedcat/exhibitions-divider.png';
+import exhibitionsFish from '../assets/whiteyedcat/exhibitions-fish.png';
+import journalArtFest from '../assets/whiteyedcat/exhibition-journal-art-fest.png';
+import klIllustrationFair from '../assets/whiteyedcat/exhibition-kl-illustration-fair.png';
+import visitorsOnly from '../assets/whiteyedcat/exhibition-visitors-only.png';
 
 const navigation = [
 	{ label: 'Home', href: '/' },
@@ -17,24 +18,25 @@ const navigation = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const commissionItems = [
+const exhibitions = [
 	{
-		title: 'Potraits',
-		image: commissionsPortrait,
-		alt: 'Colorful portrait commission preview featuring a dog surrounded by bright objects and painted details.',
-		type: 'portrait',
-		lines: [
-			'Face only RM200 (with background RM300)',
-			'Half body RM300 (with background RM350)',
-			'Full body RM350 (with background RM400)',
-		],
+		title: 'KL Illustration Fair 2025',
+		venue: 'GMBB | Kuala Lumpur',
+		image: klIllustrationFair,
+		alt: 'whiteyedcat booth display at KL Illustration Fair 2025.',
 	},
 	{
-		title: 'Sticker pack',
-		image: commissionsStickers,
-		alt: 'Sticker pack preview with small illustrated cats and playful animal poses.',
-		type: 'stickers',
-		lines: ['RM 30'],
+		title: 'Visitors Only GrimDreamStudio 2025',
+		venue: 'GMBB | Kuala Lumpur',
+		image: visitorsOnly,
+		alt: 'whiteyedcat standing beside displayed artwork at Visitors Only GrimDreamStudio 2025.',
+	},
+	{
+		title: 'Journal Art Fest Georgetown 2025',
+		venue: 'Georgetown | Penang',
+		image: journalArtFest,
+		alt: 'whiteyedcat booth display at Journal Art Fest Georgetown 2025.',
+		featured: true,
 	},
 ];
 
@@ -54,11 +56,11 @@ const footerGroups = [
 ---
 
 <Layout
-	title="Commisions | whiteyedcat"
-	description="Commission whiteyedcat for portraits and sticker packs with current rates and contact links."
+	title="Exhibitions | whiteyedcat"
+	description="whiteyedcat exhibitions and art fair appearances in Kuala Lumpur and Penang."
 >
-	<main class="commissions-page">
-		<header class="commissions-header">
+	<main class="exhibitions-page">
+		<header class="exhibitions-header">
 			<div class="artist-lockup">
 				<img src={avatar.src} alt="whiteyedcat illustrated profile avatar." loading="eager" decoding="async" />
 				<div class="artist-lockup__copy">
@@ -90,29 +92,27 @@ const footerGroups = [
 				</div>
 			</div>
 
-			<nav class="commissions-nav" aria-label="Primary">
+			<nav class="exhibitions-nav" aria-label="Primary">
 				{
 					navigation.map((item) => (
-						<a href={item.href} aria-current={item.href === '/commissions' ? 'page' : undefined}>{item.label}</a>
+						<a href={item.href} aria-current={item.href === '/exhibitions' ? 'page' : undefined}>{item.label}</a>
 					))
 				}
 			</nav>
 		</header>
 
-		<section class="commissions-section" aria-labelledby="commissions-heading">
-			<h2 id="commissions-heading">Commisions</h2>
-			<div class="commissions-list">
+		<section class="exhibitions-section" aria-labelledby="exhibitions-heading">
+			<h2 id="exhibitions-heading">Exhibitions</h2>
+			<div class="exhibitions-grid">
 				{
-					commissionItems.map((item) => (
-						<article class={`commission-item commission-item--${item.type}`}>
-							<div class="commission-item__image">
+					exhibitions.map((item) => (
+						<article class:list={['exhibition-card', item.featured && 'exhibition-card--featured']}>
+							<div class="exhibition-card__image">
 								<img src={item.image.src} alt={item.alt} loading="lazy" decoding="async" />
 							</div>
-							<div class="commission-item__copy">
+							<div class="exhibition-card__copy">
 								<h3>{item.title}</h3>
-								<div class="commission-item__rates">
-									{item.lines.map((line) => <p>{line}</p>)}
-								</div>
+								<p>{item.venue}</p>
 							</div>
 						</article>
 					))
@@ -120,13 +120,13 @@ const footerGroups = [
 			</div>
 		</section>
 
-		<div class="commissions-divider" aria-hidden="true">
-			<img src={commissionsDivider.src} alt="" loading="lazy" decoding="async" />
+		<div class="exhibitions-divider" aria-hidden="true">
+			<img src={exhibitionsDivider.src} alt="" loading="lazy" decoding="async" />
 		</div>
 
-		<section class="commissions-cta" aria-labelledby="commissions-cta-heading">
-			<div class="commissions-cta__body">
-				<h2 id="commissions-cta-heading">You want to commission me?</h2>
+		<section class="exhibitions-cta" aria-labelledby="exhibitions-cta-heading">
+			<div class="exhibitions-cta__body">
+				<h2 id="exhibitions-cta-heading">Invite me to your exhibitions</h2>
 				<div class="contact-methods">
 					<div class="contact-method">
 						<p>Send me an email at</p>
@@ -150,11 +150,11 @@ const footerGroups = [
 					</div>
 				</div>
 			</div>
-			<img class="commissions-cta__cat" src={commissionsCat.src} alt="" loading="lazy" decoding="async" />
+			<img class="exhibitions-cta__fish" src={exhibitionsFish.src} alt="" loading="lazy" decoding="async" />
 		</section>
 
-		<footer class="commissions-footer">
-			<div class="commissions-footer__wave" aria-hidden="true">
+		<footer class="exhibitions-footer">
+			<div class="exhibitions-footer__wave" aria-hidden="true">
 				<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
 					<g>
 						<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
@@ -163,14 +163,14 @@ const footerGroups = [
 					</g>
 				</svg>
 			</div>
-			<div class="commissions-footer__inner">
-				<div class="commissions-footer__brand">
+			<div class="exhibitions-footer__inner">
+				<div class="exhibitions-footer__brand">
 					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
 					<h2>whiteyedcat</h2>
 					<p class="footer-socials">X IG @</p>
 					<p class="credit">Designed and build by snouu.dev</p>
 				</div>
-				<div class="commissions-footer__links">
+				<div class="exhibitions-footer__links">
 					{
 						footerGroups.map((group) => (
 							<ul>
@@ -190,23 +190,23 @@ const footerGroups = [
 
 <style>
 	:root {
-		--commissions-bg: #f9f5f2;
-		--commissions-surface: #ffffff;
-		--commissions-text: #121212;
-		--commissions-inverse: #f2eee6;
-		--commissions-footer: #0b0b0b;
-		--commissions-shell: min(1180px, calc(100vw - 2rem));
+		--exhibitions-bg: #f9f5f2;
+		--exhibitions-surface: #ffffff;
+		--exhibitions-text: #121212;
+		--exhibitions-inverse: #f2eee6;
+		--exhibitions-footer: #0b0b0b;
+		--exhibitions-shell: min(1180px, calc(100vw - 2rem));
 	}
 
-	.commissions-page {
+	.exhibitions-page {
 		min-height: 100vh;
-		background: var(--commissions-bg);
-		color: var(--commissions-text);
+		background: var(--exhibitions-bg);
+		color: var(--exhibitions-text);
 		overflow: clip;
 	}
 
-	.commissions-header {
-		background: var(--commissions-surface);
+	.exhibitions-header {
+		background: var(--exhibitions-surface);
 		padding: clamp(2rem, 5vw, 3.1rem) 1rem 1.45rem;
 	}
 
@@ -239,7 +239,7 @@ const footerGroups = [
 	}
 
 	.artist-lockup h1,
-	.commissions-footer__brand h2 {
+	.exhibitions-footer__brand h2 {
 		margin: 0;
 		font-family: 'Birthstone', cursive;
 		font-weight: 400;
@@ -287,7 +287,7 @@ const footerGroups = [
 		justify-content: center;
 		gap: 0.35rem;
 		padding: 0.18rem 1rem 0.24rem;
-		border: 2px solid var(--commissions-text);
+		border: 2px solid var(--exhibitions-text);
 		border-radius: 999px;
 		font-size: 0.95rem;
 		font-weight: 700;
@@ -301,8 +301,8 @@ const footerGroups = [
 		line-height: 1.25;
 	}
 
-	.commissions-nav {
-		width: var(--commissions-shell);
+	.exhibitions-nav {
+		width: var(--exhibitions-shell);
 		margin: clamp(1.8rem, 4vw, 3.15rem) auto 0;
 		display: flex;
 		align-items: center;
@@ -312,13 +312,13 @@ const footerGroups = [
 		font-weight: 700;
 	}
 
-	.commissions-nav a {
+	.exhibitions-nav a {
 		position: relative;
 		padding-block: 0.3rem;
 		white-space: nowrap;
 	}
 
-	.commissions-nav a::after {
+	.exhibitions-nav a::after {
 		content: '';
 		position: absolute;
 		left: 0;
@@ -331,23 +331,23 @@ const footerGroups = [
 		transition: transform 180ms ease;
 	}
 
-	.commissions-nav a:hover::after,
-	.commissions-nav a:focus-visible::after,
-	.commissions-nav a[aria-current='page']::after {
+	.exhibitions-nav a:hover::after,
+	.exhibitions-nav a:focus-visible::after,
+	.exhibitions-nav a[aria-current='page']::after {
 		transform: scaleX(1);
 	}
 
-	.commissions-section {
-		background: var(--commissions-surface);
-		box-shadow: 0 0 0 100vmax var(--commissions-surface);
+	.exhibitions-section {
+		background: var(--exhibitions-surface);
+		box-shadow: 0 0 0 100vmax var(--exhibitions-surface);
 		clip-path: inset(0 -100vmax);
-		width: var(--commissions-shell);
+		width: var(--exhibitions-shell);
 		margin: 0 auto;
-		padding: clamp(2rem, 5vw, 3.7rem) 0 clamp(3.2rem, 6vw, 5.5rem);
+		padding: clamp(2rem, 5vw, 3.7rem) 0 clamp(5rem, 9vw, 8rem);
 	}
 
-	.commissions-section h2,
-	.commissions-cta h2 {
+	.exhibitions-section h2,
+	.exhibitions-cta h2 {
 		margin: 0;
 		font-family: 'Bodoni Moda', serif;
 		font-size: clamp(2.1rem, 4vw, 3rem);
@@ -355,94 +355,93 @@ const footerGroups = [
 		text-align: center;
 	}
 
-	.commissions-list {
-		width: min(66rem, 100%);
+	.exhibitions-grid {
+		width: min(58rem, 100%);
 		margin: clamp(2.2rem, 4vw, 3.8rem) auto 0;
 		display: grid;
-		gap: clamp(3.2rem, 7vw, 5.6rem);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2.9rem, 6vw, 5.7rem) clamp(2rem, 6vw, 4.25rem);
+		align-items: start;
 	}
 
-	.commission-item {
+	.exhibition-card {
 		display: grid;
-		grid-template-columns: clamp(12rem, 24vw, 19.25rem) minmax(0, 1fr);
-		align-items: center;
-		gap: clamp(1.6rem, 5vw, 4.2rem);
+		gap: 1rem;
+		text-align: center;
 	}
 
-	.commission-item__image {
-		width: 100%;
+	.exhibition-card--featured {
+		grid-column: 1 / -1;
+		width: min(27.4rem, 100%);
+		justify-self: center;
+	}
+
+	.exhibition-card__image {
 		overflow: hidden;
-		background: var(--commissions-bg);
-	}
-
-	.commission-item--portrait .commission-item__image {
-		aspect-ratio: 308 / 385;
 		border-radius: 0.95rem;
+		background: var(--exhibitions-bg);
+		aspect-ratio: 418 / 557;
 	}
 
-	.commission-item--stickers .commission-item__image {
-		aspect-ratio: 1;
-		background: transparent;
+	.exhibition-card:not(.exhibition-card--featured):nth-child(2) .exhibition-card__image {
+		aspect-ratio: 451 / 554;
 	}
 
-	.commission-item__image img {
+	.exhibition-card--featured .exhibition-card__image {
+		aspect-ratio: 437 / 582;
+	}
+
+	.exhibition-card__image img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 	}
 
-	.commission-item--stickers .commission-item__image img {
-		object-fit: contain;
-	}
-
-	.commission-item__copy {
+	.exhibition-card__copy {
 		display: grid;
-		gap: clamp(0.7rem, 1.5vw, 1rem);
+		gap: 0.22rem;
 	}
 
-	.commission-item h3 {
+	.exhibition-card h3,
+	.exhibition-card p {
 		margin: 0;
-		font-size: clamp(2.1rem, 4vw, 3rem);
-		line-height: 1.08;
-		font-weight: 700;
-	}
-
-	.commission-item__rates {
-		display: grid;
-		gap: 0.1rem;
-		font-size: clamp(1rem, 1.55vw, 1.5rem);
-		font-weight: 500;
 		line-height: 1.25;
 	}
 
-	.commission-item__rates p {
-		margin: 0;
+	.exhibition-card h3 {
+		font-size: clamp(1rem, 1.7vw, 1.5rem);
+		font-weight: 700;
 	}
 
-	.commissions-divider {
-		width: min(1281px, calc(100% + 2px));
-		margin: clamp(-0.2rem, 1vw, 0.8rem) auto 0;
+	.exhibition-card p {
+		font-size: clamp(0.92rem, 1.45vw, 1.25rem);
+		font-weight: 400;
+	}
+
+	.exhibitions-divider {
+		width: min(1280px, 100%);
+		margin: 0 auto;
 		pointer-events: none;
 	}
 
-	.commissions-divider img {
+	.exhibitions-divider img {
 		width: 100%;
 		height: auto;
 	}
 
-	.commissions-cta {
+	.exhibitions-cta {
 		position: relative;
-		width: var(--commissions-shell);
-		min-height: clamp(22rem, 35vw, 28rem);
+		width: var(--exhibitions-shell);
+		min-height: clamp(20rem, 34vw, 27rem);
 		margin: 0 auto;
-		padding: clamp(3.3rem, 7vw, 6.5rem) 0 clamp(7.5rem, 14vw, 10.4rem);
+		padding: clamp(3.2rem, 7vw, 6.2rem) 0 clamp(7.5rem, 14vw, 10.4rem);
 		display: grid;
 		place-items: center;
 		text-align: center;
 		isolation: isolate;
 	}
 
-	.commissions-cta__body {
+	.exhibitions-cta__body {
 		position: relative;
 		z-index: 1;
 		display: grid;
@@ -450,12 +449,12 @@ const footerGroups = [
 		gap: clamp(1rem, 2vw, 1.4rem);
 	}
 
-	.commissions-cta__cat {
+	.exhibitions-cta__fish {
 		position: absolute;
-		right: clamp(0rem, 3vw, 2.4rem);
-		bottom: clamp(2rem, 5vw, 4.6rem);
+		right: clamp(0rem, 4vw, 3rem);
+		bottom: clamp(2rem, 5vw, 4.5rem);
 		z-index: 0;
-		width: clamp(7rem, 17vw, 12.25rem);
+		width: clamp(7.5rem, 18vw, 14.9rem);
 		pointer-events: none;
 	}
 
@@ -486,9 +485,9 @@ const footerGroups = [
 		gap: 0.48rem;
 		min-height: 2rem;
 		padding: 0.2rem 0.66rem;
-		border: 1.5px solid var(--commissions-text);
+		border: 1.5px solid var(--exhibitions-text);
 		border-radius: 0.45rem;
-		background: var(--commissions-surface);
+		background: var(--exhibitions-surface);
 		font-weight: 700;
 		line-height: 1;
 		transition:
@@ -499,8 +498,8 @@ const footerGroups = [
 
 	.contact-chip:hover,
 	.contact-chip:focus-visible {
-		background: var(--commissions-text);
-		color: var(--commissions-inverse);
+		background: var(--exhibitions-text);
+		color: var(--exhibitions-inverse);
 		transform: translateY(-1px);
 	}
 
@@ -521,13 +520,13 @@ const footerGroups = [
 		stroke-width: 2;
 	}
 
-	.commissions-footer {
+	.exhibitions-footer {
 		position: relative;
-		background: var(--commissions-footer);
-		color: var(--commissions-inverse);
+		background: var(--exhibitions-footer);
+		color: var(--exhibitions-inverse);
 	}
 
-	.commissions-footer__wave {
+	.exhibitions-footer__wave {
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -538,7 +537,7 @@ const footerGroups = [
 		pointer-events: none;
 	}
 
-	.commissions-footer__wave svg {
+	.exhibitions-footer__wave svg {
 		position: absolute;
 		inset: auto -1px -1px;
 		width: calc(100% + 2px);
@@ -546,16 +545,16 @@ const footerGroups = [
 		display: block;
 	}
 
-	.commissions-footer__wave g {
+	.exhibitions-footer__wave g {
 		will-change: transform;
 	}
 
-	.commissions-footer__wave path {
-		fill: var(--commissions-footer);
+	.exhibitions-footer__wave path {
+		fill: var(--exhibitions-footer);
 	}
 
-	.commissions-footer__inner {
-		width: var(--commissions-shell);
+	.exhibitions-footer__inner {
+		width: var(--exhibitions-shell);
 		margin: 0 auto;
 		padding: clamp(2.1rem, 4vw, 3rem) 0 3.7rem;
 		display: grid;
@@ -564,7 +563,7 @@ const footerGroups = [
 		align-items: end;
 	}
 
-	.commissions-footer__brand img {
+	.exhibitions-footer__brand img {
 		width: clamp(5rem, 11vw, 7.6rem);
 		aspect-ratio: 1;
 		border-radius: 50%;
@@ -572,7 +571,7 @@ const footerGroups = [
 		margin-bottom: 1.35rem;
 	}
 
-	.commissions-footer__brand h2 {
+	.exhibitions-footer__brand h2 {
 		font-size: clamp(4rem, 8vw, 7.25rem);
 	}
 
@@ -594,13 +593,13 @@ const footerGroups = [
 		font-weight: 300;
 	}
 
-	.commissions-footer__links {
+	.exhibitions-footer__links {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: clamp(2rem, 6vw, 5rem);
 	}
 
-	.commissions-footer__links ul {
+	.exhibitions-footer__links ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -610,51 +609,50 @@ const footerGroups = [
 		font-weight: 700;
 	}
 
-	.commissions-nav a:focus-visible,
+	.exhibitions-nav a:focus-visible,
 	.social-links a:focus-visible,
 	.contact-chip:focus-visible,
-	.commissions-footer a:focus-visible {
-		outline: 2px solid var(--commissions-text);
+	.exhibitions-footer a:focus-visible {
+		outline: 2px solid var(--exhibitions-text);
 		outline-offset: 0.28rem;
 	}
 
-	.commissions-footer a:focus-visible {
-		outline-color: var(--commissions-inverse);
+	.exhibitions-footer a:focus-visible {
+		outline-color: var(--exhibitions-inverse);
 	}
 
 	@media (max-width: 920px) {
-		.commissions-nav {
+		.exhibitions-nav {
 			justify-content: center;
 			flex-wrap: wrap;
 			gap: 0.85rem 1.4rem;
 		}
 
-		.commission-item {
-			grid-template-columns: minmax(10.5rem, 16rem) minmax(0, 1fr);
-			gap: 1.5rem;
+		.exhibitions-grid {
+			width: min(46rem, 100%);
 		}
 
-		.commissions-cta__cat {
+		.exhibitions-cta__fish {
 			opacity: 0.86;
 			right: 0;
 		}
 
-		.commissions-footer__inner {
+		.exhibitions-footer__inner {
 			grid-template-columns: 1fr;
 			align-items: start;
 		}
 
-		.commissions-footer__links {
+		.exhibitions-footer__links {
 			max-width: 30rem;
 		}
 	}
 
 	@media (max-width: 640px) {
 		:root {
-			--commissions-shell: min(100vw - 1.25rem, 34rem);
+			--exhibitions-shell: min(100vw - 1.25rem, 34rem);
 		}
 
-		.commissions-header {
+		.exhibitions-header {
 			padding-top: 1.4rem;
 		}
 
@@ -678,39 +676,28 @@ const footerGroups = [
 			justify-content: center;
 		}
 
-		.commissions-list {
+		.exhibitions-grid {
+			grid-template-columns: 1fr;
 			gap: 3.2rem;
 		}
 
-		.commission-item {
-			grid-template-columns: 1fr;
-			gap: 1.1rem;
-		}
-
-		.commission-item__image {
-			width: min(100%, 19.25rem);
+		.exhibition-card,
+		.exhibition-card--featured {
+			grid-column: auto;
+			width: min(100%, 26rem);
 			justify-self: center;
 		}
 
-		.commission-item__copy {
-			justify-items: center;
-			text-align: center;
-		}
-
-		.commission-item__rates {
-			font-size: 1rem;
-		}
-
-		.commissions-cta {
+		.exhibitions-cta {
 			min-height: 30rem;
 			padding-bottom: 9rem;
 		}
 
-		.commissions-cta__cat {
+		.exhibitions-cta__fish {
 			right: 50%;
 			bottom: 1.35rem;
 			transform: translateX(50%);
-			width: 8.7rem;
+			width: 9.4rem;
 		}
 
 		.contact-method {
@@ -728,29 +715,29 @@ const footerGroups = [
 			min-height: 2.45rem;
 		}
 
-		.commissions-footer__brand,
-		.commissions-footer__links ul {
+		.exhibitions-footer__brand,
+		.exhibitions-footer__links ul {
 			text-align: center;
 			justify-items: center;
 		}
 
-		.commissions-footer__brand img {
+		.exhibitions-footer__brand img {
 			margin-inline: auto;
 		}
 
-		.commissions-footer__links {
+		.exhibitions-footer__links {
 			justify-self: center;
 			grid-template-columns: repeat(2, minmax(7rem, 1fr));
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.commissions-nav a::after,
+		.exhibitions-nav a::after,
 		.contact-chip {
 			transition: none;
 		}
 
-		.commissions-footer__wave animateTransform {
+		.exhibitions-footer__wave animateTransform {
 			display: none;
 		}
 	}
