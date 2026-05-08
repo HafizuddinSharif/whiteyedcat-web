@@ -16,19 +16,13 @@ const navigation = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const artworkColumns = [
-	[
-		{ src: galleryA, alt: 'Colorful collage artwork featuring dogs, charms, candy, and bright playful objects.', title: 'Artwork 1', type: 'portrait', purchaseUrl: null },
-		{ src: galleryB, alt: 'Painterly portrait of a woman surrounded by flowing dark green forms.', title: 'Artwork 2', type: 'square', purchaseUrl: null },
-	],
-	[
-		{ src: galleryB, alt: 'Square painterly portrait with layered botanical texture and smoky movement.', title: 'Artwork 3', type: 'square', purchaseUrl: null },
-		{ src: galleryA, alt: 'Bright mixed-media dog collage with vivid charms and toy-like shapes.', title: 'Artwork 4', type: 'portrait', purchaseUrl: null },
-	],
-	[
-		{ src: galleryA, alt: 'Portrait-format mixed-media artwork with dogs and colorful nostalgic objects.', title: 'Artwork 5', type: 'portrait', purchaseUrl: null },
-		{ src: galleryA, alt: 'Colorful dog collage artwork with candies, bows, charms, and saturated details.', title: 'Artwork 6', type: 'portrait', purchaseUrl: null },
-	],
+const artworkItems = [
+	{ src: galleryA, alt: 'Colorful collage artwork featuring dogs, charms, candy, and bright playful objects.', title: 'Artwork 1', type: 'portrait', purchaseUrl: null },
+	{ src: galleryB, alt: 'Painterly portrait of a woman surrounded by flowing dark green forms.', title: 'Artwork 2', type: 'square', purchaseUrl: null },
+	{ src: galleryB, alt: 'Square painterly portrait with layered botanical texture and smoky movement.', title: 'Artwork 3', type: 'square', purchaseUrl: null },
+	{ src: galleryA, alt: 'Bright mixed-media dog collage with vivid charms and toy-like shapes.', title: 'Artwork 4', type: 'portrait', purchaseUrl: null },
+	{ src: galleryA, alt: 'Portrait-format mixed-media artwork with dogs and colorful nostalgic objects.', title: 'Artwork 5', type: 'portrait', purchaseUrl: null },
+	{ src: galleryA, alt: 'Colorful dog collage artwork with candies, bows, charms, and saturated details.', title: 'Artwork 6', type: 'portrait', purchaseUrl: null },
 ];
 
 ---
@@ -96,22 +90,16 @@ const artworkColumns = [
 				</p>
 			</div>
 
-			<div class="gallery-columns">
+			<div class="gallery-columns" data-masonry-gallery>
 				{
-					artworkColumns.map((column) => (
-						<div class="gallery-column">
-							{
-								column.map((item) => (
-									<ArtworkCard
-										src={item.src}
-										alt={item.alt}
-										title={item.title}
-										variant={item.type}
-										purchaseUrl={item.purchaseUrl}
-									/>
-								))
-							}
-						</div>
+					artworkItems.map((item) => (
+						<ArtworkCard
+							src={item.src}
+							alt={item.alt}
+							title={item.title}
+							variant={item.type}
+							purchaseUrl={item.purchaseUrl}
+						/>
 					))
 				}
 			</div>
@@ -120,6 +108,36 @@ const artworkColumns = [
 		<SiteFooter />
 	</main>
 </Layout>
+
+<script>
+	const layoutArtworkMasonry = () => {
+		document.querySelectorAll<HTMLElement>('[data-masonry-gallery]').forEach((gallery) => {
+			const styles = window.getComputedStyle(gallery);
+			const rowHeight = Number.parseFloat(styles.getPropertyValue('grid-auto-rows'));
+			const rowGap = Number.parseFloat(styles.getPropertyValue('row-gap'));
+
+			if (!rowHeight) return;
+
+			gallery.querySelectorAll<HTMLElement>('[data-artwork-card]').forEach((card) => {
+				card.style.gridRowEnd = '';
+				const cardHeight = card.getBoundingClientRect().height;
+				const rowSpan = Math.ceil((cardHeight + rowGap) / (rowHeight + rowGap));
+				card.style.gridRowEnd = `span ${rowSpan}`;
+			});
+		});
+	};
+
+	let masonryFrame = 0;
+	const queueArtworkMasonry = () => {
+		window.cancelAnimationFrame(masonryFrame);
+		masonryFrame = window.requestAnimationFrame(layoutArtworkMasonry);
+	};
+
+	window.addEventListener('load', queueArtworkMasonry);
+	window.addEventListener('resize', queueArtworkMasonry);
+	document.fonts?.ready.then(queueArtworkMasonry);
+	queueArtworkMasonry();
+</script>
 
 <style>
 	:root {
@@ -316,13 +334,9 @@ const artworkColumns = [
 	.gallery-columns {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-auto-rows: 0.5rem;
 		gap: clamp(1rem, 2vw, 1.55rem);
 		align-items: start;
-	}
-
-	.gallery-column {
-		display: grid;
-		gap: clamp(1rem, 2vw, 1.55rem);
 	}
 
 	.buy-button {
@@ -500,10 +514,6 @@ const artworkColumns = [
 		}
 
 		.gallery-columns {
-			gap: 0.85rem;
-		}
-
-		.gallery-column {
 			gap: 0.85rem;
 		}
 
