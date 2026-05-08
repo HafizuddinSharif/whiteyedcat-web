@@ -1,0 +1,40 @@
+---
+interface Props {
+	class?: string;
+	color?: string;
+}
+
+const { class: className, color = 'currentColor' } = Astro.props;
+---
+
+<svg class:list={['animated-wave', className]} style={`--animated-wave-color: ${color};`} viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
+	<g>
+		<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
+		<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
+		<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
+	</g>
+</svg>
+
+<style>
+	.animated-wave {
+		position: absolute;
+		inset: auto -1px -1px;
+		width: calc(100% + 2px);
+		height: 100%;
+		display: block;
+	}
+
+	.animated-wave g {
+		will-change: transform;
+	}
+
+	.animated-wave path {
+		fill: var(--animated-wave-color, currentColor);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.animated-wave animateTransform {
+			display: none;
+		}
+	}
+</style>

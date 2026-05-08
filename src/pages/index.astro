@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AnimatedWave from '../components/AnimatedWave.astro';
 import ArtworkCard from '../components/ArtworkCard.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import cat from '../assets/whiteyedcat/cat.png';
 import dividerBottom from '../assets/whiteyedcat/divider-bottom.png';
@@ -50,19 +52,6 @@ const serviceLinks = [
 	{ id: 'shop', label: 'buy my artwork!', href: '/artworks' },
 ];
 
-const footerGroups = [
-	[
-		{ label: 'Home', href: '#top' },
-		{ label: 'About', href: '#about' },
-		{ label: 'Contact', href: '/contact' },
-	],
-	[
-		{ label: 'Artworks', href: '/artworks' },
-		{ label: 'Collabs', href: '/collabs' },
-		{ label: 'Commisions', href: '/commissions' },
-		{ label: 'Exhibitions', href: '/exhibitions' },
-	],
-];
 ---
 
 <Layout
@@ -75,13 +64,7 @@ const footerGroups = [
 			<p>whiteyedcat</p>
 		</div>
 		<div class="intro-reveal__wave">
-			<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
-				<g>
-					<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
-					<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
-					<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
-				</g>
-			</svg>
+			<AnimatedWave color="var(--color-footer, #0b0b0b)" />
 		</div>
 	</div>
 	<main class="page-shell" id="top">
@@ -221,38 +204,7 @@ const footerGroups = [
 			</div>
 		</section>
 
-		<footer class="site-footer">
-			<div class="site-footer__wave" aria-hidden="true">
-				<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
-					<g>
-						<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
-						<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
-						<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
-					</g>
-				</svg>
-			</div>
-			<div class="site-footer__inner">
-				<div class="site-footer__brand">
-					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
-					<h2>whiteyedcat</h2>
-					<p class="social-line">X IG @</p>
-					<p class="credit">Designed and build by snouu.dev</p>
-				</div>
-				<div class="site-footer__links">
-					{
-						footerGroups.map((group) => (
-							<ul>
-								{
-									group.map((item) => (
-										<li><a href={item.href}>{item.label}</a></li>
-									))
-								}
-							</ul>
-						))
-					}
-				</div>
-			</div>
-		</footer>
+		<SiteFooter variant="home" />
 	</main>
 </Layout>
 
@@ -353,6 +305,11 @@ const footerGroups = [
 		--shell-width: min(1180px, calc(100vw - 2rem));
 		--section-gap: clamp(4rem, 8vw, 8rem);
 		--intro-wave-height: clamp(4.5rem, 12vw, 7.5rem);
+		--site-footer-bg: var(--color-footer);
+		--site-footer-text: var(--color-text-inverse);
+		--site-footer-wave-bg: var(--color-bg);
+		--site-footer-shell: var(--shell-width);
+		--site-footer-focus: var(--color-accent);
 	}
 
 	.page-shell {
@@ -411,18 +368,7 @@ const footerGroups = [
 		height: var(--intro-wave-height);
 		overflow: hidden;
 		transform: translate3d(0, 0, 0);
-	}
-
-	.intro-reveal__wave svg {
-		position: absolute;
-		inset: auto -1px -1px;
-		width: calc(100% + 2px);
-		height: 100%;
-		display: block;
-	}
-
-	.intro-reveal__wave path {
-		fill: var(--color-footer);
+		color: var(--color-footer);
 	}
 
 	.site-header,

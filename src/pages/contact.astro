@@ -1,6 +1,7 @@
 ---
 import QRCode from 'qrcode';
 import Layout from '../layouts/Layout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import contactDividerBottom from '../assets/whiteyedcat/contact-divider-bottom.png';
 import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
@@ -16,20 +17,6 @@ const navigation = [
 	{ label: 'Exhibitions', href: '/exhibitions' },
 	{ label: 'Media Mentions', href: '/#media' },
 	{ label: 'Contact', href: '/contact' },
-];
-
-const footerGroups = [
-	[
-		{ label: 'Home', href: '/' },
-		{ label: 'About', href: '/#about' },
-		{ label: 'Contact', href: '/contact' },
-	],
-	[
-		{ label: 'Artworks', href: '/artworks' },
-		{ label: 'Collabs', href: '/collabs' },
-		{ label: 'Commisions', href: '/commissions' },
-		{ label: 'Exhibitions', href: '/exhibitions' },
-	],
 ];
 
 const homeUrl = new URL('/', Astro.site ?? Astro.url).toString();
@@ -134,38 +121,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 			<img src={contactDividerBottom.src} alt="" loading="lazy" decoding="async" />
 		</div>
 
-		<footer class="contact-footer">
-			<div class="contact-footer__wave" aria-hidden="true">
-				<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
-					<g>
-						<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
-						<path d="M1440 108C1560 50 1680 50 1800 108C1920 166 2040 166 2160 108C2280 50 2400 50 2520 108C2640 166 2760 166 2880 108V160H1440V108Z"></path>
-						<animateTransform attributeName="transform" type="translate" from="-1440 0" to="0 0" dur="5s" repeatCount="indefinite"></animateTransform>
-					</g>
-				</svg>
-			</div>
-			<div class="contact-footer__inner">
-				<div class="contact-footer__brand">
-					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
-					<h2>whiteyedcat</h2>
-					<p class="footer-socials">X IG @</p>
-					<p class="credit">Designed and build by snouu.dev</p>
-				</div>
-				<div class="contact-footer__links">
-					{
-						footerGroups.map((group) => (
-							<ul>
-								{
-									group.map((item) => (
-										<li><a href={item.href}>{item.label}</a></li>
-									))
-								}
-							</ul>
-						))
-					}
-				</div>
-			</div>
-		</footer>
+		<SiteFooter />
 	</main>
 </Layout>
 
@@ -177,6 +133,10 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		--contact-inverse: #f2eee6;
 		--contact-footer: #0b0b0b;
 		--contact-shell: min(1180px, calc(100vw - 2rem));
+		--site-footer-bg: var(--contact-footer);
+		--site-footer-text: var(--contact-inverse);
+		--site-footer-shell: var(--contact-shell);
+		--site-footer-focus: var(--contact-inverse);
 	}
 
 	.contact-page {
@@ -697,8 +657,5 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 			transition: none;
 		}
 
-		.contact-footer__wave animateTransform {
-			display: none;
-		}
 	}
 </style>
