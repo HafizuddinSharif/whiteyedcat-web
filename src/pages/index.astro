@@ -21,13 +21,19 @@ const navigation = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const galleryItems = [
-	{ src: galleryA, alt: 'Colorful collage artwork featuring playful objects and a dog portrait.', title: 'Artwork 1', size: 'portrait', purchaseUrl: null },
-	{ src: galleryB, alt: 'Portrait painting framed by green leaves and ribbon-like accents.', title: 'Artwork 2', size: 'square', purchaseUrl: null },
-	{ src: galleryA, alt: 'Mixed-media collage with bright motifs and layered stickers.', title: 'Artwork 3', size: 'portrait', purchaseUrl: null },
-	{ src: galleryB, alt: 'Illustrated portrait with dark floral tones and painterly texture.', title: 'Artwork 4', size: 'square', purchaseUrl: null },
-	{ src: galleryA, alt: 'Eclectic collage combining warm colors and decorative cut-outs.', title: 'Artwork 5', size: 'square', purchaseUrl: null },
-	{ src: galleryB, alt: 'Painterly portrait piece with botanical framing.', title: 'Artwork 6', size: 'portrait', purchaseUrl: null },
+const galleryColumns = [
+	[
+		{ src: galleryA, alt: 'Colorful collage artwork featuring playful objects and a dog portrait.', title: 'Artwork 1', size: 'portrait', purchaseUrl: null },
+		{ src: galleryB, alt: 'Portrait painting framed by green leaves and ribbon-like accents.', title: 'Artwork 2', size: 'square', purchaseUrl: null },
+	],
+	[
+		{ src: galleryA, alt: 'Mixed-media collage with bright motifs and layered stickers.', title: 'Artwork 3', size: 'portrait', purchaseUrl: null },
+		{ src: galleryB, alt: 'Illustrated portrait with dark floral tones and painterly texture.', title: 'Artwork 4', size: 'square', purchaseUrl: null },
+	],
+	[
+		{ src: galleryA, alt: 'Eclectic collage combining warm colors and decorative cut-outs.', title: 'Artwork 5', size: 'square', purchaseUrl: null },
+		{ src: galleryB, alt: 'Painterly portrait piece with botanical framing.', title: 'Artwork 6', size: 'portrait', purchaseUrl: null },
+	],
 ];
 
 const rolePills = ['painter', 'illustrator'];
@@ -128,19 +134,22 @@ const footerGroups = [
 			<div class="section-heading">
 				<h2>Featured works</h2>
 			</div>
-			<div class="gallery-grid">
-				<div class="gallery-grid__sizer" aria-hidden="true"></div>
-				<div class="gallery-grid__gutter" aria-hidden="true"></div>
+			<div class="gallery-columns">
 				{
-					galleryItems.map((item) => (
-						<ArtworkCard
-							src={item.src}
-							alt={item.alt}
-							title={item.title}
-							variant={item.size}
-							purchaseUrl={item.purchaseUrl}
-							class="art-card"
-						/>
+					galleryColumns.map((column) => (
+						<div class="gallery-column">
+							{
+								column.map((item) => (
+									<ArtworkCard
+										src={item.src}
+										alt={item.alt}
+										title={item.title}
+										variant={item.size}
+										purchaseUrl={item.purchaseUrl}
+									/>
+								))
+							}
+						</div>
 					))
 				}
 			</div>
@@ -248,30 +257,6 @@ const footerGroups = [
 </Layout>
 
 <script>
-	import Masonry from 'masonry-layout';
-
-	const galleryGrid = document.querySelector<HTMLElement>('.gallery-grid');
-
-	if (galleryGrid) {
-		const masonry = new Masonry(galleryGrid, {
-			itemSelector: '.art-card',
-			columnWidth: '.gallery-grid__sizer',
-			gutter: '.gallery-grid__gutter',
-			percentPosition: true,
-		});
-
-		const galleryImages = Array.from(galleryGrid.querySelectorAll('img'));
-
-		galleryImages.forEach((image) => {
-			if (image.complete) return;
-			image.addEventListener('load', () => masonry.layout(), { once: true });
-			image.addEventListener('error', () => masonry.layout(), { once: true });
-		});
-
-		window.addEventListener('load', () => masonry.layout(), { once: true });
-		window.addEventListener('resize', () => masonry.layout(), { passive: true });
-	}
-
 	const hero = document.querySelector<HTMLElement>('.hero');
 	const parallaxImage = document.querySelector<HTMLElement>('[data-hero-parallax]');
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -751,34 +736,19 @@ const footerGroups = [
 		line-height: 1;
 	}
 
-	.gallery-grid {
-		--gallery-gap: 1.4rem;
-		position: relative;
+	.gallery-columns {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.4rem;
+		align-items: start;
 	}
 
-	.gallery-grid::after {
-		content: '';
-		display: block;
-		clear: both;
+	.gallery-column {
+		display: grid;
+		gap: 1.4rem;
 	}
 
-	.gallery-grid__sizer,
-	:global(.gallery-grid .art-card) {
-		width: calc((100% - (var(--gallery-gap) * 2)) / 3);
-	}
-
-	.gallery-grid__sizer,
-	.gallery-grid__gutter {
-		height: 0;
-	}
-
-	.gallery-grid__gutter {
-		width: var(--gallery-gap);
-	}
-
-	:global(.gallery-grid .art-card) {
-		float: left;
-		margin-bottom: var(--gallery-gap);
+	:global(.gallery-column .artwork-card) {
 		--artwork-card-radius: 1rem;
 		--artwork-card-bg: var(--color-card);
 		--artwork-card-shadow: var(--shadow-soft);
@@ -1130,13 +1100,13 @@ const footerGroups = [
 			grid-template-columns: 1fr;
 		}
 
-		.gallery-grid {
-			--gallery-gap: 1.2rem;
+		.gallery-columns {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1.2rem;
 		}
 
-		.gallery-grid__sizer,
-		:global(.gallery-grid .art-card) {
-			width: calc((100% - var(--gallery-gap)) / 2);
+		.gallery-column {
+			gap: 1.2rem;
 		}
 
 		.about-card__avatar,
@@ -1202,8 +1172,12 @@ const footerGroups = [
 			font-size: 0.95rem;
 		}
 
-		.gallery-grid {
-			--gallery-gap: 0.85rem;
+		.gallery-columns {
+			gap: 0.85rem;
+		}
+
+		.gallery-column {
+			gap: 0.85rem;
 		}
 
 		.section-heading {
