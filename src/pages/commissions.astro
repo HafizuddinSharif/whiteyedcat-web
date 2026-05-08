@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
-import collabBand from '../assets/whiteyedcat/collab-band.png';
-import collabCat from '../assets/whiteyedcat/collab-cat.png';
-import collabCover from '../assets/whiteyedcat/collab-cover.png';
-import collabDivider from '../assets/whiteyedcat/collab-divider.png';
+import commissionsCat from '../assets/whiteyedcat/commissions-cat.png';
+import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
+import commissionsPortrait from '../assets/whiteyedcat/commissions-portrait.png';
+import commissionsStickers from '../assets/whiteyedcat/commissions-stickers.png';
 
 const navigation = [
 	{ label: 'Home', href: '/' },
@@ -17,33 +17,24 @@ const navigation = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const collaborations = [
+const commissionItems = [
 	{
-		title: 'Mossery X WhiteyedCat',
-		meta: 'Book Cover | 2024',
-		description:
-			'Probably some text to talk about the project and the inspiration behind the artwork id. Probably some text to talk about the project and the inspiration behind the artwork idk. Probably some text to talk about the project and the inspiration behind the artwork idk',
-		image: collabCover,
-		alt: 'Colorful illustrated book cover artwork featuring cats, bright stickers, and layered handwritten details.',
-		tag: 'illustration',
+		title: 'Potraits',
+		image: commissionsPortrait,
+		alt: 'Colorful portrait commission preview featuring a dog surrounded by bright objects and painted details.',
+		type: 'portrait',
+		lines: [
+			'Face only RM200 (with background RM300)',
+			'Half body RM300 (with background RM350)',
+			'Full body RM350 (with background RM400)',
+		],
 	},
 	{
-		title: 'CelcomDigi Hari Raya Card',
-		meta: 'Festivities money packet | 2025',
-		description:
-			'Probably some text to talk about the project and the inspiration behind the artwork id. Probably some text to talk about the project and the inspiration behind the artwork idk. Probably some text to talk about the project and the inspiration behind the artwork idk',
-		image: collabCover,
-		alt: 'Colorful illustrated card artwork with cats and festive graphic details.',
-		tag: 'illustration',
-	},
-	{
-		title: 'Deleted (Malaysian-based band)',
-		meta: '',
-		description:
-			'Probably some text to talk about the project and the inspiration behind the artwork id. Probably some text to talk about the project and the inspiration behind the artwork idk. Probably some text to talk about the project and the inspiration behind the artwork idk',
-		image: collabBand,
-		alt: 'Painterly portrait artwork for a Malaysian-based band collaboration.',
-		tag: 'illustration',
+		title: 'Sticker pack',
+		image: commissionsStickers,
+		alt: 'Sticker pack preview with small illustrated cats and playful animal poses.',
+		type: 'stickers',
+		lines: ['RM 30'],
 	},
 ];
 
@@ -63,11 +54,11 @@ const footerGroups = [
 ---
 
 <Layout
-	title="Collabs | whiteyedcat"
-	description="whiteyedcat collaboration portfolio featuring book cover, festive illustration, and music project artwork."
+	title="Commisions | whiteyedcat"
+	description="Commission whiteyedcat for portraits and sticker packs with current rates and contact links."
 >
-	<main class="collabs-page">
-		<header class="collabs-header">
+	<main class="commissions-page">
+		<header class="commissions-header">
 			<div class="artist-lockup">
 				<img src={avatar.src} alt="whiteyedcat illustrated profile avatar." loading="eager" decoding="async" />
 				<div class="artist-lockup__copy">
@@ -99,29 +90,29 @@ const footerGroups = [
 				</div>
 			</div>
 
-			<nav class="collabs-nav" aria-label="Primary">
+			<nav class="commissions-nav" aria-label="Primary">
 				{
 					navigation.map((item) => (
-						<a href={item.href} aria-current={item.href === '/collabs' ? 'page' : undefined}>{item.label}</a>
+						<a href={item.href} aria-current={item.href === '/commissions' ? 'page' : undefined}>{item.label}</a>
 					))
 				}
 			</nav>
 		</header>
 
-		<section class="collabs-section" aria-labelledby="collabs-heading">
-			<h2 id="collabs-heading">Collabs</h2>
-			<div class="collabs-list">
+		<section class="commissions-section" aria-labelledby="commissions-heading">
+			<h2 id="commissions-heading">Commisions</h2>
+			<div class="commissions-list">
 				{
-					collaborations.map((collab) => (
-						<article class="collab-item">
-							<div class="collab-item__image">
-								<img src={collab.image.src} alt={collab.alt} loading="lazy" decoding="async" />
+					commissionItems.map((item) => (
+						<article class={`commission-item commission-item--${item.type}`}>
+							<div class="commission-item__image">
+								<img src={item.image.src} alt={item.alt} loading="lazy" decoding="async" />
 							</div>
-							<div class="collab-item__copy">
-								<h3>{collab.title}</h3>
-								{collab.meta && <p class="collab-item__meta">{collab.meta}</p>}
-								<p>{collab.description}</p>
-								<span class="collab-tag">{collab.tag}</span>
+							<div class="commission-item__copy">
+								<h3>{item.title}</h3>
+								<div class="commission-item__rates">
+									{item.lines.map((line) => <p>{line}</p>)}
+								</div>
 							</div>
 						</article>
 					))
@@ -129,39 +120,41 @@ const footerGroups = [
 			</div>
 		</section>
 
-		<div class="collabs-divider" aria-hidden="true">
-			<img src={collabDivider.src} alt="" loading="lazy" decoding="async" />
+		<div class="commissions-divider" aria-hidden="true">
+			<img src={commissionsDivider.src} alt="" loading="lazy" decoding="async" />
 		</div>
 
-		<section class="collabs-cta" aria-labelledby="collabs-cta-heading">
-			<img src={collabCat.src} alt="" loading="lazy" decoding="async" />
-			<h2 id="collabs-cta-heading">Want to collaborate with me?</h2>
-			<div class="contact-methods">
-				<div class="contact-method">
-					<p>Send me an email at</p>
-					<a class="contact-chip" href="mailto:whiteyedcat@gmail.com" aria-label="Email whiteyedcat">
-						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-							<path d="M3.8 5.5h16.4c.7 0 1.3.6 1.3 1.3v10.4c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3V6.8c0-.7.6-1.3 1.3-1.3Zm.9 2.2 7.3 5.1 7.3-5.1H4.7Zm14.8 8.6V9.7l-7.1 4.9a.8.8 0 0 1-.9 0L4.5 9.7v6.6h15Z"></path>
-						</svg>
-						<span>whiteyedcat@gmail</span>
-					</a>
-				</div>
-				<div class="contact-method">
-					<p>Or DM me on</p>
-					<a class="contact-chip" href="https://www.instagram.com/whiteyedcat/" aria-label="DM whiteyedcat on Instagram">
-						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-							<rect x="4.5" y="4.5" width="15" height="15" rx="4.2"></rect>
-							<circle cx="12" cy="12" r="3.25"></circle>
-							<circle cx="16.25" cy="7.75" r="0.8"></circle>
-						</svg>
-						<span>@whiteyedcat</span>
-					</a>
+		<section class="commissions-cta" aria-labelledby="commissions-cta-heading">
+			<div class="commissions-cta__body">
+				<h2 id="commissions-cta-heading">You want to commission me?</h2>
+				<div class="contact-methods">
+					<div class="contact-method">
+						<p>Send me an email at</p>
+						<a class="contact-chip" href="mailto:whiteyedcat@gmail.com" aria-label="Email whiteyedcat">
+							<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+								<path d="M3.8 5.5h16.4c.7 0 1.3.6 1.3 1.3v10.4c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3V6.8c0-.7.6-1.3 1.3-1.3Zm.9 2.2 7.3 5.1 7.3-5.1H4.7Zm14.8 8.6V9.7l-7.1 4.9a.8.8 0 0 1-.9 0L4.5 9.7v6.6h15Z"></path>
+							</svg>
+							<span>whiteyedcat@gmail</span>
+						</a>
+					</div>
+					<div class="contact-method">
+						<p>Or DM me on</p>
+						<a class="contact-chip" href="https://www.instagram.com/whiteyedcat/" aria-label="DM whiteyedcat on Instagram">
+							<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+								<rect x="4.5" y="4.5" width="15" height="15" rx="4.2"></rect>
+								<circle cx="12" cy="12" r="3.25"></circle>
+								<circle cx="16.25" cy="7.75" r="0.8"></circle>
+							</svg>
+							<span>@whiteyedcat</span>
+						</a>
+					</div>
 				</div>
 			</div>
+			<img class="commissions-cta__cat" src={commissionsCat.src} alt="" loading="lazy" decoding="async" />
 		</section>
 
-		<footer class="collabs-footer">
-			<div class="collabs-footer__wave" aria-hidden="true">
+		<footer class="commissions-footer">
+			<div class="commissions-footer__wave" aria-hidden="true">
 				<svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
 					<g>
 						<path d="M0 108C120 50 240 50 360 108C480 166 600 166 720 108C840 50 960 50 1080 108C1200 166 1320 166 1440 108V160H0V108Z"></path>
@@ -170,14 +163,14 @@ const footerGroups = [
 					</g>
 				</svg>
 			</div>
-			<div class="collabs-footer__inner">
-				<div class="collabs-footer__brand">
+			<div class="commissions-footer__inner">
+				<div class="commissions-footer__brand">
 					<img src={avatar.src} alt="" loading="lazy" decoding="async" />
 					<h2>whiteyedcat</h2>
 					<p class="footer-socials">X IG @</p>
 					<p class="credit">Designed and build by snouu.dev</p>
 				</div>
-				<div class="collabs-footer__links">
+				<div class="commissions-footer__links">
 					{
 						footerGroups.map((group) => (
 							<ul>
@@ -197,23 +190,23 @@ const footerGroups = [
 
 <style>
 	:root {
-		--collabs-bg: #f9f5f2;
-		--collabs-surface: #ffffff;
-		--collabs-text: #121212;
-		--collabs-inverse: #f2eee6;
-		--collabs-footer: #0b0b0b;
-		--collabs-shell: min(1180px, calc(100vw - 2rem));
+		--commissions-bg: #f9f5f2;
+		--commissions-surface: #ffffff;
+		--commissions-text: #121212;
+		--commissions-inverse: #f2eee6;
+		--commissions-footer: #0b0b0b;
+		--commissions-shell: min(1180px, calc(100vw - 2rem));
 	}
 
-	.collabs-page {
+	.commissions-page {
 		min-height: 100vh;
-		background: var(--collabs-bg);
-		color: var(--collabs-text);
+		background: var(--commissions-bg);
+		color: var(--commissions-text);
 		overflow: clip;
 	}
 
-	.collabs-header {
-		background: var(--collabs-surface);
+	.commissions-header {
+		background: var(--commissions-surface);
 		padding: clamp(2rem, 5vw, 3.1rem) 1rem 1.45rem;
 	}
 
@@ -246,7 +239,7 @@ const footerGroups = [
 	}
 
 	.artist-lockup h1,
-	.collabs-footer__brand h2 {
+	.commissions-footer__brand h2 {
 		margin: 0;
 		font-family: 'Birthstone', cursive;
 		font-weight: 400;
@@ -294,7 +287,7 @@ const footerGroups = [
 		justify-content: center;
 		gap: 0.35rem;
 		padding: 0.18rem 1rem 0.24rem;
-		border: 2px solid var(--collabs-text);
+		border: 2px solid var(--commissions-text);
 		border-radius: 999px;
 		font-size: 0.95rem;
 		font-weight: 700;
@@ -308,8 +301,8 @@ const footerGroups = [
 		line-height: 1.25;
 	}
 
-	.collabs-nav {
-		width: var(--collabs-shell);
+	.commissions-nav {
+		width: var(--commissions-shell);
 		margin: clamp(1.8rem, 4vw, 3.15rem) auto 0;
 		display: flex;
 		align-items: center;
@@ -319,13 +312,13 @@ const footerGroups = [
 		font-weight: 700;
 	}
 
-	.collabs-nav a {
+	.commissions-nav a {
 		position: relative;
 		padding-block: 0.3rem;
 		white-space: nowrap;
 	}
 
-	.collabs-nav a::after {
+	.commissions-nav a::after {
 		content: '';
 		position: absolute;
 		left: 0;
@@ -338,23 +331,23 @@ const footerGroups = [
 		transition: transform 180ms ease;
 	}
 
-	.collabs-nav a:hover::after,
-	.collabs-nav a:focus-visible::after,
-	.collabs-nav a[aria-current='page']::after {
+	.commissions-nav a:hover::after,
+	.commissions-nav a:focus-visible::after,
+	.commissions-nav a[aria-current='page']::after {
 		transform: scaleX(1);
 	}
 
-	.collabs-section {
-		background: var(--collabs-surface);
-		box-shadow: 0 0 0 100vmax var(--collabs-surface);
+	.commissions-section {
+		background: var(--commissions-surface);
+		box-shadow: 0 0 0 100vmax var(--commissions-surface);
 		clip-path: inset(0 -100vmax);
-		width: var(--collabs-shell);
+		width: var(--commissions-shell);
 		margin: 0 auto;
-		padding: clamp(2rem, 5vw, 3.7rem) 0 clamp(4.5rem, 7vw, 5.8rem);
+		padding: clamp(2rem, 5vw, 3.7rem) 0 clamp(3.2rem, 6vw, 5.5rem);
 	}
 
-	.collabs-section h2,
-	.collabs-cta h2 {
+	.commissions-section h2,
+	.commissions-cta h2 {
 		margin: 0;
 		font-family: 'Bodoni Moda', serif;
 		font-size: clamp(2.1rem, 4vw, 3rem);
@@ -362,111 +355,113 @@ const footerGroups = [
 		text-align: center;
 	}
 
-	.collabs-list {
+	.commissions-list {
+		width: min(66rem, 100%);
+		margin: clamp(2.2rem, 4vw, 3.8rem) auto 0;
 		display: grid;
-		gap: clamp(3.8rem, 7vw, 7.2rem);
-		margin-top: clamp(1.7rem, 4vw, 3.2rem);
+		gap: clamp(3.2rem, 7vw, 5.6rem);
 	}
 
-	.collab-item {
+	.commission-item {
 		display: grid;
-		grid-template-columns: clamp(14rem, 28vw, 20.5rem) minmax(0, 1fr);
-		align-items: start;
-		gap: clamp(2rem, 5vw, 4.4rem);
+		grid-template-columns: clamp(12rem, 24vw, 19.25rem) minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(1.6rem, 5vw, 4.2rem);
 	}
 
-	.collab-item__image {
-		aspect-ratio: 328 / 344;
-		border-radius: 0.95rem;
+	.commission-item__image {
+		width: 100%;
 		overflow: hidden;
-		background: var(--collabs-bg);
+		background: var(--commissions-bg);
 	}
 
-	.collab-item__image img {
+	.commission-item--portrait .commission-item__image {
+		aspect-ratio: 308 / 385;
+		border-radius: 0.95rem;
+	}
+
+	.commission-item--stickers .commission-item__image {
+		aspect-ratio: 1;
+		background: transparent;
+	}
+
+	.commission-item__image img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 	}
 
-	.collab-item__copy {
-		display: grid;
-		justify-items: start;
-		gap: 0.65rem;
-		padding-top: clamp(0.2rem, 1vw, 0.8rem);
+	.commission-item--stickers .commission-item__image img {
+		object-fit: contain;
 	}
 
-	.collab-item h3 {
+	.commission-item__copy {
+		display: grid;
+		gap: clamp(0.7rem, 1.5vw, 1rem);
+	}
+
+	.commission-item h3 {
 		margin: 0;
-		font-size: clamp(2rem, 4vw, 3rem);
+		font-size: clamp(2.1rem, 4vw, 3rem);
 		line-height: 1.08;
 		font-weight: 700;
 	}
 
-	.collab-item__meta,
-	.collab-item__copy > p {
-		margin: 0;
-		font-weight: 700;
-		line-height: 1.35;
-	}
-
-	.collab-item__meta {
-		font-size: clamp(0.95rem, 1.5vw, 1.5rem);
-	}
-
-	.collab-item__copy > p:not(.collab-item__meta) {
-		max-width: 49rem;
-		font-size: clamp(0.95rem, 1.5vw, 1.5rem);
+	.commission-item__rates {
+		display: grid;
+		gap: 0.1rem;
+		font-size: clamp(1rem, 1.55vw, 1.5rem);
 		font-weight: 500;
-		text-align: justify;
+		line-height: 1.25;
 	}
 
-	.collab-tag {
-		min-width: clamp(9.5rem, 20vw, 15.75rem);
-		display: inline-flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 2.25rem;
-		padding: 0.2rem 1.25rem;
-		border: 1.5px solid var(--collabs-text);
-		border-radius: 999px;
-		font-size: clamp(0.9rem, 1.35vw, 1.5rem);
-		font-weight: 700;
-		line-height: 1;
+	.commission-item__rates p {
+		margin: 0;
 	}
 
-	.collabs-divider {
-		position: relative;
-		z-index: 1;
-		width: min(100rem, 100%);
-		margin: clamp(-1rem, -1vw, -0.4rem) auto 0;
+	.commissions-divider {
+		width: min(1281px, calc(100% + 2px));
+		margin: clamp(-0.2rem, 1vw, 0.8rem) auto 0;
 		pointer-events: none;
 	}
 
-	.collabs-divider img {
+	.commissions-divider img {
 		width: 100%;
 		height: auto;
 	}
 
-	.collabs-cta {
-		width: var(--collabs-shell);
+	.commissions-cta {
+		position: relative;
+		width: var(--commissions-shell);
+		min-height: clamp(22rem, 35vw, 28rem);
 		margin: 0 auto;
-		padding: clamp(2.4rem, 5vw, 4.6rem) 0 clamp(8rem, 14vw, 11rem);
+		padding: clamp(3.3rem, 7vw, 6.5rem) 0 clamp(7.5rem, 14vw, 10.4rem);
 		display: grid;
-		justify-items: center;
+		place-items: center;
 		text-align: center;
+		isolation: isolate;
 	}
 
-	.collabs-cta > img {
-		width: clamp(7rem, 18vw, 13.7rem);
-		aspect-ratio: 1;
-		object-fit: contain;
-		margin-bottom: clamp(0.8rem, 2vw, 1.4rem);
+	.commissions-cta__body {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		justify-items: center;
+		gap: clamp(1rem, 2vw, 1.4rem);
+	}
+
+	.commissions-cta__cat {
+		position: absolute;
+		right: clamp(0rem, 3vw, 2.4rem);
+		bottom: clamp(2rem, 5vw, 4.6rem);
+		z-index: 0;
+		width: clamp(7rem, 17vw, 12.25rem);
+		pointer-events: none;
 	}
 
 	.contact-methods {
 		display: grid;
 		gap: 0.72rem;
-		margin-top: 1.2rem;
 		font-size: clamp(0.95rem, 1.55vw, 1.5rem);
 		font-weight: 500;
 	}
@@ -491,9 +486,9 @@ const footerGroups = [
 		gap: 0.48rem;
 		min-height: 2rem;
 		padding: 0.2rem 0.66rem;
-		border: 1.5px solid var(--collabs-text);
+		border: 1.5px solid var(--commissions-text);
 		border-radius: 0.45rem;
-		background: var(--collabs-surface);
+		background: var(--commissions-surface);
 		font-weight: 700;
 		line-height: 1;
 		transition:
@@ -504,8 +499,8 @@ const footerGroups = [
 
 	.contact-chip:hover,
 	.contact-chip:focus-visible {
-		background: var(--collabs-text);
-		color: var(--collabs-inverse);
+		background: var(--commissions-text);
+		color: var(--commissions-inverse);
 		transform: translateY(-1px);
 	}
 
@@ -526,13 +521,13 @@ const footerGroups = [
 		stroke-width: 2;
 	}
 
-	.collabs-footer {
+	.commissions-footer {
 		position: relative;
-		background: var(--collabs-footer);
-		color: var(--collabs-inverse);
+		background: var(--commissions-footer);
+		color: var(--commissions-inverse);
 	}
 
-	.collabs-footer__wave {
+	.commissions-footer__wave {
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -543,7 +538,7 @@ const footerGroups = [
 		pointer-events: none;
 	}
 
-	.collabs-footer__wave svg {
+	.commissions-footer__wave svg {
 		position: absolute;
 		inset: auto -1px -1px;
 		width: calc(100% + 2px);
@@ -551,16 +546,16 @@ const footerGroups = [
 		display: block;
 	}
 
-	.collabs-footer__wave g {
+	.commissions-footer__wave g {
 		will-change: transform;
 	}
 
-	.collabs-footer__wave path {
-		fill: var(--collabs-footer);
+	.commissions-footer__wave path {
+		fill: var(--commissions-footer);
 	}
 
-	.collabs-footer__inner {
-		width: var(--collabs-shell);
+	.commissions-footer__inner {
+		width: var(--commissions-shell);
 		margin: 0 auto;
 		padding: clamp(2.1rem, 4vw, 3rem) 0 3.7rem;
 		display: grid;
@@ -569,7 +564,7 @@ const footerGroups = [
 		align-items: end;
 	}
 
-	.collabs-footer__brand img {
+	.commissions-footer__brand img {
 		width: clamp(5rem, 11vw, 7.6rem);
 		aspect-ratio: 1;
 		border-radius: 50%;
@@ -577,7 +572,7 @@ const footerGroups = [
 		margin-bottom: 1.35rem;
 	}
 
-	.collabs-footer__brand h2 {
+	.commissions-footer__brand h2 {
 		font-size: clamp(4rem, 8vw, 7.25rem);
 	}
 
@@ -599,13 +594,13 @@ const footerGroups = [
 		font-weight: 300;
 	}
 
-	.collabs-footer__links {
+	.commissions-footer__links {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: clamp(2rem, 6vw, 5rem);
 	}
 
-	.collabs-footer__links ul {
+	.commissions-footer__links ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -615,46 +610,51 @@ const footerGroups = [
 		font-weight: 700;
 	}
 
-	.collabs-nav a:focus-visible,
+	.commissions-nav a:focus-visible,
 	.social-links a:focus-visible,
 	.contact-chip:focus-visible,
-	.collabs-footer a:focus-visible {
-		outline: 2px solid var(--collabs-text);
+	.commissions-footer a:focus-visible {
+		outline: 2px solid var(--commissions-text);
 		outline-offset: 0.28rem;
 	}
 
-	.collabs-footer a:focus-visible {
-		outline-color: var(--collabs-inverse);
+	.commissions-footer a:focus-visible {
+		outline-color: var(--commissions-inverse);
 	}
 
 	@media (max-width: 920px) {
-		.collabs-nav {
+		.commissions-nav {
 			justify-content: center;
 			flex-wrap: wrap;
 			gap: 0.85rem 1.4rem;
 		}
 
-		.collab-item {
-			grid-template-columns: minmax(11rem, 16rem) minmax(0, 1fr);
+		.commission-item {
+			grid-template-columns: minmax(10.5rem, 16rem) minmax(0, 1fr);
 			gap: 1.5rem;
 		}
 
-		.collabs-footer__inner {
+		.commissions-cta__cat {
+			opacity: 0.86;
+			right: 0;
+		}
+
+		.commissions-footer__inner {
 			grid-template-columns: 1fr;
 			align-items: start;
 		}
 
-		.collabs-footer__links {
+		.commissions-footer__links {
 			max-width: 30rem;
 		}
 	}
 
 	@media (max-width: 640px) {
 		:root {
-			--collabs-shell: min(100vw - 1.25rem, 34rem);
+			--commissions-shell: min(100vw - 1.25rem, 34rem);
 		}
 
-		.collabs-header {
+		.commissions-header {
 			padding-top: 1.4rem;
 		}
 
@@ -678,27 +678,39 @@ const footerGroups = [
 			justify-content: center;
 		}
 
-		.collabs-list {
+		.commissions-list {
 			gap: 3.2rem;
 		}
 
-		.collab-item {
+		.commission-item {
 			grid-template-columns: 1fr;
 			gap: 1.1rem;
 		}
 
-		.collab-item__image {
-			width: min(100%, 20.5rem);
+		.commission-item__image {
+			width: min(100%, 19.25rem);
 			justify-self: center;
 		}
 
-		.collab-item__copy {
+		.commission-item__copy {
 			justify-items: center;
 			text-align: center;
 		}
 
-		.collab-item__copy > p:not(.collab-item__meta) {
-			text-align: center;
+		.commission-item__rates {
+			font-size: 1rem;
+		}
+
+		.commissions-cta {
+			min-height: 30rem;
+			padding-bottom: 9rem;
+		}
+
+		.commissions-cta__cat {
+			right: 50%;
+			bottom: 1.35rem;
+			transform: translateX(50%);
+			width: 8.7rem;
 		}
 
 		.contact-method {
@@ -716,29 +728,29 @@ const footerGroups = [
 			min-height: 2.45rem;
 		}
 
-		.collabs-footer__brand,
-		.collabs-footer__links ul {
+		.commissions-footer__brand,
+		.commissions-footer__links ul {
 			text-align: center;
 			justify-items: center;
 		}
 
-		.collabs-footer__brand img {
+		.commissions-footer__brand img {
 			margin-inline: auto;
 		}
 
-		.collabs-footer__links {
+		.commissions-footer__links {
 			justify-self: center;
 			grid-template-columns: repeat(2, minmax(7rem, 1fr));
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.collabs-nav a::after,
+		.commissions-nav a::after,
 		.contact-chip {
 			transition: none;
 		}
 
-		.collabs-footer__wave animateTransform {
+		.commissions-footer__wave animateTransform {
 			display: none;
 		}
 	}
