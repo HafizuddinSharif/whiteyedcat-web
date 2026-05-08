@@ -1,0 +1,399 @@
+---
+interface CommissionImage {
+	src: {
+		src: string;
+	};
+	alt: string;
+}
+
+interface CommissionChoice {
+	label: string;
+	price: string;
+	prefix?: string;
+}
+
+interface CommissionVariant {
+	id: string;
+	label: string;
+	choices: CommissionChoice[];
+}
+
+interface Props {
+	id: string;
+	title: string;
+	description: string;
+	images: CommissionImage[];
+	variants?: CommissionVariant[];
+	choices?: CommissionChoice[];
+	defaultVariant?: string;
+	imageFit?: 'cover' | 'contain';
+}
+
+const {
+	id,
+	title,
+	description,
+	images,
+	variants = [],
+	choices = [],
+	defaultVariant = variants[0]?.id,
+	imageFit = 'cover',
+} = Astro.props;
+
+const initialImage = images[0];
+const hasVariants = variants.length > 0;
+const hasThumbnails = images.length > 1;
+---
+
+<article class:list={['commission-item', `commission-item--${imageFit}`]} data-commission-item={id}>
+	<div class="commission-item__media">
+		<div class="commission-item__image">
+			<img
+				data-commission-image
+				src={initialImage.src.src}
+				alt={initialImage.alt}
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		{
+			hasThumbnails && (
+				<div class="commission-item__thumbs" aria-label={`${title} image choices`}>
+					{
+						images.map((image, index) => (
+							<button
+								type="button"
+								data-commission-thumbnail
+								data-image-src={image.src.src}
+								data-image-alt={image.alt}
+								aria-label={`Show ${title} preview ${index + 1}`}
+								aria-pressed={index === 0 ? 'true' : 'false'}
+							>
+								<img src={image.src.src} alt="" loading="lazy" decoding="async" />
+							</button>
+						))
+					}
+				</div>
+			)
+		}
+	</div>
+
+	<div class="commission-item__copy">
+		<h3>{title}</h3>
+		<p>{description}</p>
+
+		{
+			hasVariants && (
+				<div class="commission-item__variants" aria-label={`${title} variant choices`}>
+					{
+						variants.map((variant) => (
+							<button
+								type="button"
+								data-commission-variant={variant.id}
+								aria-pressed={variant.id === defaultVariant ? 'true' : 'false'}
+							>
+								{variant.label}
+							</button>
+						))
+					}
+				</div>
+			)
+		}
+
+		<div class="commission-item__prices">
+			{
+				hasVariants ? (
+					variants.map((variant) => (
+						<div
+							class="commission-item__price-panel"
+							data-commission-prices={variant.id}
+							hidden={variant.id !== defaultVariant}
+						>
+							{variant.choices.map((choice) => (
+								<div class="commission-price-row">
+									<span>{choice.label}</span>
+									<strong>
+										{choice.prefix && <small>{choice.prefix}</small>}
+										{choice.price}
+									</strong>
+								</div>
+							))}
+						</div>
+					))
+				) : (
+					choices.map((choice) => (
+						<div class="commission-price-row">
+							<span>{choice.label}</span>
+							<strong>
+								{choice.prefix && <small>{choice.prefix}</small>}
+								{choice.price}
+							</strong>
+						</div>
+					))
+				)
+			}
+		</div>
+	</div>
+</article>
+
+<script>
+	const setupCommissionItems = () => {
+		document.querySelectorAll<HTMLElement>('[data-commission-item]').forEach((item) => {
+			if (item.dataset.commissionReady === 'true') return;
+
+			item.dataset.commissionReady = 'true';
+			const mainImage = item.querySelector<HTMLImageElement>('[data-commission-image]');
+
+			item.querySelectorAll<HTMLButtonElement>('[data-commission-thumbnail]').forEach((button) => {
+				button.addEventListener('click', () => {
+					if (!mainImage) return;
+
+					mainImage.src = button.dataset.imageSrc || mainImage.src;
+					mainImage.alt = button.dataset.imageAlt || mainImage.alt;
+
+					item.querySelectorAll<HTMLButtonElement>('[data-commission-thumbnail]').forEach((thumbnail) => {
+						thumbnail.setAttribute('aria-pressed', thumbnail === button ? 'true' : 'false');
+					});
+				});
+			});
+
+			item.querySelectorAll<HTMLButtonElement>('[data-commission-variant]').forEach((button) => {
+				button.addEventListener('click', () => {
+					const variant = button.dataset.commissionVariant;
+
+					item.querySelectorAll<HTMLButtonElement>('[data-commission-variant]').forEach((variantButton) => {
+						variantButton.setAttribute('aria-pressed', variantButton === button ? 'true' : 'false');
+					});
+
+					item.querySelectorAll<HTMLElement>('[data-commission-prices]').forEach((panel) => {
+						panel.hidden = panel.dataset.commissionPrices !== variant;
+					});
+				});
+			});
+		});
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', setupCommissionItems, { once: true });
+	} else {
+		setupCommissionItems();
+	}
+
+	document.addEventListener('astro:page-load', setupCommissionItems);
+</script>
+
+<style>
+	.commission-item {
+		display: grid;
+		grid-template-columns: clamp(12rem, 24vw, 19.25rem) minmax(0, 1fr);
+		align-items: start;
+		gap: clamp(1.7rem, 5vw, 4.25rem);
+	}
+
+	.commission-item__media {
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.commission-item__image {
+		width: 100%;
+		aspect-ratio: 308 / 385;
+		overflow: hidden;
+		border-radius: 0.95rem;
+		background: var(--commissions-bg, #f9f5f2);
+	}
+
+	.commission-item--contain .commission-item__image {
+		aspect-ratio: 1;
+		border-radius: 0;
+		background: transparent;
+	}
+
+	.commission-item__image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.commission-item--contain .commission-item__image img {
+		object-fit: contain;
+	}
+
+	.commission-item__thumbs {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(2.8rem, 1fr));
+		gap: 0.45rem;
+	}
+
+	.commission-item__thumbs button {
+		aspect-ratio: 1;
+		padding: 0;
+		overflow: hidden;
+		border: 1.5px solid transparent;
+		border-radius: 0.38rem;
+		background: var(--commissions-bg, #f9f5f2);
+		cursor: pointer;
+		transition:
+			border-color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.commission-item__thumbs button:hover,
+	.commission-item__thumbs button:focus-visible,
+	.commission-item__thumbs button[aria-pressed='true'] {
+		border-color: var(--commissions-text, #121212);
+	}
+
+	.commission-item__thumbs button:hover {
+		transform: translateY(-1px);
+	}
+
+	.commission-item__thumbs img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.commission-item--contain .commission-item__thumbs img {
+		object-fit: contain;
+	}
+
+	.commission-item__copy {
+		min-width: 0;
+		display: grid;
+		gap: clamp(0.55rem, 1.35vw, 1rem);
+		padding-top: clamp(0.2rem, 1vw, 0.6rem);
+	}
+
+	.commission-item h3 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1.05;
+		font-weight: 700;
+	}
+
+	.commission-item p {
+		max-width: 44rem;
+		margin: 0;
+		font-size: clamp(0.95rem, 1.45vw, 1.5rem);
+		font-weight: 500;
+		line-height: 1.28;
+		text-wrap: pretty;
+	}
+
+	.commission-item__variants {
+		width: min(30.65rem, 100%);
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		overflow: hidden;
+		border: 1.5px solid var(--commissions-text, #121212);
+		border-radius: 0.35rem;
+		background: var(--commissions-surface, #ffffff);
+	}
+
+	.commission-item__variants button {
+		min-height: 2.95rem;
+		padding: 0.35rem 0.75rem;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		color: var(--commissions-text, #121212);
+		font-size: clamp(0.9rem, 1.35vw, 1.5rem);
+		font-weight: 500;
+		line-height: 1;
+		cursor: pointer;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.commission-item__variants button + button {
+		border-left: 1.5px solid var(--commissions-text, #121212);
+	}
+
+	.commission-item__variants button[aria-pressed='true'] {
+		background: var(--commissions-text, #121212);
+		color: var(--commissions-inverse, #f2eee6);
+	}
+
+	.commission-item__prices,
+	.commission-item__price-panel {
+		display: grid;
+	}
+
+	.commission-price-row {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: baseline;
+		gap: 1rem;
+		min-height: clamp(3rem, 5vw, 3.95rem);
+		border-bottom: 1.5px solid rgba(18, 18, 18, 0.55);
+		font-size: clamp(0.95rem, 1.45vw, 1.5rem);
+		font-weight: 500;
+		line-height: 1.1;
+	}
+
+	.commission-price-row strong {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.35rem;
+		font-size: clamp(1.35rem, 2.9vw, 2.25rem);
+		font-weight: 700;
+		line-height: 1;
+		text-align: right;
+		white-space: nowrap;
+	}
+
+	.commission-price-row small {
+		font-size: clamp(0.75rem, 1.15vw, 1rem);
+		font-weight: 500;
+	}
+
+	.commission-item__thumbs button:focus-visible,
+	.commission-item__variants button:focus-visible {
+		position: relative;
+		z-index: 1;
+		outline: 2px solid var(--commissions-text, #121212);
+		outline-offset: 0.18rem;
+	}
+
+	@media (max-width: 920px) {
+		.commission-item {
+			grid-template-columns: minmax(10.5rem, 16rem) minmax(0, 1fr);
+			gap: 1.5rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.commission-item {
+			grid-template-columns: 1fr;
+			gap: 1.1rem;
+		}
+
+		.commission-item__media {
+			width: min(100%, 19.25rem);
+			justify-self: center;
+		}
+
+		.commission-item__copy {
+			justify-items: center;
+			text-align: center;
+		}
+
+		.commission-item__variants {
+			width: min(100%, 30.65rem);
+		}
+
+		.commission-price-row {
+			width: 100%;
+			text-align: left;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.commission-item__thumbs button,
+		.commission-item__variants button {
+			transition: none;
+		}
+	}
+</style>

@@ -1,48 +1,137 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import CommissionItem from '../components/CommissionItem.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import commissionsCat from '../assets/whiteyedcat/commissions-cat.png';
 import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 import commissionsPortrait from '../assets/whiteyedcat/commissions-portrait.png';
 import commissionsStickers from '../assets/whiteyedcat/commissions-stickers.png';
+import galleryA from '../assets/whiteyedcat/gallery-a.png';
+import galleryB from '../assets/whiteyedcat/gallery-b.png';
 
 const navigation = [
 	{ label: 'Home', href: '/' },
 	{ label: 'About', href: '/#about' },
 	{ label: 'Artworks', href: '/artworks' },
 	{ label: 'Collabs', href: '/collabs' },
-	{ label: 'Commisions', href: '/commissions' },
+	{ label: 'Commissions', href: '/commissions' },
 	{ label: 'Exhibitions', href: '/exhibitions' },
 	{ label: 'Contact', href: '/contact' },
 ];
 
 const commissionItems = [
 	{
-		title: 'Potraits',
-		image: commissionsPortrait,
-		alt: 'Colorful portrait commission preview featuring a dog surrounded by bright objects and painted details.',
-		type: 'portrait',
-		lines: [
-			'Face only RM200 (with background RM300)',
-			'Half body RM300 (with background RM350)',
-			'Full body RM350 (with background RM400)',
+		id: 'portraits',
+		title: 'Portraits',
+		description:
+			'Illustrated portraits for people. Pop-art meets hyperrealism. Each piece is unique and painted with intention.',
+		images: [
+			{
+				src: commissionsPortrait,
+				alt: 'Colorful portrait commission preview featuring a dog surrounded by bright objects and painted details.',
+			},
+			{
+				src: galleryA,
+				alt: 'Colorful mixed-media portrait artwork with bright charms and playful details.',
+			},
+			{
+				src: galleryB,
+				alt: 'Painterly portrait framed by dark green flowing forms.',
+			},
+		],
+		defaultVariant: 'no-background',
+		variants: [
+			{
+				id: 'no-background',
+				label: 'no background',
+				choices: [
+					{ label: 'Face only', price: 'RM200' },
+					{ label: 'Half body', price: 'RM300' },
+					{ label: 'Full body', price: 'RM350' },
+				],
+			},
+			{
+				id: 'with-background',
+				label: 'with background',
+				choices: [
+					{ label: 'Face only', price: 'RM300' },
+					{ label: 'Half body', price: 'RM350' },
+					{ label: 'Full body', price: 'RM400' },
+				],
+			},
 		],
 	},
 	{
-		title: 'Sticker pack',
-		image: commissionsStickers,
-		alt: 'Sticker pack preview with small illustrated cats and playful animal poses.',
-		type: 'stickers',
-		lines: ['RM 30'],
+		id: 'pet-portraits',
+		title: 'Pet Portraits',
+		description:
+			'Illustrated portraits for pets. Pop-art meets hyperrealism. Each piece is unique and painted with intention.',
+		images: [
+			{
+				src: commissionsPortrait,
+				alt: 'Colorful pet portrait commission preview with dogs and playful surrounding details.',
+			},
+			{
+				src: galleryA,
+				alt: 'Bright mixed-media pet artwork with dogs, charms, and saturated details.',
+			},
+		],
+		defaultVariant: 'no-background',
+		variants: [
+			{
+				id: 'no-background',
+				label: 'no background',
+				choices: [{ label: 'Any animal', price: 'RM50' }],
+			},
+			{
+				id: 'with-background',
+				label: 'with background',
+				choices: [{ label: 'Any animal', price: 'RM100' }],
+			},
+		],
+	},
+	{
+		id: 'scenery',
+		title: 'Scenery',
+		description:
+			'Original digital paintings of landscapes, cityscapes, and fantasy environments. Painted with mood and atmosphere in mind - each piece tells a story without a subject.',
+		images: [
+			{
+				src: commissionsPortrait,
+				alt: 'Colorful commission preview standing in for scenery artwork.',
+			},
+			{
+				src: galleryB,
+				alt: 'Painterly artwork with atmospheric flowing green forms.',
+			},
+		],
+		choices: [{ label: 'One scene', prefix: 'from', price: 'RM500' }],
+	},
+	{
+		id: 'pet-sticker-pack',
+		title: 'Pet sticker pack',
+		description: 'Custom illustrated sticker sets. Great for Telegram, LINE, or printing.',
+		images: [
+			{
+				src: commissionsStickers,
+				alt: 'Sticker pack preview with small illustrated cats and playful animal poses.',
+			},
+			{
+				src: commissionsCat,
+				alt: 'Orange cat illustration used as a pet sticker style preview.',
+			},
+		],
+		choices: [{ label: 'Per 8 stickers', price: 'RM30' }],
+		imageFit: 'contain',
 	},
 ];
 
 ---
 
 <Layout
-	title="Commisions | whiteyedcat"
-	description="Commission whiteyedcat for portraits and sticker packs with current rates and contact links."
+	title="Commissions | whiteyedcat"
+	description="Commission whiteyedcat for portraits, pet portraits, scenery, and sticker packs with current rates and contact links."
 >
 	<main class="commissions-page">
 		<header class="commissions-header">
@@ -87,21 +176,11 @@ const commissionItems = [
 		</header>
 
 		<section class="commissions-section" aria-labelledby="commissions-heading">
-			<h2 id="commissions-heading">Commisions</h2>
+			<h2 id="commissions-heading">Commissions</h2>
 			<div class="commissions-list">
 				{
 					commissionItems.map((item) => (
-						<article class={`commission-item commission-item--${item.type}`}>
-							<div class="commission-item__image">
-								<img src={item.image.src} alt={item.alt} loading="lazy" decoding="async" />
-							</div>
-							<div class="commission-item__copy">
-								<h3>{item.title}</h3>
-								<div class="commission-item__rates">
-									{item.lines.map((line) => <p>{line}</p>)}
-								</div>
-							</div>
-						</article>
+						<CommissionItem {...item} />
 					))
 				}
 			</div>
@@ -322,63 +401,6 @@ const commissionItems = [
 		gap: clamp(3.2rem, 7vw, 5.6rem);
 	}
 
-	.commission-item {
-		display: grid;
-		grid-template-columns: clamp(12rem, 24vw, 19.25rem) minmax(0, 1fr);
-		align-items: center;
-		gap: clamp(1.6rem, 5vw, 4.2rem);
-	}
-
-	.commission-item__image {
-		width: 100%;
-		overflow: hidden;
-		background: var(--commissions-bg);
-	}
-
-	.commission-item--portrait .commission-item__image {
-		aspect-ratio: 308 / 385;
-		border-radius: 0.95rem;
-	}
-
-	.commission-item--stickers .commission-item__image {
-		aspect-ratio: 1;
-		background: transparent;
-	}
-
-	.commission-item__image img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.commission-item--stickers .commission-item__image img {
-		object-fit: contain;
-	}
-
-	.commission-item__copy {
-		display: grid;
-		gap: clamp(0.7rem, 1.5vw, 1rem);
-	}
-
-	.commission-item h3 {
-		margin: 0;
-		font-size: clamp(2.1rem, 4vw, 3rem);
-		line-height: 1.08;
-		font-weight: 700;
-	}
-
-	.commission-item__rates {
-		display: grid;
-		gap: 0.1rem;
-		font-size: clamp(1rem, 1.55vw, 1.5rem);
-		font-weight: 500;
-		line-height: 1.25;
-	}
-
-	.commission-item__rates p {
-		margin: 0;
-	}
-
 	.commissions-divider {
 		width: min(1281px, calc(100% + 2px));
 		margin: clamp(-0.2rem, 1vw, 0.8rem) auto 0;
@@ -590,11 +612,6 @@ const commissionItems = [
 			gap: 0.85rem 1.4rem;
 		}
 
-		.commission-item {
-			grid-template-columns: minmax(10.5rem, 16rem) minmax(0, 1fr);
-			gap: 1.5rem;
-		}
-
 		.commissions-cta__cat {
 			opacity: 0.86;
 			right: 0;
@@ -641,25 +658,6 @@ const commissionItems = [
 
 		.commissions-list {
 			gap: 3.2rem;
-		}
-
-		.commission-item {
-			grid-template-columns: 1fr;
-			gap: 1.1rem;
-		}
-
-		.commission-item__image {
-			width: min(100%, 19.25rem);
-			justify-self: center;
-		}
-
-		.commission-item__copy {
-			justify-items: center;
-			text-align: center;
-		}
-
-		.commission-item__rates {
-			font-size: 1rem;
 		}
 
 		.commissions-cta {
