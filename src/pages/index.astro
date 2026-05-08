@@ -780,6 +780,38 @@ const serviceLinks = [
 		width: clamp(6rem, 16vw, 9rem);
 		aspect-ratio: 1;
 		object-fit: contain;
+		transform-origin: 50% 62%;
+		animation: vibeShake 3.1s ease-in-out infinite;
+		will-change: transform;
+	}
+
+	.vibes__art img:nth-child(2) {
+		animation-delay: -1s;
+		animation-duration: 3.5s;
+	}
+
+	@keyframes vibeShake {
+		0%,
+		58%,
+		100% {
+			transform: translate3d(0, 0, 0) rotate(0deg);
+		}
+
+		67% {
+			transform: translate3d(-4px, 0, 0) rotate(-4deg);
+		}
+
+		76% {
+			transform: translate3d(4px, -3px, 0) rotate(3.6deg);
+		}
+
+		85% {
+			transform: translate3d(-3px, 2px, 0) rotate(-2.8deg);
+		}
+
+		94% {
+			transform: translate3d(2px, 0, 0) rotate(1.8deg);
+		}
 	}
 
 	.services-section {
@@ -1157,6 +1189,11 @@ const serviceLinks = [
 		.hero__content {
 			opacity: 1;
 			animation: none;
+		}
+
+		.vibes__art img {
+			animation: none;
+			transform: none;
 		}
 	}
 </style>
