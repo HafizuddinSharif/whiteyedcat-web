@@ -79,26 +79,28 @@ const hasThumbnails = images.length > 1;
 	</div>
 
 	<div class="commission-item__copy">
-		<h3>{title}</h3>
-		<p>{description}</p>
+		<div class="commission-item__header">
+			<h3>{title}</h3>
+			<p>{description}</p>
 
-		{
-			hasVariants && (
-				<div class="commission-item__variants" aria-label={`${title} variant choices`}>
-					{
-						variants.map((variant) => (
-							<button
-								type="button"
-								data-commission-variant={variant.id}
-								aria-pressed={variant.id === defaultVariant ? 'true' : 'false'}
-							>
-								{variant.label}
-							</button>
-						))
-					}
-				</div>
-			)
-		}
+			{
+				hasVariants && (
+					<div class="commission-item__variants" aria-label={`${title} variant choices`}>
+						{
+							variants.map((variant) => (
+								<button
+									type="button"
+									data-commission-variant={variant.id}
+									aria-pressed={variant.id === defaultVariant ? 'true' : 'false'}
+								>
+									{variant.label}
+								</button>
+							))
+						}
+					</div>
+				)
+			}
+		</div>
 
 		<div class="commission-item__prices">
 			{
@@ -160,14 +162,29 @@ const hasThumbnails = images.length > 1;
 			item.querySelectorAll<HTMLButtonElement>('[data-commission-variant]').forEach((button) => {
 				button.addEventListener('click', () => {
 					const variant = button.dataset.commissionVariant;
+					const currentPanel = item.querySelector<HTMLElement>('[data-commission-prices]:not([hidden])');
+					const nextPanel = item.querySelector<HTMLElement>(`[data-commission-prices="${variant}"]`);
+
+					if (!variant || !nextPanel || currentPanel === nextPanel) return;
 
 					item.querySelectorAll<HTMLButtonElement>('[data-commission-variant]').forEach((variantButton) => {
 						variantButton.setAttribute('aria-pressed', variantButton === button ? 'true' : 'false');
 					});
 
-					item.querySelectorAll<HTMLElement>('[data-commission-prices]').forEach((panel) => {
-						panel.hidden = panel.dataset.commissionPrices !== variant;
-					});
+					currentPanel?.classList.add('commission-item__price-panel--leaving');
+
+					window.setTimeout(() => {
+						item.querySelectorAll<HTMLElement>('[data-commission-prices]').forEach((panel) => {
+							panel.hidden = panel !== nextPanel;
+							panel.classList.remove('commission-item__price-panel--leaving', 'commission-item__price-panel--entering');
+						});
+
+						nextPanel.classList.add('commission-item__price-panel--entering');
+
+						window.requestAnimationFrame(() => {
+							nextPanel.classList.remove('commission-item__price-panel--entering');
+						});
+					}, 120);
 				});
 			});
 		});
@@ -186,8 +203,13 @@ const hasThumbnails = images.length > 1;
 	.commission-item {
 		display: grid;
 		grid-template-columns: clamp(12rem, 24vw, 19.25rem) minmax(0, 1fr);
-		align-items: start;
+		align-items: stretch;
 		gap: clamp(1.7rem, 5vw, 4.25rem);
+		padding: clamp(1rem, 2.4vw, 1.75rem);
+		border: 1.5px solid rgba(18, 18, 18, 0.2);
+		border-radius: 8px;
+		background: var(--commissions-surface, #ffffff);
+		box-shadow: 0 1rem 2.4rem rgba(18, 18, 18, 0.06);
 	}
 
 	.commission-item__media {
@@ -199,7 +221,7 @@ const hasThumbnails = images.length > 1;
 		width: 100%;
 		aspect-ratio: 308 / 385;
 		overflow: hidden;
-		border-radius: 0.95rem;
+		border-radius: 6px;
 		background: var(--commissions-bg, #f9f5f2);
 	}
 
@@ -230,7 +252,7 @@ const hasThumbnails = images.length > 1;
 		padding: 0;
 		overflow: hidden;
 		border: 1.5px solid transparent;
-		border-radius: 0.38rem;
+		border-radius: 6px;
 		background: var(--commissions-bg, #f9f5f2);
 		cursor: pointer;
 		transition:
@@ -260,9 +282,17 @@ const hasThumbnails = images.length > 1;
 
 	.commission-item__copy {
 		min-width: 0;
-		display: grid;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
 		gap: clamp(0.55rem, 1.35vw, 1rem);
 		padding-top: clamp(0.2rem, 1vw, 0.6rem);
+	}
+
+	.commission-item__header {
+		display: grid;
+		align-content: start;
+		gap: clamp(0.8rem, 1.75vw, 1.35rem);
 	}
 
 	.commission-item h3 {
@@ -321,12 +351,31 @@ const hasThumbnails = images.length > 1;
 		display: grid;
 	}
 
+	.commission-item__prices {
+		margin-top: auto;
+	}
+
+	.commission-item__price-panel[hidden] {
+		display: none;
+	}
+
+	.commission-item__price-panel {
+		opacity: 1;
+		transition: opacity 120ms ease;
+	}
+
+	.commission-item__price-panel--leaving,
+	.commission-item__price-panel--entering {
+		opacity: 0;
+	}
+
 	.commission-price-row {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
 		align-items: baseline;
 		gap: 1rem;
 		min-height: clamp(3rem, 5vw, 3.95rem);
+		padding: clamp(0.75rem, 1.35vw, 1.1rem) 0 clamp(0.22rem, 0.65vw, 0.42rem);
 		border-bottom: 1.5px solid rgba(18, 18, 18, 0.55);
 		font-size: clamp(0.95rem, 1.45vw, 1.5rem);
 		font-weight: 500;
@@ -361,6 +410,7 @@ const hasThumbnails = images.length > 1;
 		.commission-item {
 			grid-template-columns: minmax(10.5rem, 16rem) minmax(0, 1fr);
 			gap: 1.5rem;
+			padding: 1rem;
 		}
 	}
 
@@ -376,11 +426,18 @@ const hasThumbnails = images.length > 1;
 		}
 
 		.commission-item__copy {
+			width: 100%;
 			justify-items: center;
 			text-align: center;
 		}
 
-		.commission-item__variants {
+		.commission-item__header {
+			justify-items: center;
+		}
+
+		.commission-item__variants,
+		.commission-item__prices,
+		.commission-item__price-panel {
 			width: min(100%, 30.65rem);
 		}
 
