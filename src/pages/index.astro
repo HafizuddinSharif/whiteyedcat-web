@@ -3,13 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import AnimatedWave from '../components/AnimatedWave.astro';
 import ArtworkCard from '../components/ArtworkCard.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { artworkItems } from '../data/artworks';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import cat from '../assets/whiteyedcat/cat.png';
 import dividerBottom from '../assets/whiteyedcat/divider-bottom.png';
 import dividerTop from '../assets/whiteyedcat/divider-top.png';
 import fish from '../assets/whiteyedcat/fish.png';
 import galleryA from '../assets/whiteyedcat/gallery-a.png';
-import galleryB from '../assets/whiteyedcat/gallery-b.png';
 import heroBg from '../assets/whiteyedcat/hero-bg.png';
 import stickers from '../assets/whiteyedcat/stickers.png';
 
@@ -22,14 +22,7 @@ const navigation = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const galleryItems = [
-	{ src: galleryA, alt: 'Colorful collage artwork featuring playful objects and a dog portrait.', title: 'Artwork 1', size: 'portrait', purchaseUrl: null },
-	{ src: galleryB, alt: 'Portrait painting framed by green leaves and ribbon-like accents.', title: 'Artwork 2', size: 'square', purchaseUrl: null },
-	{ src: galleryA, alt: 'Mixed-media collage with bright motifs and layered stickers.', title: 'Artwork 3', size: 'portrait', purchaseUrl: null },
-	{ src: galleryB, alt: 'Illustrated portrait with dark floral tones and painterly texture.', title: 'Artwork 4', size: 'square', purchaseUrl: null },
-	{ src: galleryA, alt: 'Eclectic collage combining warm colors and decorative cut-outs.', title: 'Artwork 5', size: 'square', purchaseUrl: null },
-	{ src: galleryB, alt: 'Painterly portrait piece with botanical framing.', title: 'Artwork 6', size: 'portrait', purchaseUrl: null },
-];
+const featuredArtworkItems = artworkItems.filter((item) => item.featured);
 
 const rolePills = ['painter', 'illustrator'];
 
@@ -112,12 +105,12 @@ const serviceLinks = [
 			</div>
 			<div class="gallery-columns" data-masonry-gallery>
 				{
-					galleryItems.map((item) => (
+					featuredArtworkItems.map((item) => (
 						<ArtworkCard
 							src={item.src}
 							alt={item.alt}
 							title={item.title}
-							variant={item.size}
+							variant={item.variant}
 							purchaseUrl={item.purchaseUrl}
 						/>
 					))

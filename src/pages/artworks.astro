@@ -2,9 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import ArtworkCard from '../components/ArtworkCard.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { artworkItems } from '../data/artworks';
 import avatar from '../assets/whiteyedcat/avatar.png';
-import galleryA from '../assets/whiteyedcat/gallery-a.png';
-import galleryB from '../assets/whiteyedcat/gallery-b.png';
 
 const navigation = [
 	{ label: 'Home', href: '/' },
@@ -14,15 +13,6 @@ const navigation = [
 	{ label: 'Commissions', href: '/commissions' },
 	{ label: 'Exhibitions', href: '/exhibitions' },
 	{ label: 'Contact', href: '/contact' },
-];
-
-const artworkItems = [
-	{ src: galleryA, alt: 'Colorful collage artwork featuring dogs, charms, candy, and bright playful objects.', title: 'Artwork 1', type: 'portrait', purchaseUrl: null },
-	{ src: galleryB, alt: 'Painterly portrait of a woman surrounded by flowing dark green forms.', title: 'Artwork 2', type: 'square', purchaseUrl: null },
-	{ src: galleryB, alt: 'Square painterly portrait with layered botanical texture and smoky movement.', title: 'Artwork 3', type: 'square', purchaseUrl: null },
-	{ src: galleryA, alt: 'Bright mixed-media dog collage with vivid charms and toy-like shapes.', title: 'Artwork 4', type: 'portrait', purchaseUrl: null },
-	{ src: galleryA, alt: 'Portrait-format mixed-media artwork with dogs and colorful nostalgic objects.', title: 'Artwork 5', type: 'portrait', purchaseUrl: null },
-	{ src: galleryA, alt: 'Colorful dog collage artwork with candies, bows, charms, and saturated details.', title: 'Artwork 6', type: 'portrait', purchaseUrl: null },
 ];
 
 ---
@@ -97,7 +87,7 @@ const artworkItems = [
 							src={item.src}
 							alt={item.alt}
 							title={item.title}
-							variant={item.type}
+							variant={item.variant}
 							purchaseUrl={item.purchaseUrl}
 						/>
 					))
