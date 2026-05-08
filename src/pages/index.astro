@@ -8,10 +8,9 @@ import avatar from '../assets/whiteyedcat/avatar.png';
 import cat from '../assets/whiteyedcat/cat.png';
 import dividerBottom from '../assets/whiteyedcat/divider-bottom.png';
 import dividerTop from '../assets/whiteyedcat/divider-top.png';
+import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
 import fish from '../assets/whiteyedcat/fish.png';
-import galleryA from '../assets/whiteyedcat/gallery-a.png';
 import heroBg from '../assets/whiteyedcat/hero-bg.png';
-import stickers from '../assets/whiteyedcat/stickers.png';
 
 const navigation = [
 	{ label: 'About', href: '#about' },
@@ -32,10 +31,10 @@ const vibeItems = [
 ];
 
 const serviceLinks = [
-	{ id: 'collabs', label: 'collaborations', href: '/collabs' },
-	{ id: 'commissions', label: 'commissions', href: '/commissions', badge: 'Accepting requests!' },
-	{ id: 'exhibitions', label: 'exhibitions', href: '/exhibitions' },
-	{ id: 'shop', label: 'buy my artwork!', href: '/artworks' },
+	{ id: 'commissions', title: 'commissions', subtitle: 'custom artwork', href: '/commissions', corner: 'top-left' },
+	{ id: 'shop', title: 'buy my arts!', subtitle: 'prints & originals', href: '/artworks', corner: 'top-right' },
+	{ id: 'exhibitions', title: 'exhibitions', subtitle: 'gallery & shows', href: '/exhibitions', corner: 'bottom-left' },
+	{ id: 'collabs', title: 'collaborations', subtitle: 'creative projects', href: '/collabs', corner: 'bottom-right' },
 ];
 
 ---
@@ -153,34 +152,27 @@ const serviceLinks = [
 		</div>
 
 		<section class="services-section" id="contact">
-			<div class="section-heading section-heading--large">
-				<h2>Work with me!</h2>
-			</div>
 			<div class="services-layout">
-				<div class="services-layout__art">
-					<div class="services-layout__frame">
-						<img src={galleryA.src} alt="Collage artwork used as a call-to-action visual." loading="lazy" decoding="async" />
-						<img class="services-layout__stickers" src={stickers.src} alt="" loading="lazy" decoding="async" />
-					</div>
+				<img class="services-layout__fish services-layout__fish--left" src={fish.src} alt="" loading="lazy" decoding="async" />
+				<div class="section-heading section-heading--large">
+					<h2>Work with me!</h2>
 				</div>
-				<div class="services-layout__list">
-					<ul>
-						{
-							serviceLinks.map((item) => (
-								<li id={item.id} class="service-pill" >
-									<a href={item.href}>
-										<span class="spark" aria-hidden="true">✦</span>
-										<span>{item.badge && <strong class="service-badge">{item.badge}</strong>} {item.label}</span>
-									</a>
-								</li>
-							))
-						}
-					</ul>
-					<div class="services-layout__media" id="media">
-						<p>Media mentions and external features can live here next as the portfolio expands.</p>
-					</div>
-				</div>
-				<img class="services-layout__accent" src={fish.src} alt="" loading="lazy" decoding="async" />
+				<ul class="services-grid" aria-label="Ways to work with whiteyedcat">
+					{
+						serviceLinks.map((item) => (
+							<li id={item.id} class={`service-card service-card--${item.corner}`}>
+								<a href={item.href}>
+									<span class="spark" aria-hidden="true">✦</span>
+									<span class="service-card__copy">
+										<strong>{item.title}</strong>
+										<span>{item.subtitle}</span>
+									</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+				<img class="services-layout__fish services-layout__fish--right" src={contactFishRight.src} alt="" loading="lazy" decoding="async" />
 			</div>
 		</section>
 
@@ -315,6 +307,7 @@ const serviceLinks = [
 <style>
 	:root {
 		--color-bg: #f9f5f2;
+		--color-surface: #ffffff;
 		--color-text: #121212;
 		--color-text-inverse: #f2eee6;
 		--color-card: #ffffff;
@@ -327,13 +320,13 @@ const serviceLinks = [
 		--intro-wave-height: clamp(4.5rem, 12vw, 7.5rem);
 		--site-footer-bg: var(--color-footer);
 		--site-footer-text: var(--color-text-inverse);
-		--site-footer-wave-bg: var(--color-bg);
+		--site-footer-wave-bg: var(--color-surface);
 		--site-footer-shell: var(--shell-width);
 		--site-footer-focus: var(--color-accent);
 	}
 
 	.page-shell {
-		background: var(--color-bg);
+		background: var(--color-surface);
 		color: var(--color-text);
 		overflow: clip;
 	}
@@ -645,13 +638,6 @@ const serviceLinks = [
 		gap: 0.9rem;
 	}
 
-	.services-layout__list a {
-		border: 1.5px solid rgba(242, 238, 230, 0.92);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.08);
-		backdrop-filter: blur(10px);
-	}
-
 	.role-pill {
 		border: 1.5px solid rgba(242, 238, 230, 0.92);
 		border-radius: 999px;
@@ -671,8 +657,7 @@ const serviceLinks = [
 	}
 
 	.gallery-section,
-	.about-section,
-	.services-section {
+	.about-section {
 		width: var(--shell-width);
 		margin: 0 auto;
 	}
@@ -691,8 +676,7 @@ const serviceLinks = [
 	}
 
 	.section-heading h2,
-	.eyebrow,
-	.services-layout__media p {
+	.eyebrow {
 		margin: 0;
 		font-family: 'Bodoni Moda', serif;
 	}
@@ -832,106 +816,136 @@ const serviceLinks = [
 	}
 
 	.services-section {
+		width: 100%;
+		margin: 0;
 		padding-block: var(--section-gap) clamp(4rem, 8vw, 6rem);
+		background: var(--color-card);
 	}
 
 	.services-layout {
 		position: relative;
+		width: var(--shell-width);
+		margin: 0 auto;
+		min-height: clamp(34rem, 62vw, 48rem);
 		display: grid;
-		grid-template-columns: minmax(16rem, 28rem) minmax(18rem, 1fr);
-		align-items: center;
-		gap: clamp(1.75rem, 4vw, 4rem);
+		justify-items: center;
+		align-content: start;
+		padding-top: clamp(1rem, 3vw, 2rem);
 	}
 
-	.services-layout__frame {
-		position: relative;
-		width: min(100%, 24rem);
-		border-radius: 1rem;
-		overflow: visible;
-	}
-
-	.services-layout__frame > img:first-child {
-		width: 100%;
-		border-radius: 1rem;
-		box-shadow: var(--shadow-soft);
-	}
-
-	.services-layout__stickers {
+	.services-layout__fish {
 		position: absolute;
-		left: -0.9rem;
-		right: -0.9rem;
-		bottom: -1.8rem;
-		width: calc(100% + 1.8rem);
+		z-index: 0;
+		width: clamp(8.5rem, 19vw, 14.9rem);
+		pointer-events: none;
+		user-select: none;
 	}
 
-	.services-layout__list ul {
+	.services-layout__fish--left {
+		left: clamp(0rem, 9vw, 7rem);
+		top: clamp(5.5rem, 13vw, 10rem);
+		transform: rotate(-8deg);
+	}
+
+	.services-layout__fish--right {
+		right: clamp(-2rem, 4vw, 3rem);
+		bottom: clamp(2rem, 6vw, 4.4rem);
+		transform: rotate(10deg);
+	}
+
+	.services-layout .section-heading {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+	}
+
+	.services-grid {
+		position: relative;
+		z-index: 1;
+		width: min(100%, 44rem);
 		list-style: none;
-		margin: 0;
+		margin: clamp(4.5rem, 9vw, 7.7rem) 0 0;
 		padding: 0;
 		display: grid;
-		gap: 1rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.services-layout__list a {
+	.service-card {
+		min-height: clamp(9.5rem, 15vw, 11.6rem);
+		background: var(--color-card);
+		border: 2px solid var(--color-text);
+		overflow: hidden;
+	}
+
+	.service-card:nth-child(2n) {
+		margin-left: -2px;
+	}
+
+	.service-card:nth-child(n + 3) {
+		margin-top: -2px;
+	}
+
+	.service-card--top-left {
+		border-top-left-radius: 3.1rem;
+	}
+
+	.service-card--top-right {
+		border-top-right-radius: 3.1rem;
+	}
+
+	.service-card--bottom-left {
+		border-bottom-left-radius: 3.1rem;
+	}
+
+	.service-card--bottom-right {
+		border-bottom-right-radius: 3.1rem;
+	}
+
+	.service-card a {
+		min-height: inherit;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		padding: 0.95rem 1.25rem;
+		gap: 1.15rem;
+		padding: clamp(1.5rem, 3vw, 2rem) clamp(1.35rem, 3.4vw, 3.4rem);
+		border-radius: inherit;
 		color: var(--color-text);
-		background: transparent;
-		border-color: rgba(18, 18, 18, 0.78);
-		font-size: 1rem;
-		font-weight: 700;
 		transition:
-			transform 180ms ease,
 			background-color 180ms ease,
-			border-color 180ms ease;
+			color 180ms ease;
 	}
 
-	.services-layout__list a:hover,
-	.services-layout__list a:focus-visible {
-		transform: translateY(-2px);
-		background: rgba(95, 208, 211, 0.12);
-		border-color: var(--color-accent);
+	.service-card a:hover,
+	.service-card a:focus-visible {
+		background: var(--color-text);
+		color: var(--color-text-inverse);
 	}
 
 	.spark {
-		font-size: 1.05rem;
-		line-height: 1;
-	}
-
-	.services-layout__list strong {
 		flex: 0 0 auto;
-		padding: 0.38rem 0.7rem;
-		border-radius: 0.4rem;
-		background: var(--color-accent);
-		color: var(--color-text-inverse);
-		font-size: 0.7rem;
-		letter-spacing: 0.01em;
-		text-transform: uppercase;
+		font-size: 2rem;
+		line-height: 1;
+		transition: color 180ms ease;
 	}
 
-	.service-badge {
-		margin-right: 10px;
+	.service-card a:hover .spark,
+	.service-card a:focus-visible .spark {
+		color: var(--color-yellow);
 	}
 
-	.services-layout__media {
-		max-width: 32rem;
-		margin-top: 1.4rem;
-		padding-left: 0.3rem;
+	.service-card__copy {
+		display: grid;
+		gap: 0.35rem;
+		min-width: 0;
 	}
 
-	.services-layout__media p {
-		font-size: 1rem;
-		line-height: 1.6;
+	.service-card__copy strong {
+		font-size: clamp(1.25rem, 2vw, 1.5rem);
+		line-height: 1.15;
 	}
 
-	.services-layout__accent {
-		position: absolute;
-		right: -2rem;
-		bottom: -2rem;
-		width: clamp(4.5rem, 10vw, 7rem);
+	.service-card__copy span {
+		font-size: clamp(1rem, 1.7vw, 1.25rem);
+		line-height: 1.25;
 	}
 
 	.site-footer {
@@ -1020,7 +1034,7 @@ const serviceLinks = [
 	.nav-toggle:focus-visible,
 	.hero__socials a:focus-visible,
 	.site-footer a:focus-visible,
-	.services-layout__list a:focus-visible {
+	.service-card a:focus-visible {
 		outline: 2px solid var(--color-accent);
 		outline-offset: 0.28rem;
 	}
@@ -1089,7 +1103,6 @@ const serviceLinks = [
 		}
 
 		.about-card,
-		.services-layout,
 		.site-footer__inner {
 			grid-template-columns: 1fr;
 		}
@@ -1099,13 +1112,11 @@ const serviceLinks = [
 			gap: 1.2rem;
 		}
 
-		.about-card__avatar,
-		.services-layout__frame {
+		.about-card__avatar {
 			justify-self: center;
 		}
 
 		.about-card__copy,
-		.services-layout__list,
 		.site-footer__brand {
 			text-align: center;
 		}
@@ -1122,20 +1133,24 @@ const serviceLinks = [
 			justify-content: center;
 		}
 
-		.services-layout__media {
-			margin-inline: auto;
-			padding-left: 0;
-		}
-
 		.site-footer__links {
 			justify-content: center;
 			align-items: start;
 		}
 
-		.services-layout__accent {
-			right: 0;
-			bottom: -3rem;
+		.services-layout {
+			min-height: clamp(31rem, 70vw, 40rem);
 		}
+
+		.services-layout__fish--left {
+			left: -0.8rem;
+			top: clamp(5.5rem, 15vw, 8rem);
+		}
+
+	.services-layout__fish--right {
+		right: -2rem;
+		bottom: 1.3rem;
+	}
 	}
 
 	@media (max-width: 640px) {
@@ -1173,6 +1188,72 @@ const serviceLinks = [
 		.about-section,
 		.services-section {
 			padding-block: 4rem;
+		}
+
+		.services-layout {
+			min-height: auto;
+			padding-top: 0;
+		}
+
+		.services-layout .section-heading {
+			margin-bottom: 1.8rem;
+		}
+
+		.services-layout__fish {
+			width: clamp(5.8rem, 28vw, 8.25rem);
+			opacity: 0.9;
+		}
+
+		.services-layout__fish--left {
+			left: -0.7rem;
+			top: 3.1rem;
+		}
+
+		.services-layout__fish--right {
+			right: -1.2rem;
+			bottom: -2.1rem;
+		}
+
+		.services-grid {
+			width: min(100%, 27rem);
+			margin-top: 0;
+			grid-template-columns: 1fr;
+		}
+
+		.service-card,
+		.service-card:nth-child(2n),
+		.service-card:nth-child(n + 3) {
+			min-height: 8rem;
+			margin: 0;
+		}
+
+		.service-card + .service-card {
+			margin-top: -2px;
+		}
+
+		.service-card--top-left,
+		.service-card--top-right,
+		.service-card--bottom-left,
+		.service-card--bottom-right {
+			border-radius: 0;
+		}
+
+		.service-card:first-child {
+			border-top-left-radius: 2rem;
+			border-top-right-radius: 2rem;
+		}
+
+		.service-card:last-child {
+			border-bottom-right-radius: 2rem;
+			border-bottom-left-radius: 2rem;
+		}
+
+		.service-card a {
+			padding: 1.35rem 1.45rem;
+		}
+
+		.spark {
+			font-size: 1.1rem;
 		}
 
 		.site-footer__links {
