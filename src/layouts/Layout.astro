@@ -1,20 +1,85 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import {
+	artistEmail,
+	artistName,
+	siteDescription,
+	siteImage,
+	siteImageAlt,
+	siteKeywords,
+	siteLocale,
+	siteName,
+	siteTitle,
+	socialLinks,
+} from '../data/site';
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	imageAlt?: string;
+	noindex?: boolean;
 }
 
 const {
-	title = 'whiteyedcat',
-	description = 'Painter and illustrator',
-	image = '/open-graph.png',
+	title = siteTitle,
+	description = siteDescription,
+	image = siteImage,
+	imageAlt = siteImageAlt,
+	noindex = false,
 } = Astro.props;
 
-const canonicalUrl = Astro.url.href;
-const imageUrl = new URL(image, Astro.url).toString();
+const baseUrl = Astro.site ?? Astro.url;
+const canonicalUrl = new URL(Astro.url.pathname, baseUrl).toString();
+const imageUrl = new URL(image, baseUrl).toString();
+const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+const jsonLd = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		'@id': `${new URL('/', baseUrl).toString()}#website`,
+		name: siteName,
+		url: new URL('/', baseUrl).toString(),
+		description: siteDescription,
+		inLanguage: 'en-MY',
+		publisher: {
+			'@id': `${new URL('/', baseUrl).toString()}#person`,
+		},
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		'@id': `${new URL('/', baseUrl).toString()}#person`,
+		name: artistName,
+		alternateName: siteName,
+		jobTitle: 'Painter and illustrator',
+		email: `mailto:${artistEmail}`,
+		url: new URL('/', baseUrl).toString(),
+		image: imageUrl,
+		sameAs: socialLinks,
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': `${canonicalUrl}#webpage`,
+		url: canonicalUrl,
+		name: title,
+		description,
+		isPartOf: {
+			'@id': `${new URL('/', baseUrl).toString()}#website`,
+		},
+		about: {
+			'@id': `${new URL('/', baseUrl).toString()}#person`,
+		},
+		inLanguage: 'en-MY',
+		primaryImageOfPage: {
+			'@type': 'ImageObject',
+			url: imageUrl,
+			caption: imageAlt,
+		},
+	},
+];
+const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -22,7 +87,6 @@ const imageUrl = new URL(image, Astro.url).toString();
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,19 +96,29 @@ const imageUrl = new URL(image, Astro.url).toString();
 		/>
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<meta name="author" content={artistName} />
+		<meta name="keywords" content={siteKeywords.join(', ')} />
+		<meta name="robots" content={robots} />
+		<meta name="theme-color" content="#f9f5f2" />
 		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs summary" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content={siteName} />
+		<meta property="og:locale" content={siteLocale} />
 		<meta property="og:image" content={imageUrl} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
-		<meta property="og:image:alt" content="whiteyedcat painter and illustrator portfolio preview." />
+		<meta property="og:image:alt" content={imageAlt} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={imageUrl} />
+		<meta name="twitter:image:alt" content={imageAlt} />
+		<meta name="twitter:creator" content="@whiteyedcat" />
+		<script type="application/ld+json" set:html={jsonLdText} />
 		<title>{title}</title>
 		<ClientRouter fallback="animate" />
 	</head>
