@@ -21,7 +21,7 @@ const imageSrc = typeof src === 'string' ? src : src.src;
 const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter(Boolean).join(' ');
 ---
 
-<article class={cardClass} data-artwork-card tabindex="0" aria-label={`Show title for ${title}`}>
+<article class={cardClass} data-artwork-card tabindex="0" aria-pressed="false" aria-label={`Show title for ${title}`}>
 	<div class="artwork-card__inner">
 		<div class="artwork-card__face artwork-card__front">
 			<img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
@@ -48,12 +48,25 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 		return target.closest<HTMLElement>('[data-artwork-card]');
 	};
 
+	const toggleArtworkCard = (card: HTMLElement) => {
+		const isFlipped = card.classList.toggle('is-flipped');
+		card.classList.toggle('is-hover-suppressed', !isFlipped);
+		card.setAttribute('aria-pressed', String(isFlipped));
+	};
+
+	document.addEventListener('pointerleave', (event) => {
+		const card = getArtworkCard(event.target);
+		if (!card) return;
+
+		card.classList.remove('is-hover-suppressed');
+	}, true);
+
 	document.addEventListener('click', (event) => {
 		const card = getArtworkCard(event.target);
 		if (!card) return;
 		if (event.target instanceof Element && event.target.closest('a')) return;
 
-		card.classList.toggle('is-flipped');
+		toggleArtworkCard(card);
 	});
 
 	document.addEventListener('keydown', (event) => {
@@ -63,7 +76,7 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 		if (!card) return;
 
 		event.preventDefault();
-		card.classList.toggle('is-flipped');
+		toggleArtworkCard(card);
 	});
 </script>
 
@@ -79,8 +92,11 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 		border-radius: var(--artwork-card-radius);
 		background: var(--artwork-card-bg);
 		box-shadow: var(--artwork-card-shadow);
+		cursor: pointer;
 		outline: none;
 		perspective: 1200px;
+		-webkit-tap-highlight-color: transparent;
+		user-select: none;
 	}
 
 	.artwork-card--portrait {
@@ -105,8 +121,7 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 		transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.artwork-card:hover .artwork-card__inner,
-	.artwork-card:focus-within .artwork-card__inner,
+	.artwork-card:not(.is-hover-suppressed):hover .artwork-card__inner,
 	.artwork-card.is-flipped .artwork-card__inner {
 		transform: rotateY(180deg);
 	}
@@ -124,8 +139,7 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 		transition: opacity 120ms ease;
 	}
 
-	.artwork-card:hover .artwork-card__front,
-	.artwork-card:focus-within .artwork-card__front,
+	.artwork-card:not(.is-hover-suppressed):hover .artwork-card__front,
 	.artwork-card.is-flipped .artwork-card__front {
 		opacity: 0;
 	}
@@ -149,8 +163,7 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 		z-index: 2;
 	}
 
-	.artwork-card:hover .artwork-card__back,
-	.artwork-card:focus-within .artwork-card__back,
+	.artwork-card:not(.is-hover-suppressed):hover .artwork-card__back,
 	.artwork-card.is-flipped .artwork-card__back {
 		opacity: 1;
 	}
@@ -203,8 +216,7 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 			transition: none;
 		}
 
-		.artwork-card:hover .artwork-card__inner,
-		.artwork-card:focus-within .artwork-card__inner,
+		.artwork-card:not(.is-hover-suppressed):hover .artwork-card__inner,
 		.artwork-card.is-flipped .artwork-card__inner {
 			transform: none;
 		}
@@ -215,8 +227,7 @@ const cardClass = ['artwork-card', `artwork-card--${variant}`, className].filter
 			transition: opacity 180ms ease;
 		}
 
-		.artwork-card:hover .artwork-card__back,
-		.artwork-card:focus-within .artwork-card__back,
+		.artwork-card:not(.is-hover-suppressed):hover .artwork-card__back,
 		.artwork-card.is-flipped .artwork-card__back {
 			opacity: 1;
 		}
