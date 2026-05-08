@@ -121,8 +121,10 @@ const collaborations = [
 		</div>
 
 		<section class="collabs-cta" aria-labelledby="collabs-cta-heading">
-			<img src={collabCat.src} alt="" loading="lazy" decoding="async" />
-			<h2 id="collabs-cta-heading">Want to collaborate with me?</h2>
+			<div class="collabs-cta__lockup">
+				<img src={collabCat.src} alt="" loading="lazy" decoding="async" />
+				<h2 id="collabs-cta-heading">Want to collaborate with me?</h2>
+			</div>
 			<div class="contact-methods">
 				<div class="contact-method">
 					<p>Send me an email at</p>
@@ -167,7 +169,7 @@ const collaborations = [
 
 	.collabs-page {
 		min-height: 100vh;
-		background: var(--collabs-bg);
+		background: var(--collabs-surface);
 		color: var(--collabs-text);
 		overflow: clip;
 	}
@@ -416,7 +418,14 @@ const collaborations = [
 		text-align: center;
 	}
 
-	.collabs-cta > img {
+	.collabs-cta__lockup {
+		width: fit-content;
+		max-width: 100%;
+		display: grid;
+		justify-items: end;
+	}
+
+	.collabs-cta__lockup > img {
 		width: clamp(7rem, 18vw, 13.7rem);
 		aspect-ratio: 1;
 		object-fit: contain;
