@@ -694,13 +694,18 @@ const serviceLinks = [
 		align-items: start;
 	}
 
-	:global(.gallery-columns .artwork-card) {
+	:global(.gallery-section .gallery-columns .artwork-card) {
 		--artwork-card-radius: 1rem;
-		--artwork-card-bg: var(--color-card);
+		--artwork-card-bg: #000000;
 		--artwork-card-shadow: var(--shadow-soft);
-		--artwork-card-title-bg: var(--color-card);
-		--artwork-card-title-color: #121212;
+		--artwork-card-title-bg: #000000;
+		--artwork-card-title-color: var(--color-text-inverse);
 		--artwork-card-tag: var(--color-yellow);
+	}
+
+	:global(.gallery-section .gallery-columns .artwork-card__back) {
+		background: #000000;
+		color: var(--color-text-inverse);
 	}
 
 	.divider {
