@@ -57,7 +57,7 @@ export const artworkItems: ArtworkItem[] = [
     title: "A Day of Leisure",
     variant: "portrait",
     purchaseUrl: "https://whiteyedcat.bigcartel.com/product/a-day-of-leisure",
-    featured: false,
+    featured: true,
   },
   {
     src: makingRoom,
@@ -266,14 +266,6 @@ export const artworkItems: ArtworkItem[] = [
     variant: "portrait",
     purchaseUrl: null,
     featured: false,
-  },
-  {
-    src: straits,
-    alt: 'Artwork titled "Straits".',
-    title: "Straits",
-    variant: "portrait",
-    purchaseUrl: null,
-    featured: true,
   },
   {
     src: studioKip,
