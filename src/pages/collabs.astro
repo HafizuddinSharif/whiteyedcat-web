@@ -2,10 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import collabBand from '../assets/whiteyedcat/collab-band.png';
-import collabCat from '../assets/whiteyedcat/collab-cat.png';
-import collabCover from '../assets/whiteyedcat/collab-cover.png';
-import collabDivider from '../assets/whiteyedcat/collab-divider.png';
+import celcomdigiFull from '../assets/collaborations/celcomdigi_full.webp';
+import celcomdigiPacket from '../assets/collaborations/celcomdigi_packet.png';
+import deletedBand from '../assets/collaborations/d_eleted_band.webp';
+import deletedSpotify from '../assets/collaborations/d_leted_spotify.webp';
+import mosseryCover from '../assets/collaborations/mossery_cover.png';
+import mosseryFull from '../assets/collaborations/mossery_full.webp';
+import mosseryPic from '../assets/collaborations/mossery_pic.webp';
 
 const collaborations = [
 	{
@@ -13,8 +16,20 @@ const collaborations = [
 		meta: 'Book Cover | 2024',
 		description:
 			'Probably some text to talk about the project and the inspiration behind the artwork id. Probably some text to talk about the project and the inspiration behind the artwork idk. Probably some text to talk about the project and the inspiration behind the artwork idk',
-		image: collabCover,
-		alt: 'Colorful illustrated book cover artwork featuring cats, bright stickers, and layered handwritten details.',
+		images: [
+			{
+				src: mosseryCover,
+				alt: 'Square Mossery cover artwork by whiteyedcat with colorful cats and layered illustrated details.',
+			},
+			{
+				src: mosseryPic,
+				alt: 'Mossery collaboration product photo showing whiteyedcat artwork on a physical book cover.',
+			},
+			{
+				src: mosseryFull,
+				alt: 'Full vertical Mossery cover illustration by whiteyedcat with cats and expressive hand-drawn details.',
+			},
+		],
 		tag: 'illustration',
 	},
 	{
@@ -22,8 +37,16 @@ const collaborations = [
 		meta: 'Festivities money packet | 2025',
 		description:
 			'Probably some text to talk about the project and the inspiration behind the artwork id. Probably some text to talk about the project and the inspiration behind the artwork idk. Probably some text to talk about the project and the inspiration behind the artwork idk',
-		image: collabCover,
-		alt: 'Colorful illustrated card artwork with cats and festive graphic details.',
+		images: [
+			{
+				src: celcomdigiPacket,
+				alt: 'CelcomDigi festive money packet artwork by whiteyedcat with illustrated characters and Hari Raya details.',
+			},
+			{
+				src: celcomdigiFull,
+				alt: 'Wide CelcomDigi Hari Raya collaboration illustration by whiteyedcat with festive gathering artwork.',
+			},
+		],
 		tag: 'illustration',
 	},
 	{
@@ -31,8 +54,16 @@ const collaborations = [
 		meta: '',
 		description:
 			'Probably some text to talk about the project and the inspiration behind the artwork id. Probably some text to talk about the project and the inspiration behind the artwork idk. Probably some text to talk about the project and the inspiration behind the artwork idk',
-		image: collabBand,
-		alt: 'Painterly portrait artwork for a Malaysian-based band collaboration.',
+		images: [
+			{
+				src: deletedBand,
+				alt: 'Painterly portrait artwork for Deleted, a Malaysian-based band collaboration.',
+			},
+			{
+				src: deletedSpotify,
+				alt: 'Deleted band collaboration artwork presented in a Spotify-style vertical layout.',
+			},
+		],
 		tag: 'illustration',
 	},
 ];
@@ -52,8 +83,42 @@ const collaborations = [
 				{
 					collaborations.map((collab) => (
 						<article class="collab-item">
-							<div class="collab-item__image">
-								<img src={collab.image.src} alt={collab.alt} loading="lazy" decoding="async" />
+							<div class="collab-gallery" aria-label={`${collab.title} artwork gallery`}>
+								<div class="collab-gallery__stage">
+									{collab.images.map((image, index) => (
+										<figure class:list={['collab-gallery__slide', index === 0 && 'is-active']} hidden={index !== 0}>
+											<img src={image.src.src} alt={image.alt} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+										</figure>
+									))}
+								</div>
+								{collab.images.length > 1 && (
+									<div class="collab-gallery__footer">
+										<button class="collab-gallery__arrow" type="button" data-gallery-prev aria-label={`Show previous ${collab.title} image`}>
+											<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+												<path d="m15 18-6-6 6-6"></path>
+											</svg>
+										</button>
+										<div class="collab-gallery__dots" aria-label={`${collab.title} image selector`}>
+											{collab.images.map((image, index) => (
+												<button
+													class:list={['collab-gallery__dot', index === 0 && 'is-active']}
+													type="button"
+													data-gallery-dot={index}
+													aria-label={`Show image ${index + 1} of ${collab.images.length}: ${image.alt}`}
+													aria-current={index === 0 ? 'true' : undefined}
+												></button>
+											))}
+										</div>
+										<p class="collab-gallery__count" aria-live="polite">
+											<span data-gallery-current>1</span> / {collab.images.length}
+										</p>
+										<button class="collab-gallery__arrow" type="button" data-gallery-next aria-label={`Show next ${collab.title} image`}>
+											<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+												<path d="m9 6 6 6-6 6"></path>
+											</svg>
+										</button>
+									</div>
+								)}
 							</div>
 							<div class="collab-item__copy">
 								<h3>{collab.title}</h3>
@@ -67,14 +132,9 @@ const collaborations = [
 			</div>
 		</section>
 
-		<div class="collabs-divider" aria-hidden="true">
-			<img src={collabDivider.src} alt="" loading="lazy" decoding="async" />
-		</div>
-
 		<section class="collabs-cta" aria-labelledby="collabs-cta-heading">
 			<div class="collabs-cta__lockup">
-				<img src={collabCat.src} alt="" loading="lazy" decoding="async" />
-				<h2 id="collabs-cta-heading">Want to collaborate with me?</h2>
+				<h2 id="collabs-cta-heading">Collaborate with me!</h2>
 			</div>
 			<div class="contact-methods">
 				<div class="contact-method">
@@ -103,6 +163,103 @@ const collaborations = [
 		<SiteFooter />
 	</main>
 </Layout>
+
+<script>
+	const setupCollabGalleries = () => {
+		const galleries = document.querySelectorAll<HTMLElement>('.collab-gallery');
+
+		galleries.forEach((gallery) => {
+			if (gallery.dataset.galleryReady === 'true') {
+				return;
+			}
+
+			const slides = [...gallery.querySelectorAll<HTMLElement>('.collab-gallery__slide')];
+			const dots = [...gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]')];
+			const previousButton = gallery.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+			const nextButton = gallery.querySelector<HTMLButtonElement>('[data-gallery-next]');
+			const currentLabel = gallery.querySelector<HTMLElement>('[data-gallery-current]');
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			let animationTimer: number | undefined;
+			let activeIndex = Math.max(
+				0,
+				slides.findIndex((slide) => slide.classList.contains('is-active')),
+			);
+
+			const showSlide = (nextIndex: number, direction = 1) => {
+				const previousIndex = activeIndex;
+				const nextActiveIndex = (nextIndex + slides.length) % slides.length;
+
+				if (nextActiveIndex === previousIndex || slides.length === 0) {
+					return;
+				}
+
+				window.clearTimeout(animationTimer);
+				activeIndex = nextActiveIndex;
+				gallery.dataset.slideDirection = direction > 0 ? 'next' : 'prev';
+
+				slides.forEach((slide, index) => {
+					const isActive = index === activeIndex;
+					const isPrevious = index === previousIndex;
+					slide.classList.toggle('is-leaving', !reduceMotion && isPrevious);
+					slide.classList.toggle('is-active', isActive);
+					if (isActive || (!reduceMotion && isPrevious)) {
+						slide.removeAttribute('hidden');
+					} else {
+						slide.setAttribute('hidden', '');
+					}
+				});
+
+				dots.forEach((dot, index) => {
+					const isActive = index === activeIndex;
+					dot.classList.toggle('is-active', isActive);
+					if (isActive) {
+						dot.setAttribute('aria-current', 'true');
+					} else {
+						dot.removeAttribute('aria-current');
+					}
+				});
+
+				if (currentLabel) {
+					currentLabel.textContent = String(activeIndex + 1);
+				}
+
+				if (!reduceMotion) {
+					animationTimer = window.setTimeout(() => {
+						slides.forEach((slide, index) => {
+							slide.classList.remove('is-leaving');
+							if (index !== activeIndex) {
+								slide.setAttribute('hidden', '');
+							}
+						});
+					}, 360);
+				}
+			};
+
+			previousButton?.addEventListener('click', () => showSlide(activeIndex - 1, -1));
+			nextButton?.addEventListener('click', () => showSlide(activeIndex + 1, 1));
+
+			dots.forEach((dot) => {
+				dot.addEventListener('click', () => {
+					const index = Number(dot.dataset.galleryDot);
+					showSlide(index, index > activeIndex ? 1 : -1);
+				});
+			});
+
+			slides.forEach((slide, index) => {
+				slide.classList.toggle('is-active', index === activeIndex);
+				if (index === activeIndex) {
+					slide.removeAttribute('hidden');
+				} else {
+					slide.setAttribute('hidden', '');
+				}
+			});
+			gallery.dataset.galleryReady = 'true';
+		});
+	};
+
+	setupCollabGalleries();
+	document.addEventListener('astro:page-load', setupCollabGalleries);
+</script>
 
 <style>
 	:root {
@@ -151,22 +308,195 @@ const collaborations = [
 
 	.collab-item {
 		display: grid;
-		grid-template-columns: clamp(14rem, 28vw, 20.5rem) minmax(0, 1fr);
+		grid-template-columns: clamp(18rem, 34vw, 28rem) minmax(0, 1fr);
 		align-items: start;
 		gap: clamp(2rem, 5vw, 4.4rem);
 	}
 
-	.collab-item__image {
+	.collab-gallery {
+		display: grid;
+		gap: 0.78rem;
+	}
+
+	.collab-gallery__stage {
+		position: relative;
 		aspect-ratio: 328 / 344;
+		border: 1.5px solid rgba(18, 18, 18, 0.12);
 		border-radius: 0.95rem;
 		overflow: hidden;
 		background: var(--collabs-bg);
+		isolation: isolate;
 	}
 
-	.collab-item__image img {
+	.collab-gallery__slide {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		margin: 0;
+		opacity: 0;
+		transform: translateX(0);
+		pointer-events: none;
+	}
+
+	.collab-gallery__slide[hidden] {
+		display: none;
+	}
+
+	.collab-gallery__slide.is-active {
+		opacity: 1;
+		pointer-events: auto;
+		z-index: 2;
+	}
+
+	.collab-gallery[data-slide-direction='next'] .collab-gallery__slide.is-active {
+		animation: collabSlideInNext 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	.collab-gallery[data-slide-direction='next'] .collab-gallery__slide.is-leaving {
+		animation: collabSlideOutNext 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		z-index: 1;
+	}
+
+	.collab-gallery[data-slide-direction='prev'] .collab-gallery__slide.is-active {
+		animation: collabSlideInPrev 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	.collab-gallery[data-slide-direction='prev'] .collab-gallery__slide.is-leaving {
+		animation: collabSlideOutPrev 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		z-index: 1;
+	}
+
+	.collab-gallery__slide img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		display: block;
+	}
+
+	@keyframes collabSlideInNext {
+		from {
+			opacity: 0;
+			transform: translateX(18%);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes collabSlideOutNext {
+		from {
+			opacity: 1;
+			transform: translateX(0);
+		}
+
+		to {
+			opacity: 0;
+			transform: translateX(-18%);
+		}
+	}
+
+	@keyframes collabSlideInPrev {
+		from {
+			opacity: 0;
+			transform: translateX(-18%);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes collabSlideOutPrev {
+		from {
+			opacity: 1;
+			transform: translateX(0);
+		}
+
+		to {
+			opacity: 0;
+			transform: translateX(18%);
+		}
+	}
+
+	.collab-gallery__arrow {
+		width: 2.25rem;
+		aspect-ratio: 1;
+		display: inline-grid;
+		place-items: center;
+		border: 1.5px solid var(--collabs-text);
+		border-radius: 50%;
+		background: var(--collabs-surface);
+		color: var(--collabs-text);
+		cursor: pointer;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.collab-gallery__arrow:hover,
+	.collab-gallery__arrow:focus-visible {
+		background: var(--collabs-text);
+		color: var(--collabs-inverse);
+		transform: translateY(-1px);
+	}
+
+	.collab-gallery__arrow svg {
+		width: 1.35rem;
+		height: 1.35rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.4;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.collab-gallery__footer {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto auto;
+		align-items: center;
+		gap: 0.68rem;
+	}
+
+	.collab-gallery__dots {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.45rem;
+	}
+
+	.collab-gallery__dot {
+		width: 0.62rem;
+		aspect-ratio: 1;
+		padding: 0;
+		border: 1.5px solid var(--collabs-text);
+		border-radius: 50%;
+		background: transparent;
+		cursor: pointer;
+		transition:
+			background-color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.collab-gallery__dot:hover,
+	.collab-gallery__dot:focus-visible,
+	.collab-gallery__dot.is-active {
+		background: var(--collabs-text);
+		transform: scale(1.12);
+	}
+
+	.collab-gallery__count {
+		margin: 0;
+		min-width: 2.25rem;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		line-height: 1;
+		text-align: right;
 	}
 
 	.collab-item__copy {
@@ -215,23 +545,11 @@ const collaborations = [
 		line-height: 1;
 	}
 
-	.collabs-divider {
-		position: relative;
-		z-index: 1;
-		width: min(100rem, 100%);
-		margin: clamp(-1rem, -1vw, -0.4rem) auto 0;
-		pointer-events: none;
-	}
-
-	.collabs-divider img {
-		width: 100%;
-		height: auto;
-	}
-
 	.collabs-cta {
+		border-top: 1.5px solid rgba(18, 18, 18, 0.16);
 		width: var(--collabs-shell);
 		margin: 0 auto;
-		padding: clamp(2.4rem, 5vw, 4.6rem) 0 clamp(8rem, 14vw, 11rem);
+		padding: clamp(3rem, 6vw, 5.2rem) 0 clamp(8rem, 14vw, 11rem);
 		display: grid;
 		justify-items: center;
 		text-align: center;
@@ -241,14 +559,7 @@ const collaborations = [
 		width: fit-content;
 		max-width: 100%;
 		display: grid;
-		justify-items: end;
-	}
-
-	.collabs-cta__lockup > img {
-		width: clamp(7rem, 18vw, 13.7rem);
-		aspect-ratio: 1;
-		object-fit: contain;
-		margin-bottom: clamp(0.8rem, 2vw, 1.4rem);
+		justify-items: center;
 	}
 
 	.contact-methods {
@@ -404,6 +715,8 @@ const collaborations = [
 	}
 
 	.contact-chip:focus-visible,
+	.collab-gallery__arrow:focus-visible,
+	.collab-gallery__dot:focus-visible,
 	.collabs-footer a:focus-visible {
 		outline: 2px solid var(--collabs-text);
 		outline-offset: 0.28rem;
@@ -443,7 +756,7 @@ const collaborations = [
 			gap: 1.1rem;
 		}
 
-		.collab-item__image {
+		.collab-gallery {
 			width: min(100%, 20.5rem);
 			justify-self: center;
 		}
@@ -489,7 +802,15 @@ const collaborations = [
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.collab-gallery__slide,
+		.collab-gallery[data-slide-direction='next'] .collab-gallery__slide.is-active,
+		.collab-gallery[data-slide-direction='next'] .collab-gallery__slide.is-leaving,
+		.collab-gallery[data-slide-direction='prev'] .collab-gallery__slide.is-active,
+		.collab-gallery[data-slide-direction='prev'] .collab-gallery__slide.is-leaving,
+		.collab-gallery__arrow,
+		.collab-gallery__dot,
 		.contact-chip {
+			animation: none;
 			transition: none;
 		}
 
