@@ -7,7 +7,7 @@ import { artworkItems } from '../data/artworks';
 import avatar from '../assets/whiteyedcat/avatar.png';
 import cat from '../assets/whiteyedcat/cat.png';
 import dividerBottom from '../assets/whiteyedcat/divider-bottom.png';
-import dividerTop from '../assets/whiteyedcat/divider-top.png';
+import waves from '../assets/elements/waves-4-slow.webp';
 import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
 import fish from '../assets/whiteyedcat/fish.png';
 import heroBg from '../assets/whiteyedcat/hero-bg.webp';
@@ -118,7 +118,7 @@ const serviceLinks = [
 		</section>
 
 		<div class="divider divider--top" aria-hidden="true">
-			<img src={dividerTop.src} alt="" loading="lazy" decoding="async" />
+			<img src={waves.src} alt="" loading="lazy" decoding="async" />
 		</div>
 
 		<section class="about-section" id="about">
@@ -189,6 +189,7 @@ const serviceLinks = [
 		frame = 0;
 		const hero = document.querySelector<HTMLElement>('.hero');
 		const parallaxImage = document.querySelector<HTMLElement>('[data-hero-parallax]');
+		const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
 		if (!hero || !parallaxImage || reducedMotion.matches) {
 			if (parallaxImage) {
@@ -198,7 +199,6 @@ const serviceLinks = [
 		}
 
 		const rect = hero.getBoundingClientRect();
-		const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
 		if (rect.bottom < 0 || rect.top > viewportHeight) {
 			return;
@@ -709,7 +709,7 @@ const serviceLinks = [
 	}
 
 	.divider {
-		width: min(2000px, 100%);
+		width: min(1200px, 100%);
 		margin: 0 auto;
 	}
 
