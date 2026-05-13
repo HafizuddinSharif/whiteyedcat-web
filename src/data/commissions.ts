@@ -1,8 +1,7 @@
-import commissionsCat from '../assets/whiteyedcat/commissions-cat.png';
-import commissionsPortrait from '../assets/whiteyedcat/commissions-portrait.png';
-import commissionsStickers from '../assets/whiteyedcat/commissions-stickers.png';
-import galleryA from '../assets/whiteyedcat/gallery-a.png';
-import galleryB from '../assets/whiteyedcat/gallery-b.png';
+import petPortrait from '../assets/commisions/pet.webp';
+import portrait from '../assets/commisions/potrait.webp';
+import scenery from '../assets/commisions/scene.webp';
+import stickerPackPet from '../assets/commisions/sticker_pack_pet.webp';
 
 export type CommissionCountry = 'MY' | 'US';
 
@@ -44,16 +43,8 @@ export const commissionItems: CommissionItem[] = [
 			'Illustrated portraits for people. Pop-art meets hyperrealism. Each piece is unique and painted with intention.',
 		images: [
 			{
-				src: commissionsPortrait,
-				alt: 'Colorful portrait commission preview featuring a dog surrounded by bright objects and painted details.',
-			},
-			{
-				src: galleryA,
-				alt: 'Colorful mixed-media portrait artwork with bright charms and playful details.',
-			},
-			{
-				src: galleryB,
-				alt: 'Painterly portrait framed by dark green flowing forms.',
+				src: portrait,
+				alt: 'Portrait commission preview with a stylized illustrated figure and detailed background.',
 			},
 		],
 		defaultVariant: 'no-background',
@@ -85,12 +76,8 @@ export const commissionItems: CommissionItem[] = [
 			'Illustrated portraits for pets. Pop-art meets hyperrealism. Each piece is unique and painted with intention.',
 		images: [
 			{
-				src: commissionsPortrait,
-				alt: 'Colorful pet portrait commission preview with dogs and playful surrounding details.',
-			},
-			{
-				src: galleryA,
-				alt: 'Bright mixed-media pet artwork with dogs, charms, and saturated details.',
+				src: petPortrait,
+				alt: 'Pet portrait commission preview with a stylized illustrated animal and detailed background.',
 			},
 		],
 		defaultVariant: 'no-background',
@@ -114,12 +101,8 @@ export const commissionItems: CommissionItem[] = [
 			'Original digital paintings of landscapes, cityscapes, and fantasy environments. Painted with mood and atmosphere in mind - each piece tells a story without a subject.',
 		images: [
 			{
-				src: commissionsPortrait,
-				alt: 'Colorful commission preview standing in for scenery artwork.',
-			},
-			{
-				src: galleryB,
-				alt: 'Painterly artwork with atmospheric flowing green forms.',
+				src: scenery,
+				alt: 'Scenery commission preview with a detailed illustrated environment.',
 			},
 		],
 		choices: [{ label: 'One scene', prefix: 'from', prices: { MY: 'RM500', US: '$115' } }],
@@ -130,12 +113,8 @@ export const commissionItems: CommissionItem[] = [
 		description: 'Custom illustrated sticker sets. Great for Telegram, LINE, or printing.',
 		images: [
 			{
-				src: commissionsStickers,
-				alt: 'Sticker pack preview with small illustrated cats and playful animal poses.',
-			},
-			{
-				src: commissionsCat,
-				alt: 'Orange cat illustration used as a pet sticker style preview.',
+				src: stickerPackPet,
+				alt: 'Pet sticker pack commission preview with multiple illustrated animal sticker poses.',
 			},
 		],
 		choices: [{ label: 'Per 8 stickers', prices: { MY: 'RM30', US: '$7' } }],
