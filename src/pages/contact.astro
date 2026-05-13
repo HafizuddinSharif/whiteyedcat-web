@@ -1,22 +1,12 @@
 ---
 import QRCode from 'qrcode';
 import Layout from '../layouts/Layout.astro';
+import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import avatar from '../assets/whiteyedcat/avatar.png';
 import contactDividerBottom from '../assets/whiteyedcat/contact-divider-bottom.png';
 import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 import contactFishLeft from '../assets/whiteyedcat/contact-fish-left.png';
 import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
-
-const navigation = [
-	{ label: 'Home', href: '/' },
-	{ label: 'About', href: '/#about' },
-	{ label: 'Artwork', href: '/artworks' },
-	{ label: 'Collaboration', href: '/collabs' },
-	{ label: 'Commission', href: '/commissions' },
-	{ label: 'Exhibition', href: '/exhibitions' },
-	{ label: 'Contacts', href: '/contact' },
-];
 
 const homeUrl = new URL('/', Astro.site ?? Astro.url).toString();
 const homeQrCode = await QRCode.toDataURL(homeUrl, {
@@ -35,46 +25,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 	description="Contact whiteyedcat by email or Instagram for art commissions, illustration collaborations, exhibition invitations, art fairs, and media enquiries."
 >
 	<main class="contact-page">
-		<header class="contact-header">
-			<div class="artist-lockup">
-				<img src={avatar.src} alt="whiteyedcat illustrated profile avatar." loading="eager" decoding="async" />
-				<div class="artist-lockup__copy">
-					<div class="artist-lockup__topline">
-						<h1>whiteyedcat</h1>
-						<div class="social-links" aria-label="Social links">
-							<a href="https://x.com/whiteyedcat" aria-label="X">X</a>
-							<a href="https://www.instagram.com/whiteyedcat/" aria-label="Instagram">
-								<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-									<rect x="5" y="5" width="14" height="14" rx="4"></rect>
-									<circle cx="12" cy="12" r="3.2"></circle>
-									<circle cx="16.3" cy="7.7" r="0.8"></circle>
-								</svg>
-							</a>
-							<a href="https://www.threads.net/@whiteyedcat" aria-label="Threads">@</a>
-						</div>
-					</div>
-					<div class="role-pills" aria-label="Creative roles">
-						<span class="role-pill">
-							<span aria-hidden="true">✦</span>
-							painter
-						</span>
-						<span class="role-pill">
-							<span aria-hidden="true">✦</span>
-							illustrator
-						</span>
-					</div>
-					<p>I live for garage survival...and cats</p>
-				</div>
-			</div>
-
-			<nav class="contact-nav" aria-label="Primary">
-				{
-					navigation.map((item) => (
-						<a href={item.href} aria-current={item.href === '/contact' ? 'page' : undefined}>{item.label}</a>
-					))
-				}
-			</nav>
-		</header>
+		<ArtistHeader currentHref="/contact" />
 
 		<div class="contact-divider contact-divider--top" aria-hidden="true">
 			<img src={contactDividerTop.src} alt="" loading="eager" decoding="async" />
@@ -143,138 +94,6 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		background: var(--contact-surface);
 		color: var(--contact-text);
 		overflow: clip;
-	}
-
-	.contact-header {
-		background: var(--contact-surface);
-		padding: clamp(2rem, 5vw, 3.1rem) 1rem 1.45rem;
-	}
-
-	.artist-lockup {
-		width: min(48rem, 100%);
-		margin: 0 auto;
-		display: grid;
-		grid-template-columns: clamp(6.4rem, 16vw, 12rem) minmax(0, 1fr);
-		align-items: center;
-		gap: clamp(1.2rem, 3vw, 2rem);
-	}
-
-	.artist-lockup > img {
-		width: 100%;
-		aspect-ratio: 1;
-		border-radius: 50%;
-		object-fit: cover;
-	}
-
-	.artist-lockup__copy {
-		min-width: 0;
-		display: grid;
-		gap: 0.55rem;
-	}
-
-	.artist-lockup__topline {
-		display: flex;
-		align-items: center;
-		gap: clamp(0.8rem, 3vw, 2.2rem);
-	}
-
-	.artist-lockup h1,
-	.contact-footer__brand h2 {
-		margin: 0;
-		font-family: 'Birthstone', cursive;
-		font-weight: 400;
-		line-height: 0.92;
-	}
-
-	.artist-lockup h1 {
-		font-size: clamp(3.9rem, 8.3vw, 6.25rem);
-	}
-
-	.social-links {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.45rem;
-		font-size: 0.9rem;
-		font-weight: 700;
-		line-height: 1;
-	}
-
-	.social-links a {
-		display: inline-grid;
-		place-items: center;
-		width: 1rem;
-		height: 1rem;
-	}
-
-	.social-links svg {
-		width: 1rem;
-		height: 1rem;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-	}
-
-	.role-pills {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.7rem;
-	}
-
-	.role-pill {
-		min-width: clamp(7rem, 15vw, 10.3rem);
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.35rem;
-		padding: 0.18rem 1rem 0.24rem;
-		border: 2px solid var(--contact-text);
-		border-radius: 999px;
-		font-size: 0.95rem;
-		font-weight: 700;
-		line-height: 1.2;
-	}
-
-	.artist-lockup p {
-		margin: 0;
-		font-size: clamp(0.95rem, 1.9vw, 1.5rem);
-		font-weight: 500;
-		line-height: 1.25;
-	}
-
-	.contact-nav {
-		width: var(--contact-shell);
-		margin: clamp(1.8rem, 4vw, 3.15rem) auto 0;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		font-size: clamp(0.82rem, 1.4vw, 1rem);
-		font-weight: 700;
-	}
-
-	.contact-nav a {
-		position: relative;
-		padding-block: 0.3rem;
-		white-space: nowrap;
-	}
-
-	.contact-nav a::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 2px;
-		background: currentColor;
-		transform: scaleX(0);
-		transform-origin: center;
-		transition: transform 180ms ease;
-	}
-
-	.contact-nav a:hover::after,
-	.contact-nav a:focus-visible::after,
-	.contact-nav a[aria-current='page']::after {
-		transform: scaleX(1);
 	}
 
 	.contact-section {
@@ -520,8 +339,6 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		font-weight: 700;
 	}
 
-	.contact-nav a:focus-visible,
-	.social-links a:focus-visible,
 	.contact-chip:focus-visible,
 	.home-qr:focus-visible,
 	.contact-footer a:focus-visible {
@@ -538,12 +355,6 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 	}
 
 	@media (max-width: 920px) {
-		.contact-nav {
-			justify-content: center;
-			flex-wrap: wrap;
-			gap: 0.85rem 1.4rem;
-		}
-
 		.contact-panel {
 			min-height: 33rem;
 		}
@@ -565,30 +376,6 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 	@media (max-width: 640px) {
 		:root {
 			--contact-shell: min(100vw - 1.25rem, 34rem);
-		}
-
-		.contact-header {
-			padding-top: 1.4rem;
-		}
-
-		.artist-lockup {
-			grid-template-columns: 1fr;
-			justify-items: center;
-			text-align: center;
-		}
-
-		.artist-lockup > img {
-			width: 7.5rem;
-		}
-
-		.artist-lockup__topline {
-			justify-content: center;
-			flex-wrap: wrap;
-			gap: 0.6rem 1rem;
-		}
-
-		.role-pills {
-			justify-content: center;
 		}
 
 		.contact-divider--top {
@@ -650,7 +437,6 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.contact-nav a::after,
 		.contact-chip,
 		.home-qr img {
 			transition: none;
