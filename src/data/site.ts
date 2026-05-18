@@ -44,7 +44,7 @@ export const sitePages = [
 	},
 	{
 		path: '/commissions/',
-		title: 'Commissions | whiteyedcat',
+		title: 'Commission | whiteyedcat',
 		description:
 			'Commission whiteyedcat for portraits, pet portraits, scenery paintings, and custom sticker packs.',
 		priority: '0.9',
@@ -60,7 +60,7 @@ export const sitePages = [
 	},
 	{
 		path: '/exhibitions/',
-		title: 'Exhibitions | whiteyedcat',
+		title: 'Exhibition | whiteyedcat',
 		description:
 			'whiteyedcat exhibition and art fair appearances in Kuala Lumpur, Penang, and Malaysia.',
 		priority: '0.8',

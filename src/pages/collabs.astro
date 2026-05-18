@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import GhostfishCluster from '../components/GhostfishCluster.astro';
 import celcomdigiFull from '../assets/collaborations/celcomdigi_full.webp';
 import celcomdigiPacket from '../assets/collaborations/celcomdigi_packet.png';
 import deletedBand from '../assets/collaborations/d_eleted_band.webp';
@@ -9,6 +10,8 @@ import deletedSpotify from '../assets/collaborations/d_leted_spotify.webp';
 import mosseryCover from '../assets/collaborations/mossery_cover.png';
 import mosseryFull from '../assets/collaborations/mossery_full.webp';
 import mosseryPic from '../assets/collaborations/mossery_pic.webp';
+import girlInJacket from '../assets/elements/girl-in-jacket.png';
+import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 
 const collaborations = [
 	{
@@ -132,8 +135,14 @@ const collaborations = [
 			</div>
 		</section>
 
+		<div class="collabs-divider" aria-hidden="true">
+			<img src={contactDividerTop.src} alt="" loading="lazy" decoding="async" />
+		</div>
+
 		<section class="collabs-cta" aria-labelledby="collabs-cta-heading">
+			<GhostfishCluster />
 			<div class="collabs-cta__lockup">
+				<img class="collabs-cta__art" src={girlInJacket.src} alt="" loading="lazy" decoding="async" />
 				<h2 id="collabs-cta-heading">Let's Collab!</h2>
 			</div>
 			<div class="contact-methods">
@@ -546,7 +555,8 @@ const collaborations = [
 	}
 
 	.collabs-cta {
-		border-top: 1.5px solid rgba(18, 18, 18, 0.16);
+		position: relative;
+		isolation: isolate;
 		width: var(--collabs-shell);
 		margin: 0 auto;
 		padding: clamp(3rem, 6vw, 5.2rem) 0 clamp(8rem, 14vw, 11rem);
@@ -555,14 +565,37 @@ const collaborations = [
 		text-align: center;
 	}
 
+	.collabs-divider {
+		width: min(2000px, 100%);
+		margin: clamp(1rem, 2vw, 1.6rem) auto 0;
+		pointer-events: none;
+	}
+
+	.collabs-divider img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
 	.collabs-cta__lockup {
+		position: relative;
+		z-index: 1;
 		width: fit-content;
 		max-width: 100%;
 		display: grid;
 		justify-items: center;
 	}
 
+	.collabs-cta__art {
+		width: clamp(6.8rem, 12vw, 9.25rem);
+		height: auto;
+		margin-bottom: clamp(0.8rem, 2vw, 1.35rem);
+		pointer-events: none;
+	}
+
 	.contact-methods {
+		position: relative;
+		z-index: 1;
 		display: grid;
 		gap: 0.72rem;
 		margin-top: 1.2rem;

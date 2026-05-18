@@ -2,9 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import GhostfishCluster from '../components/GhostfishCluster.astro';
 import artoMovement from '../assets/exhibitions/arto_movement.jpg';
 import exhibitionsDivider from '../assets/exhibitions/exhibitions-divider.png';
-import exhibitionsFish from '../assets/exhibitions/exhibitions-fish.png';
+import girlInJacket from '../assets/elements/girl-in-jacket.png';
 import journalArtFest from '../assets/exhibitions/exhibition-journal-art-fest.png';
 import klIllustrationFair from '../assets/exhibitions/exhibition-kl-illustration-fair.png';
 import visitorsOnly from '../assets/exhibitions/exhibition-visitors-only.png';
@@ -43,14 +44,14 @@ const exhibitions = [
 ---
 
 <Layout
-	title="Exhibitions | whiteyedcat"
+	title="Exhibition | whiteyedcat"
 	description="whiteyedcat exhibition history and art fair appearances, including KL Illustration Fair, Visitors Only GrimDreamStudio, Journal Art Fest Georgetown, and Arto Movement."
 >
 	<main class="exhibitions-page">
 		<ArtistHeader currentHref="/exhibitions" />
 
 		<section class="exhibitions-section" aria-labelledby="exhibitions-heading">
-			<h2 id="exhibitions-heading">Exhibitions</h2>
+			<h2 id="exhibitions-heading">Exhibition</h2>
 			<div class="exhibitions-grid">
 				{
 					exhibitions.map((item) => (
@@ -73,7 +74,9 @@ const exhibitions = [
 		</div>
 
 		<section class="exhibitions-cta" aria-labelledby="exhibitions-cta-heading">
+			<GhostfishCluster />
 			<div class="exhibitions-cta__body">
+				<img class="exhibitions-cta__art" src={girlInJacket.src} alt="" loading="lazy" decoding="async" />
 				<h2 id="exhibitions-cta-heading">I'd love to be a part of your show!</h2>
 				<div class="contact-methods">
 					<div class="contact-method">
@@ -98,7 +101,6 @@ const exhibitions = [
 					</div>
 				</div>
 			</div>
-			<img class="exhibitions-cta__fish" src={exhibitionsFish.src} alt="" loading="lazy" decoding="async" />
 		</section>
 
 		<SiteFooter />
@@ -225,12 +227,9 @@ const exhibitions = [
 		gap: clamp(1rem, 2vw, 1.4rem);
 	}
 
-	.exhibitions-cta__fish {
-		position: absolute;
-		right: clamp(0rem, 4vw, 3rem);
-		bottom: clamp(2rem, 5vw, 4.5rem);
-		z-index: 0;
-		width: clamp(7.5rem, 18vw, 14.9rem);
+	.exhibitions-cta__art {
+		width: clamp(5.8rem, 10vw, 7.75rem);
+		height: auto;
 		pointer-events: none;
 	}
 
@@ -400,11 +399,6 @@ const exhibitions = [
 			width: min(46rem, 100%);
 		}
 
-		.exhibitions-cta__fish {
-			opacity: 0.86;
-			right: 0;
-		}
-
 		.exhibitions-footer__inner {
 			grid-template-columns: 1fr;
 			align-items: start;
@@ -431,15 +425,12 @@ const exhibitions = [
 		}
 
 		.exhibitions-cta {
-			min-height: 30rem;
-			padding-bottom: 9rem;
+			min-height: 0;
+			padding-bottom: clamp(6rem, 14vw, 8rem);
 		}
 
-		.exhibitions-cta__fish {
-			right: 50%;
-			bottom: 1.35rem;
-			transform: translateX(50%);
-			width: 9.4rem;
+		.exhibitions-cta__art {
+			width: clamp(5.6rem, 24vw, 7rem);
 		}
 
 		.contact-method {

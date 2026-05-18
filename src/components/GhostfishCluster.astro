@@ -1,0 +1,64 @@
+---
+import ghostfishOne from '../assets/elements/ghostfish-1.png';
+import ghostfishTwo from '../assets/elements/ghostfish-2.png';
+import ghostfishThree from '../assets/elements/ghostfish-3.png';
+---
+
+<div class="ghostfish-cluster" aria-hidden="true">
+	<img class="ghostfish-cluster__fish ghostfish-cluster__fish--one" src={ghostfishOne.src} alt="" loading="lazy" decoding="async" />
+	<img class="ghostfish-cluster__fish ghostfish-cluster__fish--two" src={ghostfishTwo.src} alt="" loading="lazy" decoding="async" />
+	<img class="ghostfish-cluster__fish ghostfish-cluster__fish--three" src={ghostfishThree.src} alt="" loading="lazy" decoding="async" />
+</div>
+
+<style>
+	.ghostfish-cluster {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.ghostfish-cluster__fish {
+		position: absolute;
+		height: auto;
+		opacity: 1;
+	}
+
+	.ghostfish-cluster__fish--one {
+		left: clamp(0rem, 4vw, 2.6rem);
+		top: clamp(-1rem, 0%, 0.3rem);
+		width: clamp(10.44rem, 21.6vw, 15.84rem);
+	}
+
+	.ghostfish-cluster__fish--two {
+		right: clamp(0rem, 4vw, 3rem);
+		top: clamp(1rem, 12%, 4rem);
+		width: clamp(11.16rem, 23.4vw, 17.64rem);
+	}
+
+	.ghostfish-cluster__fish--three {
+		left: clamp(1rem, 16vw, 12rem);
+		bottom: clamp(3rem, 18%, 5rem);
+		width: clamp(9.9rem, 19.8vw, 15.12rem);
+	}
+
+	@media (max-width: 640px) {
+		.ghostfish-cluster__fish--one {
+			left: 0;
+			top: -0.6rem;
+			width: clamp(5.8rem, 28vw, 8rem);
+		}
+
+		.ghostfish-cluster__fish--two {
+			right: 0;
+			top: 7%;
+			width: clamp(6.3rem, 31vw, 9rem);
+		}
+
+		.ghostfish-cluster__fish--three {
+			left: clamp(0.5rem, 8vw, 2rem);
+			bottom: 2.8rem;
+			width: clamp(5.5rem, 27vw, 7.8rem);
+		}
+	}
+</style>

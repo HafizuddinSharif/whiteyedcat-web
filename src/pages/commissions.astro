@@ -3,13 +3,14 @@ import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import CommissionItem from '../components/CommissionItem.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import GhostfishCluster from '../components/GhostfishCluster.astro';
 import { commissionItems } from '../data/commissions';
-import commissionsCat from '../assets/whiteyedcat/commissions-cat.png';
 import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
+import girlInJacket from '../assets/elements/girl-in-jacket.png';
 ---
 
 <Layout
-	title="Commissions | whiteyedcat"
+	title="Commission | whiteyedcat"
 	description="Commission whiteyedcat for custom portraits, pet portraits, scenery paintings, and sticker packs with country-specific rates and contact links."
 >
 	<main class="commissions-page">
@@ -18,7 +19,7 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		<section class="commissions-section" aria-labelledby="commissions-heading">
 			<div class="commissions-section__header">
 				<div>
-					<h2 id="commissions-heading">Commissions</h2>
+					<h2 id="commissions-heading">Commission</h2>
 					<p data-commission-country-label>United States pricing</p>
 				</div>
 			</div>
@@ -36,7 +37,9 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		</div>
 
 		<section class="commissions-cta" aria-labelledby="commissions-cta-heading">
+			<GhostfishCluster />
 			<div class="commissions-cta__body">
+				<img class="commissions-cta__art" src={girlInJacket.src} alt="" loading="lazy" decoding="async" />
 				<h2 id="commissions-cta-heading">Commission me!</h2>
 				<div class="contact-methods">
 					<div class="contact-method">
@@ -61,7 +64,6 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 					</div>
 				</div>
 			</div>
-			<img class="commissions-cta__cat" src={commissionsCat.src} alt="" loading="lazy" decoding="async" />
 		</section>
 
 		<SiteFooter />
@@ -171,12 +173,9 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		gap: clamp(1rem, 2vw, 1.4rem);
 	}
 
-	.commissions-cta__cat {
-		position: absolute;
-		right: clamp(0rem, 3vw, 2.4rem);
-		bottom: clamp(2rem, 5vw, 4.6rem);
-		z-index: 0;
-		width: clamp(7rem, 17vw, 12.25rem);
+	.commissions-cta__art {
+		width: clamp(6.8rem, 12vw, 9.25rem);
+		height: auto;
 		pointer-events: none;
 	}
 
@@ -342,11 +341,6 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 	}
 
 	@media (max-width: 920px) {
-		.commissions-cta__cat {
-			opacity: 0.86;
-			right: 0;
-		}
-
 		.commissions-footer__inner {
 			grid-template-columns: 1fr;
 			align-items: start;
@@ -377,15 +371,12 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		}
 
 		.commissions-cta {
-			min-height: 30rem;
-			padding-bottom: 9rem;
+			min-height: 0;
+			padding-bottom: clamp(6rem, 14vw, 8rem);
 		}
 
-		.commissions-cta__cat {
-			right: 50%;
-			bottom: 1.35rem;
-			transform: translateX(50%);
-			width: 8.7rem;
+		.commissions-cta__art {
+			width: clamp(6.4rem, 28vw, 8.2rem);
 		}
 
 		.contact-method {
