@@ -20,11 +20,11 @@ const { variant = 'standard' } = Astro.props;
 const footerGroups: FooterLink[][] = [
 	[
 		{ label: 'Home', href: variant === 'home' ? '#top' : '/' },
+		{ label: 'Artwork', href: '/artworks' },
 		{ label: 'About', href: variant === 'home' ? '#about' : '/#about' },
 		{ label: 'Contacts', href: '/contact' },
 	],
 	[
-		{ label: 'Artwork', href: '/artworks' },
 		{ label: 'Collaboration', href: '/collabs' },
 		{ label: 'Commission', href: '/commissions' },
 		{ label: 'Exhibition', href: '/exhibitions' },
