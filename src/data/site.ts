@@ -22,8 +22,8 @@ export const siteKeywords = [
 
 export const socialLinks = [
 	'https://www.instagram.com/whiteyedcat/',
-	'https://x.com/whiteyedcat',
 	'https://www.threads.net/@whiteyedcat',
+	'https://www.tiktok.com/@whiteyedcat',
 ];
 
 export const sitePages = [

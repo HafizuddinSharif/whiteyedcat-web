@@ -1,5 +1,8 @@
 ---
 import avatar from '../assets/whiteyedcat/avatar.png';
+import instagramIcon from '../assets/icons/instagram.svg';
+import threadsIcon from '../assets/icons/threads.svg';
+import tiktokIcon from '../assets/icons/tiktok.svg';
 
 interface Props {
 	currentHref: string;
@@ -16,6 +19,7 @@ const navigation = [
 	{ label: 'Collaboration', href: '/collabs' },
 	{ label: 'Commission', href: '/commissions' },
 	{ label: 'Exhibition', href: '/exhibitions' },
+	{ label: 'Art Shop', href: 'https://whiteyedcat.bigcartel.com', external: true },
 	{ label: 'Contacts', href: '/contact' },
 ];
 ---
@@ -27,15 +31,15 @@ const navigation = [
 			<div class="artist-header__topline">
 				<h1>whiteyedcat</h1>
 				<div class="artist-header__social-links" aria-label="Social links">
-					<a href="https://x.com/whiteyedcat" aria-label="X">X</a>
-					<a href="https://www.instagram.com/whiteyedcat/" aria-label="Instagram">
-						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-							<rect x="5" y="5" width="14" height="14" rx="4"></rect>
-							<circle cx="12" cy="12" r="3.2"></circle>
-							<circle cx="16.3" cy="7.7" r="0.8"></circle>
-						</svg>
+					<a href="https://www.instagram.com/whiteyedcat/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+						<img src={instagramIcon.src} alt="" aria-hidden="true" />
 					</a>
-					<a href="https://www.threads.net/@whiteyedcat" aria-label="Threads">@</a>
+					<a href="https://www.threads.net/@whiteyedcat" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+						<img src={threadsIcon.src} alt="" aria-hidden="true" />
+					</a>
+					<a href="https://www.tiktok.com/@whiteyedcat" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+						<img src={tiktokIcon.src} alt="" aria-hidden="true" />
+					</a>
 				</div>
 			</div>
 			<div class="artist-header__roles" aria-label="Creative roles">
@@ -55,7 +59,23 @@ const navigation = [
 	<nav class="artist-header__nav" aria-label="Primary">
 		{
 			navigation.map((item) => (
-				<a href={item.href} aria-current={item.href === currentHref ? 'page' : undefined}>{item.label}</a>
+				<a
+					href={item.href}
+					target={item.external ? '_blank' : undefined}
+					rel={item.external ? 'noopener noreferrer' : undefined}
+					aria-current={item.href === currentHref ? 'page' : undefined}
+				>
+					{item.label}
+					{
+						item.external && (
+							<svg class="external-link-icon" width="10" height="10" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+								<path d="M6 3h7v7"></path>
+								<path d="M13 3 6 10"></path>
+								<path d="M11 8v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path>
+							</svg>
+						)
+					}
+				</a>
 			))
 		}
 	</nav>
@@ -119,12 +139,9 @@ const navigation = [
 		height: 1rem;
 	}
 
-	.artist-header__social-links svg {
+	.artist-header__social-links img {
 		width: 1rem;
 		height: 1rem;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
 	}
 
 	.artist-header__roles {
@@ -167,8 +184,21 @@ const navigation = [
 
 	.artist-header__nav a {
 		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.28rem;
 		padding-block: 0.3rem;
 		white-space: nowrap;
+	}
+
+	.external-link-icon {
+		width: 1em;
+		height: 1em;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.6;
 	}
 
 	.artist-header__nav a::after {

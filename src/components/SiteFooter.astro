@@ -1,10 +1,14 @@
 ---
 import AnimatedWave from './AnimatedWave.astro';
 import avatar from '../assets/whiteyedcat/avatar.png';
+import instagramIcon from '../assets/icons/instagram.svg';
+import threadsIcon from '../assets/icons/threads.svg';
+import tiktokIcon from '../assets/icons/tiktok.svg';
 
 interface FooterLink {
 	label: string;
 	href: string;
+	external?: boolean;
 }
 
 interface Props {
@@ -24,6 +28,7 @@ const footerGroups: FooterLink[][] = [
 		{ label: 'Collaboration', href: '/collabs' },
 		{ label: 'Commission', href: '/commissions' },
 		{ label: 'Exhibition', href: '/exhibitions' },
+		{ label: 'Art Shop', href: 'https://whiteyedcat.bigcartel.com', external: true },
 	],
 ];
 ---
@@ -34,9 +39,19 @@ const footerGroups: FooterLink[][] = [
 	</div>
 	<div class="site-footer__inner">
 		<div class="site-footer__brand">
-			<img src={avatar.src} alt="" loading="lazy" decoding="async" />
+			<img class="site-footer__avatar" src={avatar.src} alt="" loading="lazy" decoding="async" />
 			<h2>whiteyedcat</h2>
-			<p class="site-footer__socials">X IG @</p>
+			<div class="site-footer__socials" aria-label="Social links">
+				<a href="https://www.instagram.com/whiteyedcat/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+					<img src={instagramIcon.src} alt="" aria-hidden="true" />
+				</a>
+				<a href="https://www.threads.net/@whiteyedcat" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+					<img src={threadsIcon.src} alt="" aria-hidden="true" />
+				</a>
+				<a href="https://www.tiktok.com/@whiteyedcat" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+					<img src={tiktokIcon.src} alt="" aria-hidden="true" />
+				</a>
+			</div>
 			<p class="site-footer__credit">Designed and build by <a href="https://snouu.dev">snouu.dev</a></p>
 			<div class="site-footer__country-selector">
 				<select data-commission-country-select aria-label="Choose commission pricing country">
@@ -51,7 +66,24 @@ const footerGroups: FooterLink[][] = [
 					<ul>
 						{
 							group.map((item) => (
-								<li><a href={item.href}>{item.label}</a></li>
+								<li>
+									<a
+										href={item.href}
+										target={item.external ? '_blank' : undefined}
+										rel={item.external ? 'noopener noreferrer' : undefined}
+									>
+										{item.label}
+										{
+											item.external && (
+												<svg class="external-link-icon" width="10" height="10" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+													<path d="M6 3h7v7"></path>
+													<path d="M13 3 6 10"></path>
+													<path d="M11 8v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path>
+												</svg>
+											)
+										}
+									</a>
+								</li>
 							))
 						}
 					</ul>
@@ -225,7 +257,7 @@ const footerGroups: FooterLink[][] = [
 		gap: 2rem;
 	}
 
-	.site-footer__brand img {
+	.site-footer__avatar {
 		width: clamp(5rem, 11vw, 7.6rem);
 		aspect-ratio: 1;
 		border-radius: 50%;
@@ -233,7 +265,7 @@ const footerGroups: FooterLink[][] = [
 		margin-bottom: 1.35rem;
 	}
 
-	.site-footer--home .site-footer__brand img {
+	.site-footer--home .site-footer__avatar {
 		width: 4.5rem;
 		height: 4.5rem;
 		margin-bottom: 1rem;
@@ -259,13 +291,26 @@ const footerGroups: FooterLink[][] = [
 
 	.site-footer__socials {
 		margin-top: 1.1rem;
-		font-size: 0.95rem;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.8rem;
 	}
 
 	.site-footer--home .site-footer__socials {
 		margin-top: 0.4rem;
+	}
+
+	.site-footer__socials a {
+		display: inline-grid;
+		place-items: center;
+		width: 1.1rem;
+		height: 1.1rem;
+	}
+
+	.site-footer__socials img {
+		width: 100%;
+		height: 100%;
+		filter: invert(1);
 	}
 
 	.site-footer__credit {
@@ -336,6 +381,22 @@ const footerGroups: FooterLink[][] = [
 		font-weight: 700;
 	}
 
+	.site-footer__links a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.28rem;
+	}
+
+	.external-link-icon {
+		width: 1em;
+		height: 1em;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.6;
+	}
+
 	.site-footer--home .site-footer__links ul {
 		gap: 0.85rem;
 		font-size: 0.92rem;
@@ -361,7 +422,7 @@ const footerGroups: FooterLink[][] = [
 			text-align: center;
 		}
 
-		.site-footer--home .site-footer__brand img {
+		.site-footer--home .site-footer__avatar {
 			margin-inline: auto;
 		}
 
@@ -382,7 +443,7 @@ const footerGroups: FooterLink[][] = [
 			justify-items: center;
 		}
 
-		.site-footer__brand img {
+		.site-footer__avatar {
 			margin-inline: auto;
 		}
 

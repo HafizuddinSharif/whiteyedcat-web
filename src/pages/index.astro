@@ -11,6 +11,9 @@ import waves from '../assets/elements/waves-4-slow.webp';
 import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
 import fish from '../assets/whiteyedcat/fish.png';
 import heroBg from '../assets/whiteyedcat/hero-bg.webp';
+import instagramIcon from '../assets/icons/instagram.svg';
+import threadsIcon from '../assets/icons/threads.svg';
+import tiktokIcon from '../assets/icons/tiktok.svg';
 
 const navigation = [
 	{ label: 'About', href: '#about' },
@@ -18,6 +21,7 @@ const navigation = [
 	{ label: 'Collaboration', href: '/collabs' },
 	{ label: 'Commission', href: '/commissions' },
 	{ label: 'Exhibition', href: '/exhibitions' },
+	{ label: 'Art Shop', href: 'https://whiteyedcat.bigcartel.com', external: true },
 	{ label: 'Contacts', href: '/contact' },
 ];
 
@@ -31,10 +35,10 @@ const vibeItems = [
 ];
 
 const serviceLinks = [
-	{ id: 'commissions', title: 'commissions', subtitle: 'custom artwork', href: '/commissions', corner: 'top-left' },
-	{ id: 'shop', title: 'buy my arts!', subtitle: 'prints & originals', href: '/artworks', corner: 'top-right' },
-	{ id: 'exhibitions', title: 'exhibitions', subtitle: 'gallery & shows', href: '/exhibitions', corner: 'bottom-left' },
-	{ id: 'collabs', title: 'collaborations', subtitle: 'creative projects', href: '/collabs', corner: 'bottom-right' },
+	{ id: 'commissions', title: 'commission', subtitle: 'custom artwork', href: '/commissions', corner: 'top-left' },
+	{ id: 'shop', title: 'view my art!', subtitle: 'prints & originals', href: '/artworks', corner: 'top-right' },
+	{ id: 'exhibitions', title: 'exhibition', subtitle: 'art showings', href: '/exhibitions', corner: 'bottom-left' },
+	{ id: 'collabs', title: 'collaboration', subtitle: 'creative projects', href: '/collabs', corner: 'bottom-right' },
 ];
 
 ---
@@ -66,7 +70,22 @@ const serviceLinks = [
 				<nav class="site-nav" id="primary-navigation" aria-label="Primary">
 					{
 						navigation.map((item) => (
-							<a href={item.href}>{item.label}</a>
+							<a
+								href={item.href}
+								target={item.external ? '_blank' : undefined}
+								rel={item.external ? 'noopener noreferrer' : undefined}
+							>
+								{item.label}
+								{
+									item.external && (
+										<svg class="external-link-icon" width="10" height="10" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+											<path d="M6 3h7v7"></path>
+											<path d="M13 3 6 10"></path>
+											<path d="M11 8v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path>
+										</svg>
+									)
+								}
+							</a>
 						))
 					}
 				</nav>
@@ -80,9 +99,15 @@ const serviceLinks = [
 			<div class="hero__overlay" aria-hidden="true"></div>
 			<div class="hero__content">
 				<div class="hero__socials" aria-label="Social links">
-					<a href="#contact">X</a>
-					<a href="#contact">IG</a>
-					<a href="#contact">@</a>
+					<a href="https://www.instagram.com/whiteyedcat/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+						<img src={instagramIcon.src} alt="" aria-hidden="true" />
+					</a>
+					<a href="https://www.threads.net/@whiteyedcat" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+						<img src={threadsIcon.src} alt="" aria-hidden="true" />
+					</a>
+					<a href="https://www.tiktok.com/@whiteyedcat" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+						<img src={tiktokIcon.src} alt="" aria-hidden="true" />
+					</a>
 				</div>
 				<h1>whiteyedcat</h1>
 					<div class="role-pills" aria-label="Creative roles">
@@ -486,8 +511,22 @@ const serviceLinks = [
 	.site-nav a {
 		flex: 1 1 0;
 		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.28rem;
 		text-align: center;
 		padding-block: 0.2rem;
+	}
+
+	.external-link-icon {
+		width: 1em;
+		height: 1em;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.6;
 	}
 
 	.site-nav a::after {
@@ -616,10 +655,19 @@ const serviceLinks = [
 		display: inline-flex;
 		align-items: center;
 		gap: 0.8rem;
-		font-size: 0.9rem;
-		font-weight: 500;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+	}
+
+	.hero__socials a {
+		display: inline-grid;
+		place-items: center;
+		width: 1.1rem;
+		height: 1.1rem;
+	}
+
+	.hero__socials img {
+		width: 100%;
+		height: 100%;
+		filter: invert(1);
 	}
 
 	.hero__content h1,
@@ -1089,6 +1137,7 @@ const serviceLinks = [
 
 		.site-nav a {
 			flex: none;
+			justify-content: flex-start;
 			text-align: left;
 			padding: 0.72rem 0.85rem;
 			border-top: 1px solid rgba(18, 18, 18, 0.08);

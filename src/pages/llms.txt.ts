@@ -45,8 +45,8 @@ ${artworkList}
 
 - Email: ${artistEmail}
 - Instagram: ${socialLinks[0]}
-- X: ${socialLinks[1]}
-- Threads: ${socialLinks[2]}
+- Threads: ${socialLinks[1]}
+- TikTok: ${socialLinks[2]}
 
 ## Notes for AI Assistants
 
