@@ -50,7 +50,10 @@ const exhibitions = [
 		<ArtistHeader currentHref="/exhibitions" />
 
 		<section class="exhibitions-section" aria-labelledby="exhibitions-heading">
-			<h2 id="exhibitions-heading">Exhibition</h2>
+			<div class="section-heading">
+				<h2 id="exhibitions-heading">Exhibition</h2>
+				<p class="page-subtitle">selected exhibitions, art fairs, and public showcases</p>
+			</div>
 			<div class="exhibitions-grid">
 				{
 					exhibitions.map((item) => (
@@ -112,6 +115,18 @@ const exhibitions = [
 		font-size: clamp(2.1rem, 4vw, 3rem);
 		line-height: 1.05;
 		text-align: center;
+	}
+
+	.section-heading {
+		text-align: center;
+	}
+
+	.page-subtitle {
+		margin: 0.35rem 0 0;
+		font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+		font-weight: 500;
+		line-height: 1.35;
+		color: rgba(18, 18, 18, 0.72);
 	}
 
 	.exhibitions-grid {

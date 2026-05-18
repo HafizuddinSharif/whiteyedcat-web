@@ -18,7 +18,7 @@ import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 		<section class="artwork-gallery" aria-labelledby="artwork-heading">
 			<div class="gallery-heading">
 				<h2 id="artwork-heading">Artwork</h2>
-				<p>
+				<p class="page-subtitle">
 					you can buy my artwork with the
 					<span class="inline-buy">
 						<button class="buy-button" type="button" disabled aria-label="Artwork purchase link unavailable">
@@ -128,16 +128,17 @@ import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 		line-height: 1.05;
 	}
 
-	.gallery-heading p {
+	.page-subtitle {
 		margin: 0.35rem 0 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-wrap: wrap;
 		gap: 0.28rem;
-		font-size: clamp(0.9rem, 1.8vw, 1.5rem);
+		font-size: clamp(0.95rem, 1.5vw, 1.25rem);
 		font-weight: 500;
 		line-height: 1.35;
+		color: rgba(18, 18, 18, 0.72);
 	}
 
 	.inline-buy {

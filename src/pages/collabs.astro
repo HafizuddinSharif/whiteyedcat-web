@@ -80,7 +80,10 @@ const collaborations = [
 		<ArtistHeader currentHref="/collabs" />
 
 		<section class="collabs-section" aria-labelledby="collabs-heading">
-			<h2 id="collabs-heading">Collaboration</h2>
+			<div class="section-heading">
+				<h2 id="collabs-heading">Collaboration</h2>
+				<p class="page-subtitle">selected creative partnerships and commissioned projects</p>
+			</div>
 			<div class="collabs-list">
 				{
 					collaborations.map((collab) => (
@@ -275,6 +278,18 @@ const collaborations = [
 		font-size: clamp(2.1rem, 4vw, 3rem);
 		line-height: 1.05;
 		text-align: center;
+	}
+
+	.section-heading {
+		text-align: center;
+	}
+
+	.page-subtitle {
+		margin: 0.35rem 0 0;
+		font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+		font-weight: 500;
+		line-height: 1.35;
+		color: rgba(18, 18, 18, 0.72);
 	}
 
 	.collabs-list {

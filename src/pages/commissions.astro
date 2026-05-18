@@ -19,7 +19,8 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 			<div class="commissions-section__header">
 				<div>
 					<h2 id="commissions-heading">Commission</h2>
-					<p data-commission-country-label>United States pricing</p>
+					<p class="page-subtitle">custom artwork made for people, pets, and places</p>
+					<p class="commissions-section__pricing" data-commission-country-label>United States pricing</p>
 				</div>
 			</div>
 			<div class="commissions-list">
@@ -79,7 +80,7 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 
 	.commissions-section__header > div {
 		display: grid;
-		gap: 0.42rem;
+		justify-items: center;
 	}
 
 	.commissions-section h2 {
@@ -94,8 +95,16 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		text-align: center;
 	}
 
-	.commissions-section__header p {
-		margin: 0;
+	.page-subtitle {
+		margin: 0.35rem 0 0;
+		font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+		font-weight: 500;
+		line-height: 1.35;
+		color: rgba(18, 18, 18, 0.72);
+	}
+
+	.commissions-section__pricing {
+		margin: 0.42rem 0 0;
 		font-size: clamp(0.9rem, 1.3vw, 1rem);
 		font-weight: 600;
 		line-height: 1.25;
