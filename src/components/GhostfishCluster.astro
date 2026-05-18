@@ -25,39 +25,41 @@ import ghostfishThree from '../assets/elements/ghostfish-3.png';
 	}
 
 	.ghostfish-cluster__fish--one {
-		left: clamp(0rem, 4vw, 2.6rem);
-		top: clamp(-1rem, 0%, 0.3rem);
+		left: clamp(2rem, 10vw, 8rem);
+		top: clamp(-10rem, -22%, -6rem);
 		width: clamp(10.44rem, 21.6vw, 15.84rem);
 	}
 
 	.ghostfish-cluster__fish--two {
 		right: clamp(0rem, 4vw, 3rem);
-		top: clamp(1rem, 12%, 4rem);
+		top: 50%;
+		transform: translateY(-50%);
 		width: clamp(11.16rem, 23.4vw, 17.64rem);
 	}
 
 	.ghostfish-cluster__fish--three {
-		left: clamp(1rem, 16vw, 12rem);
-		bottom: clamp(3rem, 18%, 5rem);
+		left: clamp(0rem, 6vw, 4.5rem);
+		bottom: clamp(-10rem, -18%, -5rem);
 		width: clamp(9.9rem, 19.8vw, 15.12rem);
 	}
 
 	@media (max-width: 640px) {
 		.ghostfish-cluster__fish--one {
-			left: 0;
-			top: -0.6rem;
+			left: clamp(1rem, 10vw, 4rem);
+			top: -4rem;
 			width: clamp(5.8rem, 28vw, 8rem);
 		}
 
 		.ghostfish-cluster__fish--two {
 			right: 0;
-			top: 7%;
+			top: 50%;
+			transform: translateY(-50%);
 			width: clamp(6.3rem, 31vw, 9rem);
 		}
 
 		.ghostfish-cluster__fish--three {
 			left: clamp(0.5rem, 8vw, 2rem);
-			bottom: 2.8rem;
+			bottom: -3rem;
 			width: clamp(5.5rem, 27vw, 7.8rem);
 		}
 	}

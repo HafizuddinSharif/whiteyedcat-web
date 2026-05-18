@@ -3,10 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import CommissionItem from '../components/CommissionItem.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import GhostfishCluster from '../components/GhostfishCluster.astro';
+import ContactCTA from '../components/ContactCTA.astro';
 import { commissionItems } from '../data/commissions';
 import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
-import girlInJacket from '../assets/elements/girl-in-jacket.png';
 ---
 
 <Layout
@@ -32,39 +31,9 @@ import girlInJacket from '../assets/elements/girl-in-jacket.png';
 			</div>
 		</section>
 
-		<div class="commissions-divider" aria-hidden="true">
-			<img src={commissionsDivider.src} alt="" loading="lazy" decoding="async" />
+		<div class="commissions-cta-wrap">
+			<ContactCTA heading="Commission me!" headingId="commissions-cta-heading" dividerSrc={commissionsDivider} />
 		</div>
-
-		<section class="commissions-cta" aria-labelledby="commissions-cta-heading">
-			<GhostfishCluster />
-			<div class="commissions-cta__body">
-				<img class="commissions-cta__art" src={girlInJacket.src} alt="" loading="lazy" decoding="async" />
-				<h2 id="commissions-cta-heading">Commission me!</h2>
-				<div class="contact-methods">
-					<div class="contact-method">
-						<p>Send me an email at</p>
-						<a class="contact-chip" href="mailto:whiteyedcat@gmail.com" aria-label="Email whiteyedcat">
-							<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-								<path d="M3.8 5.5h16.4c.7 0 1.3.6 1.3 1.3v10.4c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3V6.8c0-.7.6-1.3 1.3-1.3Zm.9 2.2 7.3 5.1 7.3-5.1H4.7Zm14.8 8.6V9.7l-7.1 4.9a.8.8 0 0 1-.9 0L4.5 9.7v6.6h15Z"></path>
-							</svg>
-							<span>whiteyedcat@gmail</span>
-						</a>
-					</div>
-					<div class="contact-method">
-						<p>Or DM me on Instagram</p>
-						<a class="contact-chip" href="https://www.instagram.com/whiteyedcat/" aria-label="DM whiteyedcat on Instagram">
-							<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-								<rect x="4.5" y="4.5" width="15" height="15" rx="4.2"></rect>
-								<circle cx="12" cy="12" r="3.25"></circle>
-								<circle cx="16.25" cy="7.75" r="0.8"></circle>
-							</svg>
-							<span>@whiteyedcat</span>
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
 
 		<SiteFooter />
 	</main>
@@ -113,8 +82,7 @@ import girlInJacket from '../assets/elements/girl-in-jacket.png';
 		gap: 0.42rem;
 	}
 
-	.commissions-section h2,
-	.commissions-cta h2 {
+	.commissions-section h2 {
 		margin: 0;
 		font-family: 'Bodoni Moda', serif;
 		font-size: clamp(2.1rem, 4vw, 3rem);
@@ -141,104 +109,12 @@ import girlInJacket from '../assets/elements/girl-in-jacket.png';
 		gap: clamp(1.2rem, 3vw, 2rem);
 	}
 
-	.commissions-divider {
-		width: min(1281px, calc(100% + 2px));
-		margin: clamp(-0.2rem, 1vw, 0.8rem) auto 0;
-		pointer-events: none;
-	}
-
-	.commissions-divider img {
-		width: 100%;
-		height: auto;
-	}
-
-	.commissions-cta {
-		position: relative;
-		width: var(--commissions-shell);
-		min-height: clamp(22rem, 35vw, 28rem);
-		margin: 0 auto;
+	.commissions-cta-wrap {
+		--cta-text: var(--commissions-text);
+		--cta-surface: var(--commissions-surface);
+		--cta-inverse: var(--commissions-inverse);
+		--cta-shell: var(--commissions-shell);
 		margin-bottom: 100px;
-		padding: clamp(3.3rem, 7vw, 6.5rem) 0 clamp(7.5rem, 14vw, 10.4rem);
-		display: grid;
-		place-items: center;
-		text-align: center;
-		isolation: isolate;
-	}
-
-	.commissions-cta__body {
-		position: relative;
-		z-index: 1;
-		display: grid;
-		justify-items: center;
-		gap: clamp(1rem, 2vw, 1.4rem);
-	}
-
-	.commissions-cta__art {
-		width: clamp(6.8rem, 12vw, 9.25rem);
-		height: auto;
-		pointer-events: none;
-	}
-
-	.contact-methods {
-		display: grid;
-		gap: 0.72rem;
-		font-size: clamp(0.95rem, 1.55vw, 1.5rem);
-		font-weight: 500;
-	}
-
-	.contact-method {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 1rem;
-	}
-
-	.contact-method p {
-		min-width: 11.75rem;
-		margin: 0;
-		text-align: right;
-		line-height: 1.25;
-	}
-
-	.contact-chip {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.48rem;
-		min-height: 2rem;
-		padding: 0.2rem 0.66rem;
-		border: 1.5px solid var(--commissions-text);
-		border-radius: 0.45rem;
-		background: var(--commissions-surface);
-		font-weight: 700;
-		line-height: 1;
-		transition:
-			background-color 180ms ease,
-			color 180ms ease,
-			transform 180ms ease;
-	}
-
-	.contact-chip:hover,
-	.contact-chip:focus-visible {
-		background: var(--commissions-text);
-		color: var(--commissions-inverse);
-		transform: translateY(-1px);
-	}
-
-	.contact-chip svg {
-		width: 1.45rem;
-		height: 1.45rem;
-		flex: 0 0 auto;
-	}
-
-	.contact-method:first-child .contact-chip svg {
-		fill: currentColor;
-	}
-
-	.contact-chip rect,
-	.contact-chip circle {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
 	}
 
 	.commissions-footer {
@@ -330,7 +206,6 @@ import girlInJacket from '../assets/elements/girl-in-jacket.png';
 		font-weight: 700;
 	}
 
-	.contact-chip:focus-visible,
 	.commissions-footer a:focus-visible {
 		outline: 2px solid var(--commissions-text);
 		outline-offset: 0.28rem;
@@ -370,30 +245,6 @@ import girlInJacket from '../assets/elements/girl-in-jacket.png';
 			text-align: center;
 		}
 
-		.commissions-cta {
-			min-height: 0;
-			padding-bottom: clamp(6rem, 14vw, 8rem);
-		}
-
-		.commissions-cta__art {
-			width: clamp(6.4rem, 28vw, 8.2rem);
-		}
-
-		.contact-method {
-			display: grid;
-			justify-items: center;
-			gap: 0.45rem;
-		}
-
-		.contact-method p {
-			min-width: 0;
-			text-align: center;
-		}
-
-		.contact-chip {
-			min-height: 2.45rem;
-		}
-
 		.commissions-footer__brand,
 		.commissions-footer__links ul {
 			text-align: center;
@@ -410,10 +261,4 @@ import girlInJacket from '../assets/elements/girl-in-jacket.png';
 		}
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.contact-chip {
-			transition: none;
-		}
-
-	}
 </style>

@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import GhostfishCluster from '../components/GhostfishCluster.astro';
+import ContactCTA from '../components/ContactCTA.astro';
 import celcomdigiFull from '../assets/collaborations/celcomdigi_full.webp';
 import celcomdigiPacket from '../assets/collaborations/celcomdigi_packet.png';
 import deletedBand from '../assets/collaborations/d_eleted_band.webp';
@@ -10,7 +10,6 @@ import deletedSpotify from '../assets/collaborations/d_leted_spotify.webp';
 import mosseryCover from '../assets/collaborations/mossery_cover.png';
 import mosseryFull from '../assets/collaborations/mossery_full.webp';
 import mosseryPic from '../assets/collaborations/mossery_pic.webp';
-import girlInJacket from '../assets/elements/girl-in-jacket.png';
 import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 
 const collaborations = [
@@ -135,39 +134,9 @@ const collaborations = [
 			</div>
 		</section>
 
-		<div class="collabs-divider" aria-hidden="true">
-			<img src={contactDividerTop.src} alt="" loading="lazy" decoding="async" />
+		<div class="collabs-cta-wrap">
+			<ContactCTA heading="Let's Collab!" headingId="collabs-cta-heading" dividerSrc={contactDividerTop} />
 		</div>
-
-		<section class="collabs-cta" aria-labelledby="collabs-cta-heading">
-			<GhostfishCluster />
-			<div class="collabs-cta__lockup">
-				<img class="collabs-cta__art" src={girlInJacket.src} alt="" loading="lazy" decoding="async" />
-				<h2 id="collabs-cta-heading">Let's Collab!</h2>
-			</div>
-			<div class="contact-methods">
-				<div class="contact-method">
-					<p>Send me an email at</p>
-					<a class="contact-chip" href="mailto:whiteyedcat@gmail.com" aria-label="Email whiteyedcat">
-						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-							<path d="M3.8 5.5h16.4c.7 0 1.3.6 1.3 1.3v10.4c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3V6.8c0-.7.6-1.3 1.3-1.3Zm.9 2.2 7.3 5.1 7.3-5.1H4.7Zm14.8 8.6V9.7l-7.1 4.9a.8.8 0 0 1-.9 0L4.5 9.7v6.6h15Z"></path>
-						</svg>
-						<span>whiteyedcat@gmail</span>
-					</a>
-				</div>
-				<div class="contact-method">
-					<p>Or DM me on Instagram</p>
-					<a class="contact-chip" href="https://www.instagram.com/whiteyedcat/" aria-label="DM whiteyedcat on Instagram">
-						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-							<rect x="4.5" y="4.5" width="15" height="15" rx="4.2"></rect>
-							<circle cx="12" cy="12" r="3.25"></circle>
-							<circle cx="16.25" cy="7.75" r="0.8"></circle>
-						</svg>
-						<span>@whiteyedcat</span>
-					</a>
-				</div>
-			</div>
-		</section>
 
 		<SiteFooter />
 	</main>
@@ -300,8 +269,7 @@ const collaborations = [
 		padding: clamp(2rem, 5vw, 3.7rem) 0 clamp(4.5rem, 7vw, 5.8rem);
 	}
 
-	.collabs-section h2,
-	.collabs-cta h2 {
+	.collabs-section h2 {
 		margin: 0;
 		font-family: 'Bodoni Moda', serif;
 		font-size: clamp(2.1rem, 4vw, 3rem);
@@ -554,108 +522,11 @@ const collaborations = [
 		line-height: 1;
 	}
 
-	.collabs-cta {
-		position: relative;
-		isolation: isolate;
-		width: var(--collabs-shell);
-		margin: 0 auto;
-		padding: clamp(3rem, 6vw, 5.2rem) 0 clamp(8rem, 14vw, 11rem);
-		display: grid;
-		justify-items: center;
-		text-align: center;
-	}
-
-	.collabs-divider {
-		width: min(2000px, 100%);
-		margin: clamp(1rem, 2vw, 1.6rem) auto 0;
-		pointer-events: none;
-	}
-
-	.collabs-divider img {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-
-	.collabs-cta__lockup {
-		position: relative;
-		z-index: 1;
-		width: fit-content;
-		max-width: 100%;
-		display: grid;
-		justify-items: center;
-	}
-
-	.collabs-cta__art {
-		width: clamp(6.8rem, 12vw, 9.25rem);
-		height: auto;
-		margin-bottom: clamp(0.8rem, 2vw, 1.35rem);
-		pointer-events: none;
-	}
-
-	.contact-methods {
-		position: relative;
-		z-index: 1;
-		display: grid;
-		gap: 0.72rem;
-		margin-top: 1.2rem;
-		font-size: clamp(0.95rem, 1.55vw, 1.5rem);
-		font-weight: 500;
-	}
-
-	.contact-method {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 1rem;
-	}
-
-	.contact-method p {
-		min-width: 11.75rem;
-		margin: 0;
-		text-align: right;
-		line-height: 1.25;
-	}
-
-	.contact-chip {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.48rem;
-		min-height: 2rem;
-		padding: 0.2rem 0.66rem;
-		border: 1.5px solid var(--collabs-text);
-		border-radius: 0.45rem;
-		background: var(--collabs-surface);
-		font-weight: 700;
-		line-height: 1;
-		transition:
-			background-color 180ms ease,
-			color 180ms ease,
-			transform 180ms ease;
-	}
-
-	.contact-chip:hover,
-	.contact-chip:focus-visible {
-		background: var(--collabs-text);
-		color: var(--collabs-inverse);
-		transform: translateY(-1px);
-	}
-
-	.contact-chip svg {
-		width: 1.45rem;
-		height: 1.45rem;
-		flex: 0 0 auto;
-	}
-
-	.contact-method:first-child .contact-chip svg {
-		fill: currentColor;
-	}
-
-	.contact-chip rect,
-	.contact-chip circle {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
+	.collabs-cta-wrap {
+		--cta-text: var(--collabs-text);
+		--cta-surface: var(--collabs-surface);
+		--cta-inverse: var(--collabs-inverse);
+		--cta-shell: var(--collabs-shell);
 	}
 
 	.collabs-footer {
@@ -747,7 +618,6 @@ const collaborations = [
 		font-weight: 700;
 	}
 
-	.contact-chip:focus-visible,
 	.collab-gallery__arrow:focus-visible,
 	.collab-gallery__dot:focus-visible,
 	.collabs-footer a:focus-visible {
@@ -803,21 +673,6 @@ const collaborations = [
 			text-align: center;
 		}
 
-		.contact-method {
-			display: grid;
-			justify-items: center;
-			gap: 0.45rem;
-		}
-
-		.contact-method p {
-			min-width: 0;
-			text-align: center;
-		}
-
-		.contact-chip {
-			min-height: 2.45rem;
-		}
-
 		.collabs-footer__brand,
 		.collabs-footer__links ul {
 			text-align: center;
@@ -841,8 +696,7 @@ const collaborations = [
 		.collab-gallery[data-slide-direction='prev'] .collab-gallery__slide.is-active,
 		.collab-gallery[data-slide-direction='prev'] .collab-gallery__slide.is-leaving,
 		.collab-gallery__arrow,
-		.collab-gallery__dot,
-		.contact-chip {
+		.collab-gallery__dot {
 			animation: none;
 			transition: none;
 		}

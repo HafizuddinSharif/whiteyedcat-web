@@ -1,0 +1,213 @@
+---
+import type { ImageMetadata } from 'astro';
+import GhostfishCluster from './GhostfishCluster.astro';
+import girlInJacket from '../assets/elements/girl-in-jacket.png';
+
+interface Props {
+	heading: string;
+	dividerSrc?: ImageMetadata;
+	headingId?: string;
+}
+
+const { heading, dividerSrc, headingId = 'contact-cta-heading' } = Astro.props;
+---
+
+<section class="contact-cta" aria-labelledby={headingId}>
+	{dividerSrc && (
+		<div class="contact-cta__divider" aria-hidden="true">
+			<img src={dividerSrc.src} alt="" loading="lazy" decoding="async" />
+		</div>
+	)}
+	<div class="contact-cta__stage">
+		<GhostfishCluster />
+		<div class="contact-cta__inner">
+			<img class="contact-cta__art" src={girlInJacket.src} alt="" loading="lazy" decoding="async" />
+			<h2 id={headingId}>{heading}</h2>
+			<div class="contact-cta__methods">
+				<div class="contact-cta__method">
+					<p>Send me an email at</p>
+					<a class="contact-cta__chip" href="mailto:whiteyedcat@gmail.com" aria-label="Email whiteyedcat">
+						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+							<path d="M3.8 5.5h16.4c.7 0 1.3.6 1.3 1.3v10.4c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3V6.8c0-.7.6-1.3 1.3-1.3Zm.9 2.2 7.3 5.1 7.3-5.1H4.7Zm14.8 8.6V9.7l-7.1 4.9a.8.8 0 0 1-.9 0L4.5 9.7v6.6h15Z"></path>
+						</svg>
+						<span>whiteyedcat@gmail</span>
+					</a>
+				</div>
+				<div class="contact-cta__method">
+					<p>Or DM me on Instagram</p>
+					<a class="contact-cta__chip" href="https://www.instagram.com/whiteyedcat/" aria-label="DM whiteyedcat on Instagram">
+						<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+							<rect x="4.5" y="4.5" width="15" height="15" rx="4.2"></rect>
+							<circle cx="12" cy="12" r="3.25"></circle>
+							<circle cx="16.25" cy="7.75" r="0.8"></circle>
+						</svg>
+						<span>@whiteyedcat</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.contact-cta {
+		position: relative;
+		width: 100%;
+		margin: 0 auto;
+		padding-bottom: clamp(7.5rem, 14vw, 10.4rem);
+		color: var(--cta-text, currentColor);
+	}
+
+	.contact-cta__divider {
+		width: min(2000px, 100%);
+		margin: clamp(1rem, 2vw, 1.6rem) auto clamp(2.2rem, 5vw, 4.6rem);
+		pointer-events: none;
+	}
+
+	.contact-cta__divider img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.contact-cta__stage {
+		position: relative;
+		isolation: isolate;
+		width: var(--cta-shell, min(1180px, calc(100vw - 2rem)));
+		min-height: clamp(20rem, 34vw, 27rem);
+		margin: 0 auto;
+		display: grid;
+		place-items: center;
+		text-align: center;
+	}
+
+	.contact-cta__inner {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		justify-items: center;
+		gap: clamp(1rem, 2vw, 1.4rem);
+	}
+
+	.contact-cta__art {
+		width: clamp(6.8rem, 12vw, 9.25rem);
+		height: auto;
+		pointer-events: none;
+	}
+
+	.contact-cta h2 {
+		margin: 0;
+		font-family: 'Bodoni Moda', serif;
+		font-size: clamp(2.1rem, 4vw, 3rem);
+		line-height: 1.05;
+	}
+
+	.contact-cta__methods {
+		display: grid;
+		gap: 0.72rem;
+		font-size: clamp(0.95rem, 1.55vw, 1.5rem);
+		font-weight: 500;
+	}
+
+	.contact-cta__method {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	.contact-cta__method p {
+		min-width: 11.75rem;
+		margin: 0;
+		text-align: right;
+		line-height: 1.25;
+	}
+
+	.contact-cta__chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.48rem;
+		min-height: 2rem;
+		padding: 0.2rem 0.66rem;
+		border: 1.5px solid var(--cta-text, currentColor);
+		border-radius: 0.45rem;
+		background: var(--cta-surface, transparent);
+		color: var(--cta-text, currentColor);
+		font-weight: 700;
+		line-height: 1;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.contact-cta__chip:hover,
+	.contact-cta__chip:focus-visible {
+		background: var(--cta-text, currentColor);
+		color: var(--cta-inverse, #fff);
+		transform: translateY(-1px);
+	}
+
+	.contact-cta__chip:focus-visible {
+		outline: 2px solid var(--cta-text, currentColor);
+		outline-offset: 0.28rem;
+	}
+
+	.contact-cta__chip svg {
+		width: 1.45rem;
+		height: 1.45rem;
+		flex: 0 0 auto;
+	}
+
+	.contact-cta__method:first-child .contact-cta__chip svg {
+		fill: currentColor;
+	}
+
+	.contact-cta__chip rect,
+	.contact-cta__chip circle {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+	}
+
+	@media (max-width: 640px) {
+		.contact-cta {
+			padding-bottom: clamp(6rem, 14vw, 8rem);
+		}
+
+		.contact-cta__divider {
+			width: 145%;
+			margin-left: -22.5%;
+			margin-bottom: 2rem;
+		}
+
+		.contact-cta__stage {
+			min-height: 0;
+		}
+
+		.contact-cta__art {
+			width: clamp(6.4rem, 28vw, 8.2rem);
+		}
+
+		.contact-cta__method {
+			display: grid;
+			justify-items: center;
+			gap: 0.45rem;
+		}
+
+		.contact-cta__method p {
+			min-width: 0;
+			text-align: center;
+		}
+
+		.contact-cta__chip {
+			min-height: 2.45rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.contact-cta__chip {
+			transition: none;
+		}
+	}
+</style>
