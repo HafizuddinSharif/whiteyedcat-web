@@ -53,18 +53,18 @@ export const commissionItems: CommissionItem[] = [
 				id: 'no-background',
 				label: 'no background',
 				choices: [
-					{ label: 'Face only', prices: { MY: 'RM200', US: '$46' } },
-					{ label: 'Half body', prices: { MY: 'RM300', US: '$69' } },
-					{ label: 'Full body', prices: { MY: 'RM350', US: '$81' } },
+					{ label: 'Face only', prices: { MY: 'RM200', US: '$70' } },
+					{ label: 'Half body', prices: { MY: 'RM300', US: '$100' } },
+					{ label: 'Full body', prices: { MY: 'RM350', US: '$150' } },
 				],
 			},
 			{
 				id: 'with-background',
 				label: 'with background',
 				choices: [
-					{ label: 'Face only', prices: { MY: 'RM300', US: '$69' } },
-					{ label: 'Half body', prices: { MY: 'RM350', US: '$81' } },
-					{ label: 'Full body', prices: { MY: 'RM400', US: '$92' } },
+					{ label: 'Face only', prices: { MY: 'RM300', US: '$80' } },
+					{ label: 'Half body', prices: { MY: 'RM350', US: '$120' } },
+					{ label: 'Full body', prices: { MY: 'RM400', US: '$200' } },
 				],
 			},
 		],
@@ -85,12 +85,12 @@ export const commissionItems: CommissionItem[] = [
 			{
 				id: 'no-background',
 				label: 'no background',
-				choices: [{ label: 'Any animal', prices: { MY: 'RM50', US: '$12' } }],
+				choices: [{ label: 'Any animal', prices: { MY: 'RM50', US: '$50' } }],
 			},
 			{
 				id: 'with-background',
 				label: 'with background',
-				choices: [{ label: 'Any animal', prices: { MY: 'RM100', US: '$23' } }],
+				choices: [{ label: 'Any animal', prices: { MY: 'RM100', US: '$70' } }],
 			},
 		],
 	},
@@ -105,7 +105,7 @@ export const commissionItems: CommissionItem[] = [
 				alt: 'Scenery commission preview with a detailed illustrated environment.',
 			},
 		],
-		choices: [{ label: 'One scene', prefix: 'from', prices: { MY: 'RM500', US: '$115' } }],
+		choices: [{ label: 'One scene', prefix: 'from', prices: { MY: 'RM500', US: '$300' } }],
 	},
 	{
 		id: 'pet-sticker-pack',
@@ -117,7 +117,7 @@ export const commissionItems: CommissionItem[] = [
 				alt: 'Pet sticker pack commission preview with multiple illustrated animal sticker poses.',
 			},
 		],
-		choices: [{ label: 'Per 8 stickers', prices: { MY: 'RM30', US: '$7' } }],
+		choices: [{ label: 'Per 8 stickers', prices: { MY: 'RM30', US: '$30' } }],
 		imageFit: 'contain',
 	},
 ];
