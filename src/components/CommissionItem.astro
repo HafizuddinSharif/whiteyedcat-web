@@ -244,6 +244,10 @@ const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) 
 			select.value = activeCountry;
 		});
 
+		document.querySelectorAll<HTMLButtonElement>('[data-commission-country-option]').forEach((button) => {
+			button.setAttribute('aria-pressed', button.dataset.commissionCountryOption === activeCountry ? 'true' : 'false');
+		});
+
 		document.querySelectorAll<HTMLElement>('[data-commission-country-label]').forEach((label) => {
 			label.textContent = `${pricing.label} pricing`;
 		});
@@ -322,6 +326,15 @@ const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) 
 			});
 		});
 
+		document.querySelectorAll<HTMLButtonElement>('[data-commission-country-option]').forEach((button) => {
+			if (button.dataset.commissionCountryReady === 'true') return;
+
+			button.dataset.commissionCountryReady = 'true';
+			button.addEventListener('click', () => {
+				setCommissionCountry(button.dataset.commissionCountryOption || commissionPricing.defaultCountry);
+			});
+		});
+
 		setCommissionCountry(detectCommissionCountry());
 	};
 
@@ -330,6 +343,11 @@ const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) 
 	} else {
 		setupCommissionItems();
 	}
+
+	window.addEventListener('commission-country-change', (event) => {
+		const country = event instanceof CustomEvent ? event.detail?.country : null;
+		setCommissionCountry(country || commissionPricing.defaultCountry);
+	});
 
 	document.addEventListener('astro:page-load', setupCommissionItems);
 </script>

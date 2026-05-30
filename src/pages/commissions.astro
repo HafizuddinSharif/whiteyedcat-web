@@ -20,7 +20,13 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 				<div>
 					<h2 id="commissions-heading">Commission</h2>
 					<p class="page-subtitle">custom artwork made for people, pets, and places</p>
-					<p class="commissions-section__pricing" data-commission-country-label>United States pricing</p>
+					<div class="commissions-section__currency" aria-label="Choose commission pricing currency">
+						<span class="commissions-section__currency-label">Pricing</span>
+						<div class="commissions-section__currency-options">
+							<button type="button" data-commission-country-option="US" aria-pressed="true">USD</button>
+							<button type="button" data-commission-country-option="MY" aria-pressed="false">MYR</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="commissions-list">
@@ -103,12 +109,61 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		color: rgba(18, 18, 18, 0.72);
 	}
 
-	.commissions-section__pricing {
-		margin: 0.42rem 0 0;
-		font-size: clamp(0.9rem, 1.3vw, 1rem);
+	.commissions-section__currency {
+		margin: 0.8rem 0 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.7rem;
+		max-width: 100%;
+		padding: 0.25rem;
+		border: 1.5px solid rgba(18, 18, 18, 0.2);
+		border-radius: 999px;
+		background: rgba(18, 18, 18, 0.04);
+	}
+
+	.commissions-section__currency-label {
+		padding-left: 0.7rem;
+		font-size: clamp(0.78rem, 1vw, 0.9rem);
 		font-weight: 600;
-		line-height: 1.25;
-		color: rgba(18, 18, 18, 0.68);
+		line-height: 1;
+		color: rgba(18, 18, 18, 0.58);
+	}
+
+	.commissions-section__currency-options {
+		display: inline-grid;
+		grid-template-columns: repeat(2, minmax(3.25rem, 1fr));
+		gap: 0.2rem;
+	}
+
+	.commissions-section__currency button {
+		min-height: 2rem;
+		padding: 0.3rem 0.65rem;
+		border: 0;
+		border-radius: 999px;
+		background: transparent;
+		color: rgba(18, 18, 18, 0.7);
+		font: inherit;
+		font-size: 0.78rem;
+		font-weight: 800;
+		line-height: 1;
+		cursor: pointer;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.commissions-section__currency button:hover {
+		color: var(--commissions-text);
+	}
+
+	.commissions-section__currency button[aria-pressed='true'] {
+		background: var(--commissions-text);
+		color: var(--commissions-inverse);
+	}
+
+	.commissions-section__currency button:focus-visible {
+		outline: 2px solid var(--commissions-text);
+		outline-offset: 0.2rem;
 	}
 
 	.commissions-list {
@@ -252,6 +307,10 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 
 		.commissions-section h2 {
 			text-align: center;
+		}
+
+		.commissions-section__currency {
+			gap: 0.5rem;
 		}
 
 		.commissions-footer__brand,

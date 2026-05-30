@@ -184,6 +184,10 @@ const footerGroups: FooterLink[][] = [
 			select.value = activeCountry;
 		});
 
+		document.querySelectorAll<HTMLButtonElement>('[data-commission-country-option]').forEach((button) => {
+			button.setAttribute('aria-pressed', button.dataset.commissionCountryOption === activeCountry ? 'true' : 'false');
+		});
+
 		saveFooterCountry(activeCountry);
 		window.dispatchEvent(new CustomEvent('commission-country-change', { detail: { country: activeCountry } }));
 	};
@@ -195,6 +199,15 @@ const footerGroups: FooterLink[][] = [
 			select.dataset.footerCountryReady = 'true';
 			select.addEventListener('change', () => {
 				setFooterCountry(select.value);
+			});
+		});
+
+		document.querySelectorAll<HTMLButtonElement>('[data-commission-country-option]').forEach((button) => {
+			if (button.dataset.footerCountryReady === 'true') return;
+
+			button.dataset.footerCountryReady = 'true';
+			button.addEventListener('click', () => {
+				setFooterCountry(button.dataset.commissionCountryOption || footerCountrySelector.defaultCountry);
 			});
 		});
 
