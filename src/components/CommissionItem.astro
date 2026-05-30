@@ -110,7 +110,10 @@ const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) 
 						>
 							{variant.choices.map((choice) => (
 								<div class="commission-price-row">
-									<span>{choice.label}</span>
+									<span>
+										{choice.label}
+										{choice.note && <small>{choice.note}</small>}
+									</span>
 									<strong>
 										{choice.prefix && <small>{choice.prefix}</small>}
 										<span data-commission-price data-prices={JSON.stringify(choice.prices)}>{getPrice(choice.prices)}</span>
@@ -122,7 +125,10 @@ const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) 
 				) : (
 					choices.map((choice) => (
 						<div class="commission-price-row">
-							<span>{choice.label}</span>
+							<span>
+								{choice.label}
+								{choice.note && <small>{choice.note}</small>}
+							</span>
 							<strong>
 								{choice.prefix && <small>{choice.prefix}</small>}
 								<span data-commission-price data-prices={JSON.stringify(choice.prices)}>{getPrice(choice.prices)}</span>
@@ -522,9 +528,19 @@ const getPrice = (prices: CommissionChoice['prices'], country = defaultCountry) 
 		white-space: nowrap;
 	}
 
+	.commission-price-row > span {
+		display: grid;
+		gap: 0.3rem;
+	}
+
 	.commission-price-row small {
 		font-size: clamp(0.75rem, 1.15vw, 1rem);
 		font-weight: 500;
+	}
+
+	.commission-price-row > span small {
+		color: rgba(18, 18, 18, 0.62);
+		line-height: 1.15;
 	}
 
 	.commission-item__thumbs button:focus-visible,

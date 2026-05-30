@@ -16,6 +16,7 @@ export interface CommissionChoice {
     US: string;
   };
   prefix?: string;
+  note?: string;
 }
 
 export interface CommissionVariant {
@@ -115,7 +116,19 @@ export const commissionItems: CommissionItem[] = [
         alt: "Pet sticker pack commission preview with multiple illustrated animal sticker poses.",
       },
     ],
-    choices: [{ label: "Per 8 stickers", prices: { MY: "RM30", US: "$30" } }],
+    defaultVariant: "digital-only",
+    variants: [
+      {
+        id: "digital-only",
+        label: "Digital only",
+        choices: [{ label: "Per 8 stickers", prices: { MY: "RM30", US: "$30" } }],
+      },
+      {
+        id: "printed-delivery",
+        label: "Printed + delivery",
+        choices: [{ label: "Per 8 stickers", prices: { MY: "RM45", US: "N/A" }, note: "Only in Malaysia" }],
+      },
+    ],
     imageFit: "contain",
   },
 ];
