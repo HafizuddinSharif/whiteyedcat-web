@@ -124,7 +124,8 @@ const serviceLinks = [
 		</section>
 
 		<section class="gallery-section" id="artworks">
-			<div class="section-heading">
+			<div class="section-heading section-heading--featured">
+				<img class="section-heading__animation" src={waves2.src} alt="" loading="lazy" decoding="async" aria-hidden="true" />
 				<h2>Featured works</h2>
 			</div>
 			<div class="gallery-columns" data-masonry-gallery>
@@ -141,10 +142,6 @@ const serviceLinks = [
 				}
 			</div>
 		</section>
-
-		<div class="divider divider--top" aria-hidden="true">
-			<img src={waves2.src} alt="" loading="lazy" decoding="async" />
-		</div>
 
 		<section class="about-section" id="about">
 			<div class="about-card">
@@ -719,8 +716,24 @@ const serviceLinks = [
 		text-align: center;
 	}
 
+	.section-heading--featured {
+		display: grid;
+		justify-items: center;
+		place-items: center;
+		gap: 0.1rem;
+		margin-bottom: clamp(1.8rem, 4vw, 3rem);
+	}
+
 	.section-heading--large {
 		margin-bottom: 2.8rem;
+	}
+
+	.section-heading__animation {
+		width: clamp(200px, 50vw, 280px);
+		max-width: none;
+		height: auto;
+		pointer-events: none;
+		user-select: none;
 	}
 
 	.section-heading h2,
