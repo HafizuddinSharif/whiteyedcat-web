@@ -26,7 +26,7 @@ const cardClass = [
 ].filter(Boolean).join(' ');
 ---
 
-<article class={cardClass} data-artwork-card tabindex="0" aria-pressed="false" aria-label={`Show title for ${title}`}>
+<article class={cardClass} data-artwork-card tabindex="0" aria-label={`View ${title} fullscreen`}>
 	<div class="artwork-card__inner">
 		<div class="artwork-card__face artwork-card__front">
 			<img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
@@ -35,6 +35,11 @@ const cardClass = [
 			<p>{title}</p>
 		</div>
 	</div>
+	<button class="artwork-card__enlarge" type="button" data-artwork-open aria-label={`View ${title} fullscreen`}>
+		<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+			<path d="M8.7 4.8H5.9c-.6 0-1.1.5-1.1 1.1v2.8H3V5.9C3 4.3 4.3 3 5.9 3h2.8v1.8Zm6.6 0V3h2.8C19.7 3 21 4.3 21 5.9v2.8h-1.8V5.9c0-.6-.5-1.1-1.1-1.1h-2.8ZM4.8 15.3v2.8c0 .6.5 1.1 1.1 1.1h2.8V21H5.9A2.9 2.9 0 0 1 3 18.1v-2.8h1.8Zm14.4 0H21v2.8a2.9 2.9 0 0 1-2.9 2.9h-2.8v-1.8h2.8c.6 0 1.1-.5 1.1-1.1v-2.8Z"></path>
+		</svg>
+	</button>
 	{
 		purchaseUrl && (
 			<a class="artwork-card__buy" href={purchaseUrl} target="_blank" rel="noopener noreferrer" aria-label={`Buy ${title}`}>
@@ -45,6 +50,17 @@ const cardClass = [
 			</a>
 		)
 	}
+	<dialog class="artwork-card__viewer" data-artwork-viewer aria-label={`${title} fullscreen view`}>
+		<button class="artwork-card__viewer-close" type="button" data-artwork-close aria-label="Close fullscreen artwork">
+			<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+				<path d="m6.4 5.1 5.6 5.6 5.6-5.6 1.3 1.3-5.6 5.6 5.6 5.6-1.3 1.3-5.6-5.6-5.6 5.6-1.3-1.3 5.6-5.6-5.6-5.6 1.3-1.3Z"></path>
+			</svg>
+		</button>
+		<figure class="artwork-card__viewer-figure">
+			<img src={imageSrc} alt={alt} decoding="async" />
+			<figcaption>{title}</figcaption>
+		</figure>
+	</dialog>
 </article>
 
 <script>
@@ -53,35 +69,84 @@ const cardClass = [
 		return target.closest<HTMLElement>('[data-artwork-card]');
 	};
 
-	const toggleArtworkCard = (card: HTMLElement) => {
-		const isFlipped = card.classList.toggle('is-flipped');
-		card.classList.toggle('is-hover-suppressed', !isFlipped);
-		card.setAttribute('aria-pressed', String(isFlipped));
+	const openArtworkViewer = (card: HTMLElement) => {
+		const viewer = card.querySelector<HTMLDialogElement>('[data-artwork-viewer]');
+		if (!viewer) return;
+
+		viewer.classList.remove('is-closing');
+
+		if (typeof viewer.showModal === 'function') {
+			viewer.showModal();
+		} else {
+			viewer.setAttribute('open', '');
+		}
+
+		document.documentElement.classList.add('has-artwork-viewer');
 	};
 
-	document.addEventListener('pointerleave', (event) => {
-		const card = getArtworkCard(event.target);
-		if (!card) return;
+	const closeArtworkViewer = (viewer: HTMLDialogElement) => {
+		if (!viewer.open || viewer.classList.contains('is-closing')) return;
 
-		card.classList.remove('is-hover-suppressed');
-	}, true);
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (prefersReducedMotion) {
+			viewer.close();
+			return;
+		}
+
+		viewer.classList.add('is-closing');
+		window.setTimeout(() => {
+			viewer.classList.remove('is-closing');
+			viewer.close();
+		}, 190);
+	};
 
 	document.addEventListener('click', (event) => {
 		const card = getArtworkCard(event.target);
 		if (!card) return;
-		if (event.target instanceof Element && event.target.closest('a')) return;
+		if (!(event.target instanceof Element)) return;
 
-		toggleArtworkCard(card);
+		const viewer = event.target.closest<HTMLDialogElement>('[data-artwork-viewer]');
+		if (viewer) {
+			if (
+				event.target.closest('[data-artwork-close]') ||
+				event.target === viewer ||
+				event.target.classList.contains('artwork-card__viewer-figure')
+			) {
+				closeArtworkViewer(viewer);
+			}
+
+			return;
+		}
+
+		if (event.target.closest('a')) return;
+
+		openArtworkViewer(card);
 	});
 
 	document.addEventListener('keydown', (event) => {
 		if (event.key !== 'Enter' && event.key !== ' ') return;
+		if (event.target instanceof Element && event.target.closest('a, button, [data-artwork-viewer]')) return;
 
 		const card = getArtworkCard(event.target);
 		if (!card) return;
 
 		event.preventDefault();
-		toggleArtworkCard(card);
+		openArtworkViewer(card);
+	});
+
+	document.addEventListener('cancel', (event) => {
+		if (!(event.target instanceof HTMLDialogElement)) return;
+		if (!event.target.matches('[data-artwork-viewer]')) return;
+
+		event.preventDefault();
+		closeArtworkViewer(event.target);
+	});
+
+	document.addEventListener('close', (event) => {
+		if (!(event.target instanceof HTMLDialogElement)) return;
+		if (!event.target.matches('[data-artwork-viewer]')) return;
+
+		document.documentElement.classList.toggle('has-artwork-viewer', Boolean(document.querySelector('[data-artwork-viewer][open]')));
 	});
 </script>
 
@@ -101,6 +166,10 @@ const cardClass = [
 		outline: none;
 		-webkit-tap-highlight-color: transparent;
 		user-select: none;
+	}
+
+	:global(html.has-artwork-viewer) {
+		overflow: hidden;
 	}
 
 	.artwork-card--portrait {
@@ -195,6 +264,59 @@ const cardClass = [
 		transform: translateY(0);
 	}
 
+	.artwork-card__enlarge,
+	.artwork-card__viewer-close {
+		border: 0;
+		color: #ffffff;
+		cursor: pointer;
+		line-height: 0;
+	}
+
+	.artwork-card__enlarge {
+		position: absolute;
+		left: 0.45rem;
+		top: 0.45rem;
+		z-index: 3;
+		display: inline-grid;
+		place-items: center;
+		width: 2.05rem;
+		height: 2.05rem;
+		padding: 0;
+		border-radius: 999px;
+		background: rgb(11 11 11 / 0.86);
+		opacity: 0;
+		transform: translateY(-0.35rem) scale(0.94);
+		transition:
+			opacity 180ms ease,
+			transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			background-color 180ms ease;
+	}
+
+	.artwork-card__enlarge svg,
+	.artwork-card__viewer-close svg {
+		width: 1.18rem;
+		height: 1.18rem;
+		fill: currentColor;
+	}
+
+	.artwork-card:not(.is-hover-suppressed):hover .artwork-card__enlarge,
+	.artwork-card:focus-visible .artwork-card__enlarge,
+	.artwork-card:focus-within .artwork-card__enlarge {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.artwork-card__enlarge:hover,
+	.artwork-card__viewer-close:hover {
+		background: #000000;
+	}
+
+	.artwork-card__enlarge:focus-visible,
+	.artwork-card__viewer-close:focus-visible {
+		outline: 3px solid var(--artwork-card-tag);
+		outline-offset: 3px;
+	}
+
 	.artwork-card__buy {
 		position: absolute;
 		right: 0.45rem;
@@ -220,9 +342,144 @@ const cardClass = [
 		flex: 0 0 auto;
 	}
 
+	@keyframes artworkViewerFadeIn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes artworkViewerFadeOut {
+		from {
+			opacity: 1;
+		}
+
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes artworkViewerArtworkIn {
+		from {
+			opacity: 0;
+			transform: translateY(0.7rem) scale(0.985);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes artworkViewerArtworkOut {
+		from {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+
+		to {
+			opacity: 0;
+			transform: translateY(0.45rem) scale(0.99);
+		}
+	}
+
+	.artwork-card__viewer {
+		width: 100vw;
+		max-width: none;
+		height: 100dvh;
+		max-height: none;
+		margin: 0;
+		padding: clamp(1rem, 3vw, 2rem);
+		border: 0;
+		background: rgb(5 5 5 / 0.94);
+		color: #f2eee6;
+		cursor: zoom-out;
+	}
+
+	.artwork-card__viewer[open] {
+		animation: artworkViewerFadeIn 180ms ease both;
+	}
+
+	.artwork-card__viewer[open].is-closing {
+		animation: artworkViewerFadeOut 180ms ease both;
+	}
+
+	.artwork-card__viewer::backdrop {
+		background: rgb(0 0 0 / 0.74);
+	}
+
+	.artwork-card__viewer[open]::backdrop {
+		animation: artworkViewerFadeIn 180ms ease both;
+	}
+
+	.artwork-card__viewer[open].is-closing::backdrop {
+		animation: artworkViewerFadeOut 180ms ease both;
+	}
+
+	.artwork-card__viewer-figure {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		display: grid;
+		grid-template-rows: minmax(0, 1fr) auto;
+		align-items: center;
+		justify-items: center;
+		gap: 0.8rem;
+	}
+
+	.artwork-card__viewer[open] .artwork-card__viewer-figure {
+		animation: artworkViewerArtworkIn 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	.artwork-card__viewer[open].is-closing .artwork-card__viewer-figure {
+		animation: artworkViewerArtworkOut 180ms ease both;
+	}
+
+	.artwork-card__viewer-figure img {
+		width: auto;
+		height: auto;
+		max-width: min(100%, 1200px);
+		max-height: calc(100dvh - 7rem);
+		object-fit: contain;
+		box-shadow: 0 1.4rem 4rem rgb(0 0 0 / 0.38);
+	}
+
+	.artwork-card__viewer-figure figcaption {
+		max-width: min(100%, 54rem);
+		margin: 0;
+		font-family: 'Bodoni Moda', serif;
+		font-size: clamp(1.15rem, 2.2vw, 2rem);
+		line-height: 1.05;
+		text-align: center;
+	}
+
+	.artwork-card__viewer-close {
+		position: fixed;
+		right: clamp(0.75rem, 2vw, 1.4rem);
+		top: clamp(0.75rem, 2vw, 1.4rem);
+		z-index: 2;
+		display: inline-grid;
+		place-items: center;
+		width: 2.7rem;
+		height: 2.7rem;
+		padding: 0;
+		border-radius: 999px;
+		background: rgb(0 0 0 / 0.74);
+	}
+
 	.artwork-card:focus-visible {
 		outline: 3px solid var(--artwork-card-tag);
 		outline-offset: 4px;
+	}
+
+	@media (hover: none) {
+		.artwork-card__enlarge {
+			opacity: 1;
+			transform: none;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -231,12 +488,22 @@ const cardClass = [
 		}
 
 		.artwork-card__back::before,
-		.artwork-card__back p {
+		.artwork-card__back p,
+		.artwork-card__enlarge {
 			transition: none;
 		}
 
 		.artwork-card__back p {
 			transform: none;
+		}
+
+		.artwork-card__viewer[open],
+		.artwork-card__viewer[open].is-closing,
+		.artwork-card__viewer[open]::backdrop,
+		.artwork-card__viewer[open].is-closing::backdrop,
+		.artwork-card__viewer[open] .artwork-card__viewer-figure,
+		.artwork-card__viewer[open].is-closing .artwork-card__viewer-figure {
+			animation: none;
 		}
 	}
 </style>
