@@ -47,20 +47,37 @@ const serviceLinks = [
 	title="whiteyedcat | Malaysian Painter and Illustrator"
 	description="Explore whiteyedcat's Malaysian art portfolio: emotional playful-dark paintings, illustration, prints, commissions, collaborations, exhibitions, and contact details."
 >
-	<div class="intro-reveal" aria-hidden="true">
+	<div class="intro-reveal is-pending" data-intro-reveal aria-hidden="true">
 		<div class="intro-reveal__brand">
-			<img src={avatar.src} alt="" loading="eager" decoding="async" />
+			<img src={avatar.src} alt="" loading="eager" decoding="async" data-intro-critical />
 			<p>whiteyedcat</p>
+			<div class="intro-reveal__loader">
+				<span class="intro-reveal__spinner"></span>
+				<span class="intro-reveal__loader-label">loading art</span>
+			</div>
 		</div>
 		<div class="intro-reveal__wave">
 			<AnimatedWave color="var(--color-footer, #0b0b0b)" />
 		</div>
 	</div>
-	<main class="page-shell" id="top">
+	<noscript>
+		<style>
+			.intro-reveal {
+				display: none !important;
+			}
+
+			.site-header,
+			.hero__content {
+				opacity: 1 !important;
+				animation: none !important;
+			}
+		</style>
+	</noscript>
+	<main class="page-shell" id="top" data-intro-content>
 		<header class="site-header">
 			<div class="site-header__inner">
 				<a href="#top" class="brand-mark" aria-label="Go to top">
-					<img src={avatar.src} alt="" loading="eager" decoding="async" />
+					<img src={avatar.src} alt="" loading="eager" decoding="async" data-intro-critical />
 				</a>
 				<button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation">
 					<span aria-hidden="true"></span>
@@ -94,7 +111,7 @@ const serviceLinks = [
 
 		<section class="hero">
 			<div class="hero__backdrop" aria-hidden="true">
-				<img data-hero-parallax src={heroBg.src} alt="" loading="eager" decoding="async" />
+				<img data-hero-parallax data-intro-critical src={heroBg.src} alt="" loading="eager" decoding="async" />
 			</div>
 			<div class="hero__overlay" aria-hidden="true"></div>
 			<div class="hero__content">
@@ -204,8 +221,78 @@ const serviceLinks = [
 
 <script>
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const introMaxWait = 8000;
 
 	let frame = 0;
+
+	const waitForImage = (image: HTMLImageElement) => {
+		if (image.complete) {
+			return Promise.resolve();
+		}
+
+		return new Promise<void>((resolve) => {
+			const settle = () => {
+				image.removeEventListener('load', settle);
+				image.removeEventListener('error', settle);
+				resolve();
+			};
+
+			image.addEventListener('load', settle, { once: true });
+			image.addEventListener('error', settle, { once: true });
+		});
+	};
+
+	const waitWithTimeout = (promise: Promise<unknown>, timeout: number) => {
+		return new Promise<void>((resolve) => {
+			const timer = window.setTimeout(resolve, timeout);
+
+			promise
+				.catch(() => undefined)
+				.finally(() => {
+					window.clearTimeout(timer);
+					resolve();
+				});
+		});
+	};
+
+	const setupIntroReveal = () => {
+		const reveal = document.querySelector<HTMLElement>('[data-intro-reveal]');
+		const introContent = document.querySelector<HTMLElement>('[data-intro-content]');
+
+		if (!introContent) return;
+
+		if (!reveal || reducedMotion.matches) {
+			introContent.classList.add('is-intro-ready');
+			reveal?.remove();
+			return;
+		}
+
+		if (reveal.dataset.introState) return;
+		reveal.dataset.introState = 'waiting';
+
+		const criticalImages = Array.from(document.querySelectorAll<HTMLImageElement>('[data-intro-critical]'));
+		const criticalAssetsReady = Promise.all([
+			...criticalImages.map(waitForImage),
+			document.fonts?.ready ?? Promise.resolve(),
+		]);
+
+		waitWithTimeout(criticalAssetsReady, introMaxWait).then(() => {
+			reveal.dataset.introState = 'ready';
+			reveal.classList.remove('is-pending');
+			reveal.classList.add('is-ready');
+			introContent.classList.add('is-intro-ready');
+		});
+
+		reveal.addEventListener(
+			'animationend',
+			(event) => {
+				if (event.target === reveal) {
+					reveal.remove();
+				}
+			},
+			{ once: true },
+		);
+	};
 
 	const updateHeroParallax = () => {
 		frame = 0;
@@ -318,11 +405,13 @@ const serviceLinks = [
 	window.addEventListener('load', queueArtworkMasonry);
 	window.addEventListener('resize', queueArtworkMasonry);
 	document.addEventListener('astro:page-load', () => {
+		setupIntroReveal();
 		setNavigationOpen(false);
 		requestHeroParallaxUpdate();
 		queueArtworkMasonry();
 	});
 	document.fonts?.ready.then(queueArtworkMasonry);
+	setupIntroReveal();
 	queueArtworkMasonry();
 </script>
 
@@ -363,7 +452,11 @@ const serviceLinks = [
 		pointer-events: auto;
 		transform: translate3d(0, 0, 0);
 		will-change: transform;
-		animation: introRevealWipe 900ms cubic-bezier(0.76, 0, 0.24, 1) 1050ms forwards;
+	}
+
+	.intro-reveal.is-ready {
+		pointer-events: none;
+		animation: introRevealWipe 900ms cubic-bezier(0.76, 0, 0.24, 1) 300ms forwards;
 	}
 
 	.intro-reveal__brand {
@@ -375,8 +468,13 @@ const serviceLinks = [
 		gap: 0.45rem;
 		color: var(--color-text-inverse);
 		text-align: center;
-		opacity: 0;
-		animation: introBrandFade 1100ms ease forwards;
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+		will-change: opacity, transform;
+	}
+
+	.intro-reveal.is-ready .intro-reveal__brand {
+		animation: introBrandExit 620ms ease forwards;
 	}
 
 	.intro-reveal__brand img {
@@ -395,6 +493,42 @@ const serviceLinks = [
 		font-weight: 400;
 	}
 
+	.intro-reveal__loader {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		min-height: 1rem;
+		margin-top: clamp(0.4rem, 1.6vh, 0.85rem);
+		color: rgba(242, 238, 230, 0.82);
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		opacity: 1;
+	}
+
+	.intro-reveal__loader-label {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+		transition:
+			opacity 220ms ease,
+			transform 220ms ease;
+	}
+
+	.intro-reveal.is-ready .intro-reveal__loader-label {
+		opacity: 0;
+		transform: translate3d(0, 0.3rem, 0);
+	}
+
+	.intro-reveal__spinner {
+		width: 1rem;
+		aspect-ratio: 1;
+		border: 2px solid rgba(242, 238, 230, 0.34);
+		border-top-color: var(--color-accent);
+		border-radius: 50%;
+		animation: introSpinner 780ms linear infinite;
+	}
+
 	.intro-reveal__wave {
 		position: absolute;
 		left: 0;
@@ -410,7 +544,11 @@ const serviceLinks = [
 	.hero__content {
 		opacity: 0;
 		will-change: opacity;
-		animation: introContentReveal 700ms ease 1240ms forwards;
+	}
+
+	.page-shell.is-intro-ready .site-header,
+	.page-shell.is-intro-ready .hero__content {
+		animation: introContentReveal 700ms ease 480ms forwards;
 	}
 
 	@keyframes introRevealWipe {
@@ -430,14 +568,9 @@ const serviceLinks = [
 		}
 	}
 
-	@keyframes introBrandFade {
-		0% {
-			opacity: 0;
-			transform: translate3d(0, 0.25rem, 0);
-		}
-
-		28%,
-		58% {
+	@keyframes introBrandExit {
+		0%,
+		42% {
 			opacity: 1;
 			transform: translate3d(0, 0, 0);
 		}
@@ -445,6 +578,12 @@ const serviceLinks = [
 		100% {
 			opacity: 0;
 			transform: translate3d(0, -0.35rem, 0);
+		}
+	}
+
+	@keyframes introSpinner {
+		to {
+			transform: rotate(360deg);
 		}
 	}
 
