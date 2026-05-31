@@ -123,9 +123,70 @@ const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 		<ClientRouter fallback="animate" />
 	</head>
 	<body>
+		<div class="route-loader" role="status" aria-live="polite" aria-hidden="true" data-route-loader>
+			<span class="route-loader__spinner" aria-hidden="true"></span>
+			<span>loading</span>
+		</div>
 		<slot />
 	</body>
 </html>
+
+<script>
+	const routeLoaderScriptKey = '__whiteyedcatRouteLoaderReady';
+	const routeLoaderActiveClass = 'is-route-loading';
+
+	const getRouteLoader = () => document.querySelector<HTMLElement>('[data-route-loader]');
+
+	const showRouteLoader = () => {
+		const loader = getRouteLoader();
+
+		document.documentElement.classList.add(routeLoaderActiveClass);
+		loader?.setAttribute('aria-hidden', 'false');
+	};
+
+	const hideRouteLoader = () => {
+		const loader = getRouteLoader();
+
+		document.documentElement.classList.remove(routeLoaderActiveClass);
+		loader?.setAttribute('aria-hidden', 'true');
+	};
+
+	const isSamePageHashNavigation = (from: URL, to: URL) => {
+		return from.pathname === to.pathname && from.search === to.search && from.hash !== to.hash;
+	};
+
+	const shouldShowRouteLoader = (event: Event) => {
+		if (!('from' in event) || !('to' in event)) return true;
+
+		const transitionEvent = event as Event & { from: URL; to: URL; sourceElement?: Element };
+		const sourceElement = transitionEvent.sourceElement;
+
+		if (isSamePageHashNavigation(transitionEvent.from, transitionEvent.to)) return false;
+
+		if (sourceElement instanceof HTMLAnchorElement) {
+			if (sourceElement.target && sourceElement.target !== '_self') return false;
+			if (sourceElement.hasAttribute('download')) return false;
+		}
+
+		return transitionEvent.from.href !== transitionEvent.to.href;
+	};
+
+	if (!Reflect.get(window, routeLoaderScriptKey)) {
+		Reflect.set(window, routeLoaderScriptKey, true);
+
+		document.addEventListener('astro:before-preparation', (event) => {
+			if (shouldShowRouteLoader(event)) {
+				showRouteLoader();
+			}
+		});
+
+		document.addEventListener('astro:after-swap', hideRouteLoader);
+		document.addEventListener('astro:page-load', hideRouteLoader);
+		window.addEventListener('pageshow', hideRouteLoader);
+	}
+
+	hideRouteLoader();
+</script>
 
 <style>
 	:global(:root) {
@@ -165,6 +226,52 @@ const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 		animation: pageFadeIn 280ms ease 60ms both;
 	}
 
+	:global(.route-loader) {
+		position: fixed;
+		top: max(1rem, env(safe-area-inset-top));
+		left: 50%;
+		z-index: 1000;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55rem;
+		min-height: 2.5rem;
+		padding: 0.62rem 0.9rem;
+		border: 2px solid #121212;
+		background: #ffffff;
+		color: #121212;
+		box-shadow: 0 12px 0 rgba(18, 18, 18, 0.16);
+		font-size: 0.78rem;
+		font-weight: 700;
+		line-height: 1;
+		text-transform: uppercase;
+		pointer-events: none;
+		opacity: 0;
+		transform: translate3d(-50%, -0.75rem, 0);
+		transition:
+			opacity 160ms ease,
+			transform 160ms ease;
+	}
+
+	:global(html.is-route-loading .route-loader) {
+		opacity: 1;
+		transform: translate3d(-50%, 0, 0);
+	}
+
+	:global(.route-loader__spinner) {
+		width: 0.95rem;
+		aspect-ratio: 1;
+		border: 2px solid rgba(18, 18, 18, 0.22);
+		border-top-color: #5fd0d3;
+		border-radius: 50%;
+		animation: routeLoaderSpin 720ms linear infinite;
+	}
+
+	@keyframes routeLoaderSpin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		:global(html) {
 			scroll-behavior: auto;
@@ -172,6 +279,14 @@ const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 
 		:global(::view-transition-old(root)),
 		:global(::view-transition-new(root)) {
+			animation: none;
+		}
+
+		:global(.route-loader) {
+			transition: none;
+		}
+
+		:global(.route-loader__spinner) {
 			animation: none;
 		}
 	}
