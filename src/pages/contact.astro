@@ -3,7 +3,6 @@ import QRCode from 'qrcode';
 import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import contactDividerBottom from '../assets/whiteyedcat/contact-divider-bottom.png';
 import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 import contactFishLeft from '../assets/whiteyedcat/contact-fish-left.png';
 import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
@@ -68,7 +67,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		</section>
 
 		<div class="contact-divider contact-divider--bottom" aria-hidden="true">
-			<img src={contactDividerBottom.src} alt="" loading="lazy" decoding="async" />
+			<img src={contactDividerTop.src} alt="" loading="lazy" decoding="async" />
 		</div>
 
 		<SiteFooter />
@@ -120,6 +119,10 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 	.contact-divider--bottom {
 		margin-top: clamp(2.4rem, 4vw, 3.8rem);
 		margin-bottom: clamp(5.5rem, 11vw, 8.4rem);
+	}
+
+	.contact-divider--bottom img {
+		transform: scaleX(-1);
 	}
 
 	.contact-panel {
