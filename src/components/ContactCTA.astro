@@ -56,7 +56,7 @@ const { heading, headingId = 'contact-cta-heading' } = Astro.props;
 	}
 
 	.contact-cta__divider {
-		width: min(2000px, 100%);
+		width: var(--cta-shell, min(1180px, calc(100vw - 2rem)));
 		margin: clamp(1rem, 2vw, 1.6rem) auto clamp(4.5rem, 9vw, 7.5rem);
 		pointer-events: none;
 	}
@@ -173,8 +173,6 @@ const { heading, headingId = 'contact-cta-heading' } = Astro.props;
 		}
 
 		.contact-cta__divider {
-			width: 145%;
-			margin-left: -22.5%;
 			margin-bottom: 4.25rem;
 		}
 
