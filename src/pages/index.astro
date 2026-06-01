@@ -5,8 +5,7 @@ import ArtworkCard from '../components/ArtworkCard.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { artworkItems } from '../data/artworks';
 import avatar from '../assets/whiteyedcat/avatar.png';
-import cat from '../assets/whiteyedcat/cat.png';
-import wavesDivider from '../assets/elements/waves-4.webp';
+import wavesAccent from '../assets/elements/waves.png';
 import waves2 from '../assets/elements/waves_2_pingpong_2.webp';
 import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
 import fish from '../assets/whiteyedcat/fish.png';
@@ -28,11 +27,6 @@ const navigation = [
 const featuredArtworkItems = artworkItems.filter((item) => item.featured);
 
 const rolePills = ['painter', 'illustrator'];
-
-const vibeItems = [
-	{ src: fish, alt: 'Decorative fish illustration.' },
-	{ src: cat, alt: 'Decorative cat illustration.' },
-];
 
 const serviceLinks = [
 	{ id: 'commissions', title: 'commission', subtitle: 'custom artwork', href: '/commissions', corner: 'top-left' },
@@ -170,25 +164,12 @@ const serviceLinks = [
 					<p class="lead">
 						painter/illustrator from malaysia she explores emotions of girlhood through art where it delves into a realm of colour and playfulness. Through her art she explores the depths of mundane life beyond what meets the eye
 					</p>
-					<div class="vibes">
-						<div>
-							<h3>What I vibe with</h3>
-						</div>
-						<div class="vibes__art">
-							{
-								vibeItems.map((item) => (
-									<img src={item.src.src} alt={item.alt} loading="lazy" decoding="async" />
-								))
-							}
-						</div>
+					<div class="about-card__accent" aria-hidden="true">
+						<img src={wavesAccent.src} alt="" loading="lazy" decoding="async" />
 					</div>
 				</div>
 			</div>
 		</section>
-
-		<div class="divider divider--bottom" aria-hidden="true">
-			<img src={wavesDivider.src} alt="" loading="lazy" decoding="async" />
-		</div>
 
 		<section class="services-section" id="contact">
 			<div class="services-layout">
@@ -908,16 +889,6 @@ const serviceLinks = [
 		color: var(--color-text-inverse);
 	}
 
-	.divider {
-		width: min(1200px, 100%);
-		margin: 0 auto;
-	}
-
-	.divider img {
-		width: 100%;
-		height: auto;
-	}
-
 	.about-section {
 		padding-block: var(--section-gap);
 	}
@@ -955,69 +926,24 @@ const serviceLinks = [
 	}
 
 	.lead {
-		max-width: 46rem;
+		width: 100%;
 		margin: 1rem 0 0;
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.7;
 	}
 
-	.vibes {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1.25rem 2rem;
+	.about-card__accent {
+		width: 100%;
 		margin-top: 1.35rem;
 	}
 
-	.vibes h3 {
-		margin: 0;
-		font-size: 1.3rem;
-	}
-
-	.vibes__art {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.vibes__art img {
-		width: clamp(6rem, 16vw, 9rem);
-		aspect-ratio: 1;
+	.about-card__accent img {
+		display: block;
+		width: 100%;
+		height: auto;
 		object-fit: contain;
-		transform-origin: 50% 62%;
-		animation: vibeShake 3.1s ease-in-out infinite;
-		will-change: transform;
-	}
-
-	.vibes__art img:nth-child(2) {
-		animation-delay: -1s;
-		animation-duration: 3.5s;
-	}
-
-	@keyframes vibeShake {
-		0%,
-		58%,
-		100% {
-			transform: translate3d(0, 0, 0) rotate(0deg);
-		}
-
-		67% {
-			transform: translate3d(-4px, 0, 0) rotate(-4deg);
-		}
-
-		76% {
-			transform: translate3d(4px, -3px, 0) rotate(3.6deg);
-		}
-
-		85% {
-			transform: translate3d(-3px, 2px, 0) rotate(-2.8deg);
-		}
-
-		94% {
-			transform: translate3d(2px, 0, 0) rotate(1.8deg);
-		}
+		object-position: left center;
 	}
 
 	.services-section {
@@ -1335,10 +1261,6 @@ const serviceLinks = [
 			margin-inline: auto;
 		}
 
-		.vibes {
-			justify-content: center;
-		}
-
 		.site-footer__links {
 			justify-content: center;
 			align-items: start;
@@ -1487,9 +1409,5 @@ const serviceLinks = [
 			animation: none;
 		}
 
-		.vibes__art img {
-			animation: none;
-			transform: none;
-		}
 	}
 </style>
