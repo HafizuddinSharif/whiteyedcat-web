@@ -5,7 +5,6 @@ import ArtworkCard from '../components/ArtworkCard.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ContactCTA from '../components/ContactCTA.astro';
 import { artworkItems } from '../data/artworks';
-import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 ---
 
 <Layout
@@ -48,7 +47,7 @@ import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
 		</section>
 
 		<div class="artwork-cta-wrap">
-			<ContactCTA heading="Want to know more about my art?" headingId="artwork-cta-heading" dividerSrc={contactDividerTop} />
+			<ContactCTA heading="Want to know more about my art?" headingId="artwork-cta-heading" />
 		</div>
 
 		<SiteFooter />

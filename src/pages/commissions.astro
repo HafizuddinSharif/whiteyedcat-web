@@ -5,7 +5,6 @@ import CommissionItem from '../components/CommissionItem.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ContactCTA from '../components/ContactCTA.astro';
 import { commissionItems } from '../data/commissions';
-import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 ---
 
 <Layout
@@ -39,7 +38,7 @@ import commissionsDivider from '../assets/whiteyedcat/commissions-divider.png';
 		</section>
 
 		<div class="commissions-cta-wrap">
-			<ContactCTA heading="Commission me!" headingId="commissions-cta-heading" dividerSrc={commissionsDivider} />
+			<ContactCTA heading="Commission me!" headingId="commissions-cta-heading" />
 		</div>
 
 		<SiteFooter />
