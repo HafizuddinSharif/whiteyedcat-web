@@ -33,7 +33,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 
 		<section class="contact-section" aria-labelledby="contact-heading">
 			<div class="contact-panel">
-				<img class="contact-fish contact-fish--left" src={contactFishLeft.src} alt="" loading="lazy" decoding="async" />
+				<img class="contact-fish contact-fish--left fish-shake" src={contactFishLeft.src} alt="" loading="lazy" decoding="async" />
 				<div class="contact-panel__body">
 					<h2 id="contact-heading">Contact Me</h2>
 					<div class="contact-methods">
@@ -63,7 +63,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 						<img src={homeQrCode} alt="QR code linking to the whiteyedcat homepage." loading="eager" decoding="async" />
 					</a>
 				</div>
-				<img class="contact-fish contact-fish--right" src={contactFishRight.src} alt="" loading="lazy" decoding="async" />
+				<img class="contact-fish contact-fish--right fish-shake fish-shake--delay" src={contactFishRight.src} alt="" loading="lazy" decoding="async" />
 			</div>
 		</section>
 

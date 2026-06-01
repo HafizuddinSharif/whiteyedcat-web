@@ -173,7 +173,7 @@ const serviceLinks = [
 
 		<section class="services-section" id="contact">
 			<div class="services-layout">
-				<img class="services-layout__fish services-layout__fish--left" src={fish.src} alt="" loading="lazy" decoding="async" />
+				<img class="services-layout__fish services-layout__fish--left fish-shake" src={fish.src} alt="" loading="lazy" decoding="async" />
 				<div class="section-heading section-heading--large">
 					<h2>Work with me!</h2>
 				</div>
@@ -192,7 +192,7 @@ const serviceLinks = [
 						))
 					}
 				</ul>
-				<img class="services-layout__fish services-layout__fish--right" src={contactFishRight.src} alt="" loading="lazy" decoding="async" />
+				<img class="services-layout__fish services-layout__fish--right fish-shake fish-shake--delay" src={contactFishRight.src} alt="" loading="lazy" decoding="async" />
 			</div>
 		</section>
 
@@ -975,13 +975,13 @@ const serviceLinks = [
 	.services-layout__fish--left {
 		left: clamp(0rem, 9vw, 7rem);
 		top: clamp(3.8rem, 10vw, 7.6rem);
-		transform: rotate(-8deg);
+		--fish-rotate: -8deg;
 	}
 
 	.services-layout__fish--right {
 		right: clamp(-2rem, 4vw, 3rem);
 		bottom: clamp(0.5rem, 3vw, 2.4rem);
-		transform: rotate(10deg);
+		--fish-rotate: 10deg;
 	}
 
 	.services-layout .section-heading {
