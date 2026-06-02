@@ -40,7 +40,7 @@ export const commissionItems: CommissionItem[] = [
   {
     id: "portraits",
     title: "Portraits",
-    description: "Illustrated portraits for people. Pop-art meets hyperrealism. Each piece is unique and painted with intention.",
+    description: "Illustrated portraits for people.",
     images: [
       {
         src: portrait,
@@ -72,7 +72,7 @@ export const commissionItems: CommissionItem[] = [
   {
     id: "pet-portraits",
     title: "Pet Portraits",
-    description: "Illustrated portraits for pets. Pop-art meets hyperrealism. Each piece is unique and painted with intention.",
+    description: "Illustrated portraits for pets.",
     images: [
       {
         src: petPortrait,
@@ -96,8 +96,7 @@ export const commissionItems: CommissionItem[] = [
   {
     id: "scenery",
     title: "Custom Artwork",
-    description:
-      "A fully custom digital painting of whatever you imagine — environments, architecture, a reference photo brought to life. Each piece is crafted with mood and atmosphere, telling a story in its own way.",
+    description: "Custom digital painting of your request/your imagination!",
     images: [
       {
         src: scenery,
