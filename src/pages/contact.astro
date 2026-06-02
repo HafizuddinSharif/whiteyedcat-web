@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import Layout from '../layouts/Layout.astro';
 import ArtistHeader from '../components/ArtistHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import contactDividerTop from '../assets/whiteyedcat/contact-divider-top.png';
+import contactDividerWaves from '../assets/elements/waves.png';
 import contactFishLeft from '../assets/whiteyedcat/contact-fish-left.png';
 import contactFishRight from '../assets/whiteyedcat/contact-fish-right.png';
 
@@ -27,7 +27,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		<ArtistHeader currentHref="/contact" />
 
 		<div class="contact-divider contact-divider--top" aria-hidden="true">
-			<img src={contactDividerTop.src} alt="" loading="eager" decoding="async" />
+			<img src={contactDividerWaves.src} alt="" loading="eager" decoding="async" />
 		</div>
 
 		<section class="contact-section" aria-labelledby="contact-heading">
@@ -67,7 +67,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		</section>
 
 		<div class="contact-divider contact-divider--bottom" aria-hidden="true">
-			<img src={contactDividerTop.src} alt="" loading="lazy" decoding="async" />
+			<img src={contactDividerWaves.src} alt="" loading="lazy" decoding="async" />
 		</div>
 
 		<SiteFooter />
@@ -102,7 +102,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 	}
 
 	.contact-divider {
-		width: min(2000px, 100%);
+		width: var(--contact-shell);
 		margin-inline: auto;
 		pointer-events: none;
 	}
