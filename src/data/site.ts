@@ -1,7 +1,7 @@
 export const siteName = 'whiteyedcat';
 export const siteTitle = 'whiteyedcat | Malaysian Painter and Illustrator';
 export const siteDescription =
-	'Portfolio of whiteyedcat, a Malaysian painter and illustrator creating emotional, playful-dark artwork, prints, commissions, collaborations, and exhibition projects.';
+	'Painter and illustrator from Malaysia exploring emotions of womanhood through colour, playfulness, and the hidden depths of mundane life.';
 export const siteImage = '/open-graph.png';
 export const siteImageAlt = 'whiteyedcat painter and illustrator portfolio preview.';
 export const artistName = 'whiteyedcat';
@@ -38,7 +38,7 @@ export const sitePages = [
 		path: '/artworks/',
 		title: 'Artwork | whiteyedcat',
 		description:
-			'Browse selected whiteyedcat paintings, illustrations, prints, and available original artwork.',
+			'Browse selected whiteyedcat paintings, illustrations, prints, and original artwork exploring womanhood, colour, playfulness, and mundane life.',
 		priority: '0.9',
 		changefreq: 'monthly',
 	},

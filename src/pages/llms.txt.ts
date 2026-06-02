@@ -25,7 +25,7 @@ const buildLlmsText = (baseUrl: string) => {
 
 > ${siteDescription}
 
-whiteyedcat is a painter and illustrator based in Malaysia. The portfolio highlights original paintings, illustration projects, portrait and pet commissions, sticker packs, collaborations, exhibitions, and contact options.
+whiteyedcat is a painter and illustrator from Malaysia. Her art explores emotions of womanhood through colour, playfulness, and the hidden depths of mundane life. The portfolio highlights original paintings, illustration projects, portrait and pet commissions, sticker packs, collaborations, exhibitions, and contact options.
 
 ## Main Pages
 
