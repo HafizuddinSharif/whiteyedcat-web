@@ -27,7 +27,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		<ArtistHeader currentHref="/contact" />
 
 		<div class="contact-divider contact-divider--top" aria-hidden="true">
-			<img src={contactDividerWaves.src} alt="" loading="eager" decoding="async" />
+			<img src={contactDividerWaves.src} alt="" loading="eager" decoding="async" fetchpriority="high" />
 		</div>
 
 		<section class="contact-section" aria-labelledby="contact-heading">
@@ -67,7 +67,7 @@ const homeQrCode = await QRCode.toDataURL(homeUrl, {
 		</section>
 
 		<div class="contact-divider contact-divider--bottom" aria-hidden="true">
-			<img src={contactDividerWaves.src} alt="" loading="lazy" decoding="async" />
+			<img src={contactDividerWaves.src} alt="" loading="eager" decoding="async" fetchpriority="high" />
 		</div>
 
 		<SiteFooter />
