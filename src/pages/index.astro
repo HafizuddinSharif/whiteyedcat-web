@@ -13,6 +13,7 @@ import heroBg from '../assets/whiteyedcat/hero-bg.webp';
 import instagramIcon from '../assets/icons/instagram.svg';
 import threadsIcon from '../assets/icons/threads.svg';
 import tiktokIcon from '../assets/icons/tiktok.svg';
+import illustrationArtsFestival from '../assets/exhibitions/exhibitions-IAF2026.webp';
 
 const navigation = [
 	{ label: 'About', href: '#about' },
@@ -169,6 +170,43 @@ const serviceLinks = [
 					<div class="about-card__accent" aria-hidden="true">
 						<img src={wavesAccent.src} alt="" loading="lazy" decoding="async" />
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="upcoming-exhibition" aria-labelledby="upcoming-exhibition-heading">
+			<div class="upcoming-exhibition__card">
+				<div class="upcoming-exhibition__poster">
+					<p class="upcoming-exhibition__status">Happening soon</p>
+					<img
+						src={illustrationArtsFestival.src}
+						alt="Illustration Arts Festival 2026 poster featuring whiteyedcat Malaysia artwork."
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="upcoming-exhibition__copy">
+					<p class="upcoming-exhibition__eyebrow">Upcoming exhibition</p>
+					<h2 id="upcoming-exhibition-heading">Illustration Arts Festival 2026</h2>
+					<p class="upcoming-exhibition__date">
+						<time datetime="2026-07-03">3</time>–<time datetime="2026-07-05">5 July 2026</time>
+						<span aria-hidden="true">·</span>
+						11am–7pm
+					</p>
+					<p class="upcoming-exhibition__venue">
+						New Art Museum Singapore<br />
+						Whitestone Gallery<br />
+						Tanjong Pagar Distripark
+					</p>
+					<a
+						class="upcoming-exhibition__link"
+						href="https://www.instagram.com/illustrationartsfest/?hl=en"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						View exhibition details
+						<span aria-hidden="true">↗</span>
+					</a>
 				</div>
 			</div>
 		</section>
@@ -948,6 +986,129 @@ const serviceLinks = [
 		object-position: left center;
 	}
 
+	.upcoming-exhibition {
+		width: var(--shell-width);
+		margin: 0 auto;
+		padding-block: var(--section-gap);
+	}
+
+	.upcoming-exhibition__card {
+		display: grid;
+		grid-template-columns: minmax(15rem, 0.78fr) minmax(18rem, 1.22fr);
+		align-items: center;
+		gap: clamp(2rem, 6vw, 5.5rem);
+		padding: clamp(1rem, 2vw, 1.4rem);
+		border: 2px solid var(--color-text);
+		border-radius: 0;
+		background: var(--color-surface);
+		box-shadow: 0.75rem 0.75rem 0 var(--color-text);
+	}
+
+	.upcoming-exhibition__poster {
+		position: relative;
+		aspect-ratio: 1179 / 1557;
+		overflow: hidden;
+		border-radius: clamp(0.9rem, 2vw, 1.5rem);
+		background: var(--color-bg);
+	}
+
+	.upcoming-exhibition__poster img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.upcoming-exhibition__status {
+		position: absolute;
+		z-index: 1;
+		top: clamp(0.45rem, 1.2vw, 0.65rem);
+		left: -0.15rem;
+		margin: 0;
+		padding: 0.72rem 1.35rem 0.65rem;
+		background: #ff4b0b;
+		color: #fff8cf;
+		box-shadow: 0.38rem 0.38rem 0 #ffd928;
+		font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		animation: upcomingStatusFloat 2.2s ease-in-out infinite;
+	}
+
+	.upcoming-exhibition__copy {
+		padding: clamp(0.5rem, 2vw, 1.5rem) clamp(0.25rem, 2vw, 1rem);
+	}
+
+	.upcoming-exhibition__eyebrow {
+		margin: 0 0 0.8rem;
+		color: #d83a05;
+		font-size: 0.82rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.upcoming-exhibition h2 {
+		max-width: 11ch;
+		margin: 0;
+		font-family: 'Bodoni Moda', serif;
+		font-size: clamp(2.5rem, 5.5vw, 5rem);
+		line-height: 0.98;
+	}
+
+	.upcoming-exhibition__date {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.55rem;
+		margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+		font-size: clamp(1.05rem, 2vw, 1.4rem);
+		font-weight: 800;
+	}
+
+	.upcoming-exhibition__venue {
+		margin: 0.75rem 0 0;
+		font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+		font-weight: 500;
+		line-height: 1.55;
+	}
+
+	.upcoming-exhibition__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-top: clamp(1.5rem, 3vw, 2.3rem);
+		padding: 0.8rem 1.1rem;
+		border: 2px solid var(--color-text);
+		border-radius: 10px;
+		background: var(--color-text);
+		color: var(--color-text-inverse);
+		font-size: 0.92rem;
+		font-weight: 800;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.upcoming-exhibition__link:hover,
+	.upcoming-exhibition__link:focus-visible {
+		background: var(--color-accent);
+		color: var(--color-text);
+		transform: translateY(-0.2rem);
+	}
+
+	@keyframes upcomingStatusFloat {
+		0%,
+		100% {
+			transform: translateY(0) rotate(-1.5deg);
+		}
+
+		50% {
+			transform: translateY(0.85rem) rotate(-1.5deg);
+		}
+	}
+
 	.services-section {
 		width: 100%;
 		margin: 0;
@@ -1172,6 +1333,11 @@ const serviceLinks = [
 		outline-offset: 0.28rem;
 	}
 
+	.upcoming-exhibition__link:focus-visible {
+		outline: 3px solid #d83a05;
+		outline-offset: 0.3rem;
+	}
+
 	@media (max-width: 920px) {
 		.site-header {
 			margin-bottom: 0;
@@ -1237,6 +1403,7 @@ const serviceLinks = [
 		}
 
 		.about-card,
+		.upcoming-exhibition__card,
 		.site-footer__inner {
 			grid-template-columns: 1fr;
 		}
@@ -1251,8 +1418,23 @@ const serviceLinks = [
 		}
 
 		.about-card__copy,
+		.upcoming-exhibition__copy,
 		.site-footer__brand {
 			text-align: center;
+		}
+
+		.upcoming-exhibition__poster {
+			width: min(100%, 28rem);
+			justify-self: center;
+		}
+
+		.upcoming-exhibition h2 {
+			max-width: 14ch;
+			margin-inline: auto;
+		}
+
+		.upcoming-exhibition__date {
+			justify-content: center;
 		}
 
 		.site-footer__inner {
@@ -1316,8 +1498,15 @@ const serviceLinks = [
 		}
 
 		.about-section,
+		.upcoming-exhibition,
 		.services-section {
 			padding-block: 4rem;
+		}
+
+		.upcoming-exhibition__card {
+			gap: 1.5rem;
+			padding: 0.75rem 0.75rem 1.5rem;
+			box-shadow: 0.45rem 0.45rem 0 var(--color-text);
 		}
 
 		.services-layout {
@@ -1409,6 +1598,11 @@ const serviceLinks = [
 		.hero__content {
 			opacity: 1;
 			animation: none;
+		}
+
+		.upcoming-exhibition__status {
+			animation: none;
+			transform: rotate(-1.5deg);
 		}
 
 	}
