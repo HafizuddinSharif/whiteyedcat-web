@@ -7,8 +7,18 @@ import artoMovement from '../assets/exhibitions/arto_movement.jpg';
 import journalArtFest from '../assets/exhibitions/exhibition-journal-art-fest.png';
 import klIllustrationFair from '../assets/exhibitions/exhibition-kl-illustration-fair.png';
 import visitorsOnly from '../assets/exhibitions/exhibition-visitors-only.png';
+import illustrationArtsFestival from '../assets/exhibitions/exhibitions-IAF2026.webp';
 
 const exhibitions = [
+	{
+		title: 'Illustration Arts Festival 2026',
+		date: '3–5 July 2026 · 11am–7pm',
+		venue: 'New Art Museum Singapore · Whitestone Gallery · Tanjong Pagar Distripark',
+		image: illustrationArtsFestival,
+		alt: 'Illustration Arts Festival 2026 poster featuring whiteyedcat Malaysia artwork.',
+		aspectRatio: '1179 / 1557',
+		status: 'Happening soon',
+	},
 	{
 		title: 'KL Illustration Fair 2025',
 		venue: 'GMBB | Kuala Lumpur',
@@ -43,7 +53,7 @@ const exhibitions = [
 
 <Layout
 	title="Exhibition | whiteyedcat"
-	description="whiteyedcat exhibition history and art fair appearances, including KL Illustration Fair, Visitors Only GrimDreamStudio, Journal Art Fest Georgetown, and Arto Movement."
+	description="See whiteyedcat at Illustration Arts Festival 2026 in Singapore, plus past exhibitions and art fair appearances in Malaysia."
 >
 	<main class="exhibitions-page">
 		<ArtistHeader currentHref="/exhibitions" />
@@ -58,10 +68,12 @@ const exhibitions = [
 					exhibitions.map((item) => (
 						<article class="exhibition-card" style={`--exhibition-aspect-ratio: ${item.aspectRatio};`}>
 							<div class="exhibition-card__image">
+								{item.status && <p class="exhibition-card__status">{item.status}</p>}
 								<img src={item.image.src} alt={item.alt} loading="lazy" decoding="async" />
 							</div>
 							<div class="exhibition-card__copy">
 								<h3>{item.title}</h3>
+								{item.date && <p class="exhibition-card__date">{item.date}</p>}
 								<p>{item.venue}</p>
 							</div>
 						</article>
@@ -144,10 +156,40 @@ const exhibitions = [
 	}
 
 	.exhibition-card__image {
+		position: relative;
 		overflow: hidden;
 		border-radius: 0.95rem;
 		background: var(--exhibitions-bg);
 		aspect-ratio: var(--exhibition-aspect-ratio);
+	}
+
+	.exhibition-card__status {
+		position: absolute;
+		z-index: 1;
+		top: clamp(0.45rem, 1.2vw, 0.65rem);
+		left: -0.15rem;
+		margin: 0;
+		padding: 0.72rem 1.35rem 0.65rem;
+		background: #ff4b0b;
+		color: #fff8cf;
+		box-shadow: 0.38rem 0.38rem 0 #ffd928;
+		font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		animation: status-float 2.2s ease-in-out infinite;
+	}
+
+	@keyframes status-float {
+		0%,
+		100% {
+			transform: translateY(0) rotate(-1.5deg);
+		}
+
+		50% {
+			transform: translateY(0.85rem) rotate(-1.5deg);
+		}
 	}
 
 	.exhibition-card__image img {
@@ -175,6 +217,11 @@ const exhibitions = [
 	.exhibition-card p {
 		font-size: clamp(0.92rem, 1.45vw, 1.25rem);
 		font-weight: 400;
+	}
+
+	.exhibition-card .exhibition-card__date {
+		color: #d83a05;
+		font-weight: 750;
 	}
 
 	.exhibitions-cta-wrap {
@@ -326,6 +373,13 @@ const exhibitions = [
 		.exhibitions-footer__links {
 			justify-self: center;
 			grid-template-columns: repeat(2, minmax(7rem, 1fr));
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.exhibition-card__status {
+			animation: none;
+			transform: rotate(-1.5deg);
 		}
 	}
 
