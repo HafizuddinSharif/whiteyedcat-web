@@ -32,6 +32,11 @@ import theNightWhereMasFuckedUp from "../assets/artworks/the_night_where_mas_fuc
 import tisButAFuneral from "../assets/artworks/tis_but_a_funeral.webp";
 import toobadshesdead from "../assets/artworks/toobadshesdead.webp";
 import whatisitdad from "../assets/artworks/whatisitdaD.webp";
+import allTheOtherWays from "../assets/artworks/all_the_other_ways.webp";
+import dataAnalystAtWorkCommission from "../assets/artworks/data_analyst_at_work_commission.webp";
+import fruitBirdiesCommission from "../assets/artworks/fruit_birdies_commission.webp";
+import lostInThePoli from "../assets/artworks/lost_in_the_poli.webp";
+import petasFavCommission from "../assets/artworks/petas_fav_commission.webp";
 
 export interface ArtworkItem {
   src: ImageMetadata;
@@ -43,6 +48,46 @@ export interface ArtworkItem {
 }
 
 export const artworkItems: ArtworkItem[] = [
+  {
+    src: petasFavCommission,
+    alt: "Illustrated cat surrounded by corn, tomatoes, carrots, and lush garden plants.",
+    title: "PETA's Fav",
+    variant: "portrait",
+    purchaseUrl: null,
+    featured: false,
+  },
+  {
+    src: lostInThePoli,
+    alt: "Surreal digital scene with a woman, orange cats, floating fish, and a computer-window frame.",
+    title: "Lost in the Poli",
+    variant: "portrait",
+    purchaseUrl: null,
+    featured: false,
+  },
+  {
+    src: fruitBirdiesCommission,
+    alt: "Colorful cat-and-fruit illustration with pomegranates, tomatoes, leafy plants, and starbursts.",
+    title: "Fruit Birdies",
+    variant: "portrait",
+    purchaseUrl: null,
+    featured: false,
+  },
+  {
+    src: dataAnalystAtWorkCommission,
+    alt: "Orange tabby cat in a tie working at a desk with a laptop and data charts.",
+    title: "Data Analyst at Work",
+    variant: "portrait",
+    purchaseUrl: null,
+    featured: false,
+  },
+  {
+    src: allTheOtherWays,
+    alt: "Three figures in embroidered outfits stand among glowing fish and a dark forest backdrop.",
+    title: "All the Other Ways",
+    variant: "portrait",
+    purchaseUrl: null,
+    featured: false,
+  },
   {
     src: foundYou,
     alt: "Colorful collage artwork featuring dogs, charms, candy, and bright playful objects.",
