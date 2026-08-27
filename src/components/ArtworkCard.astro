@@ -3,7 +3,7 @@ interface Props {
 	src: { src: string } | string;
 	alt: string;
 	title: string;
-	variant: 'portrait' | 'square';
+	variant: 'portrait' | 'square' | 'landscape';
 	purchaseUrl?: string | null;
 	class?: string;
 }
@@ -238,6 +238,10 @@ const cardClass = [
 
 	.artwork-card--square {
 		aspect-ratio: 1;
+	}
+
+	.artwork-card--landscape {
+		aspect-ratio: 600 / 412;
 	}
 
 	.artwork-card__inner,

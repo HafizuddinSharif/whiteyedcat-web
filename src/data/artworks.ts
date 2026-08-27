@@ -34,20 +34,38 @@ import toobadshesdead from "../assets/artworks/toobadshesdead.webp";
 import whatisitdad from "../assets/artworks/whatisitdaD.webp";
 import allTheOtherWays from "../assets/artworks/all_the_other_ways.webp";
 import dataAnalystAtWorkCommission from "../assets/artworks/data_analyst_at_work_commission.webp";
+import everyYouEveryMe from "../assets/artworks/every_you_every_me.webp";
 import fruitBirdiesCommission from "../assets/artworks/fruit_birdies_commission.webp";
 import lostInThePoli from "../assets/artworks/lost_in_the_poli.webp";
+import merelyHuman from "../assets/artworks/merely_human.webp";
 import petasFavCommission from "../assets/artworks/petas_fav_commission.webp";
 
 export interface ArtworkItem {
   src: ImageMetadata;
   alt: string;
   title: string;
-  variant: "portrait" | "square";
+  variant: "portrait" | "square" | "landscape";
   purchaseUrl: string | null;
   featured: boolean;
 }
 
 export const artworkItems: ArtworkItem[] = [
+  {
+    src: everyYouEveryMe,
+    alt: "Portrait of a woman surrounded by goldfish, books, a cat, and a classical column.",
+    title: "Every You Every Me",
+    variant: "portrait",
+    purchaseUrl: null,
+    featured: false,
+  },
+  {
+    src: merelyHuman,
+    alt: "Two figures in a lush, dreamlike landscape with flowers, shells, and glowing bubbles.",
+    title: "Merely Human",
+    variant: "landscape",
+    purchaseUrl: null,
+    featured: false,
+  },
   {
     src: petasFavCommission,
     alt: "Illustrated cat surrounded by corn, tomatoes, carrots, and lush garden plants.",
